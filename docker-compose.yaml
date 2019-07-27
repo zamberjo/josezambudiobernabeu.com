@@ -1,0 +1,34 @@
+version: '2.3'
+
+services:
+  cv_node:
+    container_name: cv_node
+    build:
+      context: ./web
+      args:
+        NODE_UID: ${USER_UID:-501}
+        NODE_GID: ${USER_GID:-20}
+        NODE_ENV: ${NODE_ENV:-production}
+    volumes:
+      - './web:${PROJECT_PWD}/web'
+    working_dir: ${PROJECT_PWD}/web
+
+  cv_web:
+    container_name: cv_web
+    image: nginx:alpine
+    volumes:
+      - ./web/dist:/usr/share/nginx/html:ro
+    ports:
+      - 8080:80
+    networks:
+      - proxy-network
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:josezambudiobernabeu.com'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
+
+networks:
+  proxy-network:
+    external: true

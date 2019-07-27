@@ -1,0 +1,141 @@
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #3D5467;
+    color: #DB5461;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-shadow: 5px 5px rgba(0,0,0,0.1);
+}
+
+.other {
+    font-size: 0.6em;
+}
+#nameContainer {
+    display: flex;
+    flex-direction: row;
+
+    font-family: Arial;
+    font-size: 15em;
+    font-weight: bold;
+
+    animation-name: nameContainerAppear;
+    animation-delay: 1s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+
+    cursor: pointer;
+}
+@keyframes nameContainerAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(-3000px);
+    }
+    60% {
+
+        transform: translateY(25px);
+    }
+    75% {
+        transform: translateY(-10px);
+    }
+    90% {
+        transform: translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#name {
+    cursor: pointer;
+    width: .5em;
+    overflow-x: hidden;
+}
+#name.showName:hover {
+    animation-name: nameMove;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+@keyframes nameMove {
+    0% {
+        width: .5em;
+        transform: translateX(0);
+        margin-right: 0;
+    }
+    100% {
+        width: 1.6em;
+        transform: translateX(-10vw);
+        margin-right: -0.6em;
+    }
+}
+
+
+#firstLastName {
+    width: 0.6em;
+    overflow-x: hidden;
+}
+#firstLastName.showFirstLastName:hover {
+    animation-name: firstLastNameMove;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+    position: relative;
+}
+@keyframes firstLastNameMove {
+    0% {
+        width: 0.6em;
+        transform: translate(0, 0);
+        left: 0;
+    }
+    100% {
+        width: 3.1em;
+        transform: translate(-42.5vw, 0);
+        left: 2.55em;
+    }
+}
+
+#secondLastName {
+    width: 0.7em;
+    overflow-x: hidden;
+}
+#secondLastName.showSecondLastName:hover {
+    animation-name: secondLastNameMove;
+    animation-duration: 1.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+    position: relative;
+}
+@keyframes secondLastNameMove {
+    0% {
+        width: 0.7em;
+    }
+    100% {
+        width: 3.1em;
+    }
+}
+
+#socialContainer {
+    cursor: pointer;
+    font-size: 3em;
+    text-decoration: none;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#socialContainer i {
+    margin: .5em;
+}
+#socialContainer a {
+    color: #8EA8C3;
+}
