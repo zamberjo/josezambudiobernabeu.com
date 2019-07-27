@@ -18,8 +18,6 @@ services:
     image: nginx:alpine
     volumes:
       - ./web/dist:/usr/share/nginx/html:ro
-    # ports:
-      # - 8080:80
     networks:
       - proxy-network
     labels:
