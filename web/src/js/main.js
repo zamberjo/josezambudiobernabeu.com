@@ -5,7 +5,6 @@ const $secondLastName = document.getElementById("secondLastName");
 const $socialContainer = document.getElementById("socialContainer");
 
 $nameContainer.addEventListener('click', (event) => {
-    _gaq.push(['_trackEvent', 'title', 'click', 'linkedin', '0']);
     window.open("https://www.linkedin.com/in/zamberjo");
 });
 
