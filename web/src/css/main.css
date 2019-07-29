@@ -1,3 +1,5 @@
+/*@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);*/
+
 body {
     height: 100vh;
     display: flex;
@@ -5,6 +7,7 @@ body {
     justify-content: center;
     background: #3D5467;
     color: #DB5461;
+    font-family: Arial;
 }
 
 #container {
@@ -21,7 +24,6 @@ body {
     display: flex;
     flex-direction: row;
 
-    font-family: Arial;
     font-size: 15em;
     font-weight: bold;
 
@@ -31,6 +33,7 @@ body {
     animation-fill-mode: forwards;
     animation-timing-function: ease-out;
 
+    opacity: 0;
     cursor: pointer;
 }
 @keyframes nameContainerAppear {
@@ -55,26 +58,21 @@ body {
 }
 
 #name {
-    cursor: pointer;
     width: .5em;
     overflow-x: hidden;
 }
 #name.showName:hover {
     animation-name: nameMove;
-    animation-duration: 1s;
+    animation-duration: .7s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-out;
 }
 @keyframes nameMove {
     0% {
         width: .5em;
-        transform: translateX(0);
-        margin-right: 0;
     }
     100% {
         width: 1.6em;
-        transform: translateX(-10vw);
-        margin-right: -0.6em;
     }
 }
 
@@ -93,13 +91,9 @@ body {
 @keyframes firstLastNameMove {
     0% {
         width: 0.6em;
-        transform: translate(0, 0);
-        left: 0;
     }
     100% {
         width: 3.1em;
-        transform: translate(-42.5vw, 0);
-        left: 2.55em;
     }
 }
 
