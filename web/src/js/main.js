@@ -18,15 +18,18 @@ $nameContainer.addEventListener('animationend', (event) => {
             $firstLastName.classList.add('showName');
             $secondLastName.classList.add('showName');
             break;
-        default:
+        case "nameAliasResetMove":
+            $name.classList.remove('resetAlias');
+            $name.classList.add('showName');
             break;
-    }
-});
-
-$nameContainer.addEventListener('animationiteration', (event) => {
-    switch(event.animationName) {
-        case "nameAliasMove":
-            $name.style.animationPlayState = "paused";
+        case "firstLastNameAliasResetMove":
+            $firstLastName.classList.remove('resetAlias');
+            $firstLastName.classList.add('showName');
+            break;
+        case "secondLastNameAliasResetMove":
+            $secondLastName.classList.remove('resetAlias');
+            $secondLastName.classList.add('showName');
+            break;
         default:
             break;
     }
@@ -45,19 +48,18 @@ $aliasButton.addEventListener('click', (event) => {
     $secondLastName.classList.remove('showName');
     $secondLastName.classList.add('showAlias');
 });
-$nameButton.addEventListener('click', (event) => {
 
+$nameButton.addEventListener('click', (event) => {
     $nameButton.classList.add('active');
     $aliasButton.classList.remove('active');
 
-    $name.style.animationPlayState = "running";
     $name.classList.remove('showAlias');
-    $name.classList.add('showName');
+    $name.classList.add('resetAlias');
 
     $firstLastName.classList.remove('showAlias');
-    $firstLastName.classList.add('showName');
+    $firstLastName.classList.add('resetAlias');
 
     $secondLastName.classList.remove('showAlias');
-    $secondLastName.classList.add('showName');
+    $secondLastName.classList.add('resetAlias');
 });
 
