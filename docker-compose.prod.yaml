@@ -6,6 +6,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile-prod
+    restart: always
     networks:
       - proxy-network
     labels:
