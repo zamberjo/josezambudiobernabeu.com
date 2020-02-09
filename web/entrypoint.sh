@@ -12,8 +12,12 @@ yarn config --silent set cache-folder "$(pwd)/.npm"
 PATH="$(pwd)/node_modules/.bin:${PATH}"
 export PATH
 
-echo "Resolving Node dependencies..."
-yarn install
+if [ ${#} -eq 0 ]; then
+    echo "Resolving Node dependencies..."
+    yarn install
 
-echo "Eject..."
-exec yarn run build:dev
+    echo "Starting server..."
+    exec npm start
+fi
+
+exec "${@}"

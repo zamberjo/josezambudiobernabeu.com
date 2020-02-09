@@ -15,6 +15,11 @@ const plugins = [
     filename: 'index.html',
     template: 'src/index.html',
   }),
+  new HtmlWebpackPlugin({
+    title: 'Jose Zambudio Bernabeu',
+    filename: '404.html',
+    template: 'src/404.html',
+  }),
 ];
 
 if ( process.env.NODE_ENV === 'production' ) {
@@ -41,7 +46,7 @@ module.exports = (env) => {
     entry: ["@babel/polyfill", path.resolve(__dirname, 'src/index.js')],
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: "js/bundle.js",
+      filename: "js/[name].js",
     },
     mode: process.env.NODE_ENV,
     module: {
@@ -72,5 +77,9 @@ module.exports = (env) => {
       ]
     },
     plugins: plugins,
+    devServer: {
+      host: '0.0.0.0',
+      port: 9000,
+    },
   };
 }
