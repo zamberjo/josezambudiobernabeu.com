@@ -6,8 +6,9 @@
   "author": "Jose Zambudio Bernabeu",
   "license": "MIT",
   "scripts": {
-    "build:dev": "webpack --env.NODE_ENV=development --config ./webpack.config.js",
-    "build:prod": "webpack -p --env.NODE_ENV=production --config ./webpack.config.js"
+    "start": "webpack-dev-server",
+    "build": "webpack -p --env.NODE_ENV=production --config ./webpack.config.js",
+    "deploy": "firebase deploy"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
@@ -17,6 +18,7 @@
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.1.0",
+    "firebase-tools": "^7.12.1",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.8.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
@@ -24,7 +26,8 @@
     "postcss-nested": "^4.1.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {}
 }
