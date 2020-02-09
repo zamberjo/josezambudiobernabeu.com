@@ -1,0 +1,22 @@
+name: DEPLOY
+
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  page_build:
+  release:
+    types:
+      - created
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to Firebase
+      uses: lowply/deploy-firebase@v0.0.2
