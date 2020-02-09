@@ -21,13 +21,15 @@ jobs:
       uses: actions/checkout@master
     - name: Install Dependencies
       run: yarn install
+      working-directory: ./web
     - name: Build
       run: yarn run build
+      working-directory: ./web
     - name: Archive Production Artifact
       uses: actions/upload-artifact@master
       with:
         name: dist
-        path: dist
+        path: ./web/dist
   deploy:
     name: Deploy
     needs: build
