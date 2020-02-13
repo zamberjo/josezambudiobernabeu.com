@@ -15,11 +15,11 @@
     "react-scripts": "3.3.1"
   },
   "scripts": {
-    "lint": "eslint ./",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint ./"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,9 +40,12 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.18.3",
+    "tslint": "^6.0.0",
+    "tslint-react": "^4.2.0",
     "typescript": "^3.7.5"
   }
 }
