@@ -11,25 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Yarn install
-        uses: borales/actions-yarn@v2.0.0
+      - name: Install Dependencies
+        run: yarn install
         working-directory: ./web
-        with:
-          cmd: install
       
-      - name: Yarn linter
-        uses: borales/actions-yarn@v2.0.0
+      - name: Passing the linter
+        run: yarn run lint
         working-directory: ./web
-        with:
-          cmd: run lint
       
-      # - name: Yarn tests
-      #   uses: borales/actions-yarn@v2.0.0
-      #   with:
-      #     cmd: run test
+      # - name: Running tests
+      #   run: yarn run test
+      #   working-directory: ./web
   
-      - name: Yarn build
-        uses: borales/actions-yarn@v2.0.0
+      - name: Build
+        run: yarn run build
         working-directory: ./web
-        with:
-          cmd: run build
