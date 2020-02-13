@@ -1,0 +1,32 @@
+name: CI
+
+on: 
+  pull_request:
+
+jobs:
+  Linter:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Yarn install
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      
+      - name: Yarn linter
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: run lint
+      
+      # - name: Yarn tests
+      #   uses: borales/actions-yarn@v2.0.0
+      #   with:
+      #     cmd: run test
+  
+      - name: Yarn build
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: run build
