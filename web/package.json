@@ -1,33 +1,44 @@
 {
-  "name": "personalwebsite",
+  "name": "JoseZambudioBernabeu.com",
   "version": "1.0.0",
-  "description": "My personal website",
+  "description": "Personal website",
   "main": "index.js",
+  "repository": "https://github.com/zamberjo/josezambudiobernabeu.com",
   "author": "Jose Zambudio Bernabeu",
   "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "create-react-app": "^3.3.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.1"
+  },
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack -p --env.NODE_ENV=production --config ./webpack.config.js",
-    "deploy": "firebase deploy"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.5.5",
-    "autoprefixer": "^9.6.1",
-    "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.1.0",
-    "firebase-tools": "^7.12.1",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.8.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "postcss-loader": "^3.0.0",
-    "postcss-nested": "^4.1.2",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.10.3"
-  },
-  "dependencies": {}
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.18.3"
+  }
 }
