@@ -1,0 +1,10 @@
+.Sidebar {
+  background-color: #3d5467;
+}
+.Sidebar nav {
+  background-color: #da5461;
+}
+.Sidebar nav .brand-logo {
+  margin-left: 1%;
+  color: #3d5467;
+}
