@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import 'materialize-css/dist/css/materialize.min.css';
-import './Presentation.css';
+import './Name.css';
 
 /**
- * Presentation Component
+ * Name Component
  */
-class Presentation extends Component {
+class Name extends Component {
   /**
    * Initialize Materialize
    * TODO:: To improve this code.
@@ -229,4 +229,4 @@ class Presentation extends Component {
   }
 }
 
-export default Presentation;
+export default Name;
