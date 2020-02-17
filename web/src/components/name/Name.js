@@ -8,6 +8,11 @@ import './Name.css';
  * Name Component
  */
 class Name extends Component {
+  static propTypes = {
+    ReactGA: PropTypes.string.isRequired,
+  };
+
+
   /**
    * Initialize scrollspy Materialize
    * @param {Object} props Props of Component
@@ -22,7 +27,6 @@ class Name extends Component {
       },
       'activeAction': 'alias',
     };
-
     this.nameContainerClick = this.nameContainerClick.bind(this);
     this.nameContainerAnima = this.nameContainerAnima.bind(this);
     this.buttonNameAnimation = this.buttonNameAnimation.bind(this);
@@ -32,7 +36,7 @@ class Name extends Component {
    * Click on name animation.
    */
   nameContainerClick() {
-    // ga('send', 'event', 'social', 'click', 'linkedin', '0');
+    this.props.ReactGA.event({category: 'Social', action: 'linkedin'});
     window.open('https://www.linkedin.com/in/zamberjo');
   }
 
@@ -249,19 +253,25 @@ class Name extends Component {
         </div>
         <div id='socialContainer'>
           <a href='https://github.com/zamberjo?tab=contributions&period=monthly'
-            onClick='ga("send", "event", "social", "click", "github", "0")'
+            onClick={
+              this.props.ReactGA.event({
+                category: 'Social', action: 'github'})}
             rel='noopener noreferrer'
             target='_blank'>
             <i className='fab fa-github-alt'></i>
           </a>
           <a href='https://twitter.com/Zamberjo'
-            onClick='ga("send", "event", "social", "click", "twitter", "0")'
+            onClick={
+              this.props.ReactGA.event({
+                category: 'Social', action: 'twitter'})}
             rel='noopener noreferrer'
             target='_blank'>
             <i className='fab fa-twitter'></i>
           </a>
           <a href='https://www.linkedin.com/in/zamberjo'
-            onClick='ga("send", "event", "social", "click", "linkedin", "0")'
+            onClick={
+              this.props.ReactGA.event({
+                category: 'Social', action: 'linkedin'})}
             rel='noopener noreferrer'
             target='_blank'>
             <i className='fab fa-linkedin-in'></i>
