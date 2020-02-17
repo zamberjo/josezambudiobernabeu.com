@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import M from 'materialize-css/dist/js/materialize.min.js';
+// import M from 'materialize-css/dist/js/materialize.min.js';
 import PropTypes from 'prop-types';
 import 'materialize-css/dist/css/materialize.min.css';
+import './WorkExperience.css';
 
 /**
  * Experience Component
@@ -17,17 +18,6 @@ class WorkExperience extends Component {
   };
 
   /**
-   * Initialize sidenav Materialize
-   */
-  componentDidMount() {
-    M.ScrollSpy.init(document.querySelectorAll('.scrollspy'), {
-      throttle: 100,
-      scrollOfffset: 500,
-      activeClass: 'active',
-    });
-  }
-
-  /**
    * Component
    * @return {WorkExperience} Component
    */
@@ -37,8 +27,8 @@ class WorkExperience extends Component {
         <div className='row'>
           <div className='col s2 l1'>
             <img className='responsive-img circle'
-              src='assets/img/{ this.props.image }'
-              alt='{ this.props.alt }'/>
+              src={'assets/img/work/' + this.props.image}
+              alt={this.props.alt}/>
           </div>
           <div className='col s10 l11'>
             <div className='row'>

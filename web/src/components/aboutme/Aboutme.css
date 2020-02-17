@@ -1,0 +1,29 @@
+#aboutme {
+  font-family: 'Fira Code', monospace;
+  text-align: justify;
+  margin-top: 5vh;
+}
+#aboutme img {
+  border-radius: 1vh;
+}
+section {
+  min-height: 91vh;
+}
+#aboutme .row > .tabs-content,
+#aboutme .col > .tabs-content {
+  min-height: 100%;
+}
+.tabs-content.carousel.carousel-slider .carousel-item.active{
+  position: relative;
+}  
+.tabs-content.carousel.carousel-slider{
+  height: auto !important;
+}
+.collection-item .col > img {
+  display: flex;
+}
+.collection-item img {
+  border: 1px solid #3d5467;
+  justify-content: center;
+  align-items: center;
+}

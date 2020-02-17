@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-// import M from 'materialize-css/dist/js/materialize.min.js';
+import M from 'materialize-css/dist/js/materialize.min.js';
 import 'materialize-css/dist/css/materialize.min.css';
 import './PresentationTab.css';
+import me from './img/me.jpg';
 
 /**
  * PresentationTab Component
@@ -9,8 +10,36 @@ import './PresentationTab.css';
 class PresentationTab extends Component {
   /**
    * Initialize sidenav Materialize
+   * @param {Object} props Props of Component
    */
-  // componentDidMount() {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      imgOptions: {},
+    };
+  }
+
+  /**
+   * Initialize Materialbox
+   */
+  componentDidMount() {
+    const {imgOptions} = this.state;
+    if (typeof M !== 'undefined') {
+      this.imgInst = M.Materialbox.init(this._imgEl, imgOptions);
+    }
+  }
+
+  /**
+   * Update Materialbox
+   */
+  componentDidUpdate() {
+    const {imgOptions} = this.state;
+
+    if (typeof M !== 'undefined') {
+      this.imgInst.destroy();
+      this.imgInst = M.Materialbox.init(this._imgEl, imgOptions);
+    }
+  }
 
   /**
    * Component
@@ -18,13 +47,14 @@ class PresentationTab extends Component {
    */
   render() {
     return (
-      <div className='col s12'>
+      <div id='presentation' className='col s12'>
         <div className='col s12'>
           <div className='row'>
             <div className='col s12 m6 l4'>
               <img id='me'
-                className='materialboxed responsive-img z-depth-2'
-                src='assets/img/me.jpg'
+                ref={(el) => (this._imgEl = el)}
+                className='materialboxed hoverable responsive-img z-depth-2'
+                src={me}
                 alt='Jose Zambudio Bernabeu'/>
             </div>
             <div className='col s12 m6 l8'>

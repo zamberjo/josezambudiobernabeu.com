@@ -1,3 +1,6 @@
 p {
-    font-size: 1.4em;
+  font-size: 1.4em;
+}
+#me {
+  margin: .5rem 0 1rem 0;
 }

@@ -1,0 +1,19 @@
+.job-title,
+.company-title,
+.duration-title {
+  color: #3d5467;
+  font-weight: bold;
+  text-align: right;
+}
+.job {
+  font-weight: bold;
+}
+.job,
+.company,
+.duration {
+  text-align: left;
+}
+.content {
+  text-align: justify;
+}
+  

@@ -6,6 +6,15 @@
     height: 150px;
   }
   .parallax img {
-    max-height: 200%; /* or a little bit higher */
+    max-height: 200%;
   }
+}
+@media only screen and (min-width: 993px) {
+  .parallax img {
+    max-height: 170%;
+  }
+}
+/* TODO: Ver como poner este */
+main #parallax-torvalds img {
+  max-width: 132%;
 }

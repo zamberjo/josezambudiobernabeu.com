@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import Parallax from '../parallax/Parallax';
 import PresentationTab from './PresentationTab';
+import Experience from './Experience';
 import Skills from './Skills';
 import Studies from './Studies';
 import 'materialize-css/dist/css/materialize.min.css';
@@ -13,6 +14,7 @@ import './Aboutme.css';
 class AboutMe extends Component {
   /**
    * Initialize sidenav Materialize
+   * @param {Object} props Props of Component
    */
   constructor(props) {
     super(props);
@@ -25,14 +27,14 @@ class AboutMe extends Component {
       tabsOptions: {
         swipeable: true,
       },
-    }
+    };
   }
 
   /**
    * Initialize ScrollSpy && Tabs Materialize
    */
   componentDidMount() {
-    const { scrollOptions, tabsOptions } = this.state;
+    const {scrollOptions, tabsOptions} = this.state;
     if (typeof M !== 'undefined') {
       this.scrollInst = M.ScrollSpy.init(this._scrollEl, scrollOptions);
       this.tabsInst = M.Tabs.init(this._tabsEl, tabsOptions);
@@ -43,7 +45,7 @@ class AboutMe extends Component {
    * Update ScrollSpy && Tabs Materialize
    */
   componentDidUpdate() {
-    const { scrollOptions, tabsOptions } = this.state;
+    const {scrollOptions, tabsOptions} = this.state;
 
     if (typeof M !== 'undefined') {
       this.tabsInst.destroy();
@@ -64,11 +66,11 @@ class AboutMe extends Component {
           src='2.jpg'
           alt='Snippet of code'/>
         <section className='scrollspy' id='aboutme'
-          ref={el => (this._scrollEl = el)}>
+          ref={(el) => (this._scrollEl = el)}>
           <div className='row'>
             <div className='col s12'>
               <ul className='tabs tabs-fixed-width'
-                ref={el => (this._tabsEl = el)}>
+                ref={(el) => (this._tabsEl = el)}>
                 <li className='tab col s3'>
                   <a className='active' href='#presentation'>
                   Presentacion
@@ -89,6 +91,7 @@ class AboutMe extends Component {
 
           <div className='row'>
             <PresentationTab/>
+            <Experience/>
             <Skills/>
             <Studies/>
           </div>

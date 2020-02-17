@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
-// import M from 'materialize-css/dist/js/materialize.min.js';
+import PropTypes from 'prop-types';
 import 'materialize-css/dist/css/materialize.min.css';
+import './Skill.css';
 
 /**
  * Skills Component
  */
 class Skill extends Component {
+  static propTypes = {
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+  };
+
   /**
    * Initialize sidenav Materialize
    */
@@ -17,10 +23,10 @@ class Skill extends Component {
    */
   render() {
     return (
-      <article className='col s6 m4 l2'>
-        <img src='assets/img/skills/{this.props.src}'
-          className='skill responsive-img'
-          alt='{ this.props.alt }'/>
+      <article className='col s6 m4 l2 skill'>
+        <img src={'assets/img/skills/' + this.props.src}
+          className='hoverable responsive-img'
+          alt={ this.props.alt }/>
       </article>
     );
   }
