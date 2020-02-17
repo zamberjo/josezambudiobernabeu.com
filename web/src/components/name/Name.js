@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
+
 import 'materialize-css/dist/css/materialize.min.css';
 import './Name.css';
 
@@ -8,15 +9,29 @@ import './Name.css';
  */
 class Name extends Component {
   /**
+   * Initialize scrollspy Materialize
+   * @param {Object} props Props of Component
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      scrollOptions: {
+        throttle: 100,
+        scrollOfffset: 500,
+        activeClass: 'active',
+      },
+    };
+  }
+
+  /**
    * Initialize Materialize
    * TODO:: To improve this code.
    */
   componentDidMount() {
-    M.ScrollSpy.init(document.querySelectorAll('.scrollspy'), {
-      throttle: 100,
-      scrollOfffset: 500,
-      activeClass: 'active',
-    });
+    const {scrollOptions} = this.state;
+    if (typeof M !== 'undefined') {
+      this.scrollInst = M.ScrollSpy.init(this._scrollEl, scrollOptions);
+    }
 
     const $nameContainer = document.getElementById('nameContainer');
     const $name = document.getElementById('name');
@@ -173,12 +188,25 @@ class Name extends Component {
   }
 
   /**
+   * Update ScrollSpy
+   */
+  componentDidUpdate() {
+    const {scrollOptions} = this.state;
+    if (typeof M !== 'undefined') {
+      this.scrollInst.destroy();
+      this.scrollInst = M.ScrollSpy.init(this._scrollEl, scrollOptions);
+    }
+  }
+
+  /**
    * Render component
    * @return {Presentation} Component
    */
   render() {
     return (
-      <section className='scrollspy Presentation'>
+      <section id='presentationName'
+        className='scrollspy Presentation'
+        ref={(el) => (this._scrollEl = el)}>
         <div id='switch' className='hide-on-small-only'>
           <i id='name-btn' className='fas fa-user-tie active'></i>
           <i id='alias-btn' className='fas fa-user-secret'></i>

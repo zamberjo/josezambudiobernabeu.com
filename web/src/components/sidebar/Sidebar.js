@@ -9,13 +9,37 @@ import './Sidebar.css';
 class Sidebar extends Component {
   /**
    * Initialize sidenav Materialize
+   * @param {Object} props Props of Component
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      sidenavOptions: {
+        edge: 'left',
+        inDuration: 250,
+      },
+    };
+  }
+
+  /**
+   * Initialize Materialize
    */
   componentDidMount() {
-    const elem = document.querySelector('.sidenav');
-    M.Sidenav.init(elem, {
-      edge: 'left',
-      inDuration: 250,
-    });
+    const {sidenavOptions} = this.state;
+    if (typeof M !== 'undefined') {
+      this.sidenavInst = M.Sidenav.init(this._sidenavEl, sidenavOptions);
+    }
+  }
+
+  /**
+   * Update Sidenav
+   */
+  componentDidUpdate() {
+    const {sidenavOptions} = this.state;
+    if (typeof M !== 'undefined') {
+      this.sidenavInst.destroy();
+      this.sidenavInst = M.Sidenav.init(this._sidenavEl, sidenavOptions);
+    }
   }
 
   /**
@@ -34,7 +58,7 @@ class Sidebar extends Component {
                 <i className='material-icons'>menu</i>
               </a>
               <ul className='right hide-on-med-and-down'>
-                <li><a href='#header'>Home</a></li>
+                <li><a href='#presentationName'>Home</a></li>
                 <li><a href='#aboutme'>Sobre mi</a></li>
                 <li><a href='#projects'>Proyectos personales</a></li>
                 {/* <li><a href='#contact'>Contact</a></li> */}
@@ -42,7 +66,8 @@ class Sidebar extends Component {
             </div>
           </nav>
         </div>
-        <ul className='sidenav' id='mobile-menu'>
+        <ul id='mobile-menu' className='sidenav'
+          ref={(el) => (this._sidenavEl = el)}>
           <li><a className='scrollspy' href='#header'>Home</a></li>
           <li>
             <a className='scrollspy' href='#projects'>Proyectos personales</a>

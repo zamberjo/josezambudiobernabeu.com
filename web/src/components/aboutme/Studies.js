@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-// import M from 'materialize-css/dist/js/materialize.min.js';
+import Study from './Study.js';
+
 import 'materialize-css/dist/css/materialize.min.css';
+
+import data from './studies.json';
 
 /**
  * Studies Component
@@ -16,11 +19,14 @@ class Studies extends Component {
    * @return {Studies} Component
    */
   render() {
+    const studies = data.studies;
     return (
       <div id='studies' className='col s12'>
-        <div className='row'>
-          <div className='col s12'>
-            Estudios
+        <div className='container'>
+          <div className='row'>
+            {studies.map((item, key) => {
+              return <Study {...item} key={key}/>;
+            })}
           </div>
         </div>
       </div>

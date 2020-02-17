@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-// import M from 'materialize-css/dist/js/materialize.min.js';
 import WorkExperience from './WorkExperience';
+
 import 'materialize-css/dist/css/materialize.min.css';
+
 import data from './experience.json';
 
 /**
@@ -20,16 +21,7 @@ class Experience extends Component {
           <div className='col s12'>
             <ul className='collection'>
               {works.map((item, key) => {
-                return (
-                  <WorkExperience
-                    key={key}
-                    image={item.image}
-                    alt={item.alt}
-                    jobTitle={item.jobTitle}
-                    company={item.company}
-                    duration={item.duration}
-                    description={item.description}/>
-                );
+                return <WorkExperience {...item} key={key}/>;
               })}
             </ul>
           </div>

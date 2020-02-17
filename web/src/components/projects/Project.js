@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import M from 'materialize-css/dist/js/materialize.min.js';
 import PropTypes from 'prop-types';
 import 'materialize-css/dist/css/materialize.min.css';
+
 /**
  * Project Component
  */
@@ -14,17 +14,6 @@ class Project extends Component {
   };
 
   /**
-   * Initialize sidenav Materialize
-   */
-  componentDidMount() {
-    M.ScrollSpy.init(document.querySelectorAll('.scrollspy'), {
-      throttle: 100,
-      scrollOfffset: 500,
-      activeClass: 'active',
-    });
-  }
-
-  /**
    * Component
    * @return {Project} Component
    */
@@ -34,8 +23,8 @@ class Project extends Component {
         <div className='card small'>
           <div className='card-image waves-effect waves-block waves-light'>
             <img className='activator'
-              src='assets/img/{this.props.src}'
-              alt='{this.props.name}'/>
+              src={'assets/img/projects/' + this.props.src}
+              alt={this.props.name}/>
           </div>
           <div className='card-content'>
             <span className='card-title activator grey-text text-darken-4'>

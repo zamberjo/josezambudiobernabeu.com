@@ -7,11 +7,6 @@ import './Footer.css';
  */
 class Footer extends Component {
   /**
-   * Initialize sidenav Materialize
-   */
-  // componentDidMount() {}
-
-  /**
    * Component
    * @return {Sidebar} Component
    */
