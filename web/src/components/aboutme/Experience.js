@@ -19,9 +19,10 @@ class Experience extends Component {
         <div className='row'>
           <div className='col s12'>
             <ul className='collection'>
-              {works.map((item) => {
+              {works.map((item, key) => {
                 return (
                   <WorkExperience
+                    key={key}
                     image={item.image}
                     alt={item.alt}
                     jobTitle={item.jobTitle}
