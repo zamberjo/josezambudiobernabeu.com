@@ -1,0 +1,16 @@
+div.Study {
+  border-radius: 5px;
+  background-color: white;
+  padding: 1vh;
+  font-weight: bold;
+}
+div.Study .title {
+  font-size: 1.5em;
+}
+div.Study .center {
+  text-align: left;
+  font-size: 1em;
+}
+div.Study .dates {
+  color: #26272b;
+}

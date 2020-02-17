@@ -1,0 +1,17 @@
+version: '2.3'
+
+services:
+  josezambudiobernabeu:
+    container_name: josezambudiobernabeu
+    build:
+      context: ./web
+      args:
+        NODE_UID: ${USER_UID:-501}
+        NODE_GID: ${USER_GID:-20}
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-localhost:8080}
+        REACT_APP_DEBUG: ${REACT_APP_DEBUG:-true}
+    volumes:
+      - './web:${PROJECT_PWD}/web'
+    working_dir: ${PROJECT_PWD}/web
+    ports:
+      - '3000:3000'

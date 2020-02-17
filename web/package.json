@@ -1,33 +1,55 @@
 {
-  "name": "personalwebsite",
+  "name": "JoseZambudioBernabeu.com",
   "version": "1.0.0",
-  "description": "My personal website",
+  "description": "Personal website",
   "main": "index.js",
+  "repository": "https://github.com/zamberjo/josezambudiobernabeu.com",
   "author": "Jose Zambudio Bernabeu",
   "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
+    "material-design-icons": "^3.0.1",
+    "materialize-css": "^1.0.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-ga": "^2.7.0",
+    "react-scripts": "3.3.1"
+  },
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack -p --env.NODE_ENV=production --config ./webpack.config.js",
-    "deploy": "firebase deploy"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "firebase deploy",
+    "lint": "eslint ./"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.5.5",
-    "autoprefixer": "^9.6.1",
-    "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.1.0",
+    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^7.1.2",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.18.3",
     "firebase-tools": "^7.12.1",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.8.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "postcss-loader": "^3.0.0",
-    "postcss-nested": "^4.1.2",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.10.3"
-  },
-  "dependencies": {}
+    "tslint": "^6.0.0",
+    "tslint-react": "^4.2.0",
+    "typescript": "^3.7.5"
+  }
 }

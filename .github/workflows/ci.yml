@@ -1,0 +1,28 @@
+name: CI
+
+on: 
+  pull_request:
+
+jobs:
+  Linter:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Dependencies
+        run: yarn install
+        working-directory: ./web
+      
+      - name: Passing the linter
+        run: yarn run lint
+        working-directory: ./web
+      
+      # - name: Running tests
+      #   run: yarn run test
+      #   working-directory: ./web
+  
+      - name: Build
+        run: yarn run build
+        working-directory: ./web

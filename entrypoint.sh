@@ -14,7 +14,7 @@ export PATH
 
 if [ ${#} -eq 0 ]; then
     echo "Resolving Node dependencies..."
-    yarn install --network-timeout 1000000
+    yarn install
 
     echo "Starting server..."
     exec npm start

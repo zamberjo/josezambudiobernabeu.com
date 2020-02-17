@@ -1,0 +1,44 @@
+{
+    "skills": [
+        {
+            "src": "odoo.png",
+            "alt": "Logo skill Odoo"
+        }, {
+            "src": "docker.png",
+            "alt": "Logo skill Docker"
+        }, {
+            "src": "postgresql.png",
+            "alt": "Logo skill PostgreSQL"
+        }, {
+            "src": "python.jpg",
+            "alt": "Logo skill Python"
+        }, {
+            "src": "js.png",
+            "alt": "Logo skill Javascript"
+        }, {
+            "src": "nodejs.png",
+            "alt": "Logo skill NodeJS"
+        }, {
+            "src": "mongodb.jpg",
+            "alt": "Logo skill MongoDB"
+        }, {
+            "src": "git.png",
+            "alt": "Logo skill Git"
+        }, {
+            "src": "wordpress.png",
+            "alt": "Logo skill Wordpress"
+        }, {
+            "src": "github.png",
+            "alt": "Logo skill Github"
+        }, {
+            "src": "reactjs.png",
+            "alt": "Logo skill ReactJS"
+        }, {
+            "src": "webpack.png",
+            "alt": "Logo skill Webpack"
+        }, {
+            "src": "materialize.jpeg",
+            "alt": "Logo skill Materialize"
+        }
+    ]
+}
