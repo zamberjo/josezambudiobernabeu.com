@@ -47,7 +47,7 @@ class Footer extends Component {
             <div className='col l4 offset-l2 s12'>
               <h5 className='white-text'>Projects</h5>
               <ul>
-              <li>
+                <li>
                   <a className='grey-text text-lighten-3'
                     target='_blank'
                     rel="noopener noreferrer"
