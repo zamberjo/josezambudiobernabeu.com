@@ -58,20 +58,39 @@ class Sidebar extends Component {
                 <i className='material-icons'>menu</i>
               </a>
               <ul className='right hide-on-med-and-down'>
-                <li><a href='#presentationName'>Home</a></li>
-                <li><a href='#aboutme'>Sobre mi</a></li>
-                <li><a href='#projects'>Side Projects</a></li>
+                <li>
+                  <a href='#presentationName'>Home</a>
+                </li>
+                <li>
+                  <a href='#aboutme'>Sobre mi</a>
+                </li>
+                {/* <li>
+                  <a href='#experience'>Experiencia</a>
+                </li>
+                <li>
+                  <a href='#skills'>Skills</a>
+                </li>
+                <li>
+                  <a href='#studies'>Estudios</a>
+                </li> */}
+                <li>
+                  <a href='#projects'>Side Projects</a>
+                </li>
               </ul>
             </div>
           </nav>
         </div>
         <ul id='mobile-menu' className='sidenav'
           ref={(el) => (this._sidenavEl = el)}>
-          <li><a className='scrollspy' href='#header'>Home</a></li>
           <li>
-            <a className='scrollspy' href='#projects'>Proyectos personales</a>
+            <a className='scrollspy' href='#presentationName'>Home</a>
           </li>
-          <li><a className='scrollspy' href='#aboutme'>Sobre mi</a></li>
+          <li>
+            <a className='scrollspy' href='#aboutme'>Sobre mi</a>
+          </li>
+          <li>
+            <a className='scrollspy' href='#projects'>Side Projects</a>
+          </li>
         </ul>
       </header>
     );

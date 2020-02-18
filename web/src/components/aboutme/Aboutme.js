@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import Parallax from '../parallax/Parallax';
 import PresentationTab from './PresentationTab';
-import Experience from './Experience';
+import ExperienceTab from './ExperienceTab';
 import Skills from './Skills';
 import Studies from './Studies';
 
@@ -21,7 +21,7 @@ class AboutMe extends Component {
     super(props);
     this.state = {
       scrollOptions: {
-        throttle: 100,
+        throttle: 0,
         scrollOfffset: 500,
         activeClass: 'active',
       },
@@ -92,7 +92,7 @@ class AboutMe extends Component {
 
           <div className='row'>
             <PresentationTab/>
-            <Experience/>
+            <ExperienceTab/>
             <Skills/>
             <Studies/>
           </div>

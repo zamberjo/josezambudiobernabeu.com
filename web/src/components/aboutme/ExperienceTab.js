@@ -6,12 +6,12 @@ import 'materialize-css/dist/css/materialize.min.css';
 import data from './experience.json';
 
 /**
- * Experience Component
+ * ExperienceTab Component
  */
-class Experience extends Component {
+class ExperienceTab extends Component {
   /**
    * Component
-   * @return {Experience} Component
+   * @return {ExperienceTab} Component
    */
   render() {
     const works = data.works;
@@ -31,4 +31,4 @@ class Experience extends Component {
   }
 }
 
-export default Experience;
+export default ExperienceTab;
