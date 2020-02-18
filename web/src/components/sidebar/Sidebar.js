@@ -60,8 +60,7 @@ class Sidebar extends Component {
               <ul className='right hide-on-med-and-down'>
                 <li><a href='#presentationName'>Home</a></li>
                 <li><a href='#aboutme'>Sobre mi</a></li>
-                <li><a href='#projects'>Proyectos personales</a></li>
-                {/* <li><a href='#contact'>Contact</a></li> */}
+                <li><a href='#projects'>Side Projects</a></li>
               </ul>
             </div>
           </nav>
@@ -73,7 +72,6 @@ class Sidebar extends Component {
             <a className='scrollspy' href='#projects'>Proyectos personales</a>
           </li>
           <li><a className='scrollspy' href='#aboutme'>Sobre mi</a></li>
-          {/* <li><a className='scrollspy' href='#contact'>Contact</a></li> */}
         </ul>
       </header>
     );
