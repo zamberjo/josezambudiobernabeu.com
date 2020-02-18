@@ -14,7 +14,7 @@ class WorkExperience extends Component {
     jobTitle: PropTypes.string.isRequired,
     company: PropTypes.string.isRequired,
     duration: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.array.isRequired,
   };
 
   /**
@@ -52,8 +52,12 @@ class WorkExperience extends Component {
               </div>
             </div>
           </div>
-          <div className='col s12 l11 content'>
-            {this.props.description}
+          <div className='col s10 l11 content right'>
+            <ul>
+              {this.props.description.map((item, key) => {
+                return <li key={key}>{item}</li>;
+              })}
+            </ul>
           </div>
         </div>
       </li>
