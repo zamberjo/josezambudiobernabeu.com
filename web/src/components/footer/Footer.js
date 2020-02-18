@@ -46,7 +46,64 @@ class Footer extends Component {
             </div>
             <div className='col l4 offset-l2 s12'>
               <h5 className='white-text'>Projects</h5>
-              {/* <ul></ul> */}
+              <ul>
+              <li>
+                  <a className='grey-text text-lighten-3'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    href='https://github.com/zamberjo/hesidohackeadobot'>
+                    HeSidoHackeadoBot
+                  </a>
+                </li>
+                <li>
+                  <a className='grey-text text-lighten-3'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    href='https://github.com/zamberjo/home-hosted'>
+                    Home-Hosted
+                  </a>
+                </li>
+                <li>
+                  <a className='grey-text text-lighten-3'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    href='https://github.com/zamberjo/josezambudiobernabeu.com'>
+                    Personal website JoseZambudioBernabeu.com
+                  </a>
+                </li>
+                <li>
+                  <a className='grey-text text-lighten-3'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    href='https://github.com/zamberjo/GetInfoSocial'>
+                    GetInfoSocial
+                  </a>
+                </li>
+                <li>
+                  <a className='grey-text text-lighten-3'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    href='https://github.com/zamberjo/cotos_backend'>
+                    Cotos - Backend
+                  </a>
+                </li>
+                <li>
+                  <a className='grey-text text-lighten-3'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    href='https://github.com/zamberjo/cotos_web'>
+                    Cotos - Frontend
+                  </a>
+                </li>
+                <li>
+                  <a className='grey-text text-lighten-3'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    href='https://github.com/zamberjo/cotos_ia'>
+                    Cotos - IA (ML)
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

@@ -38,7 +38,7 @@ class Project extends Component {
               <i className='material-icons right'>close</i>
             </span>
             <p>{ this.props.description }</p>
-            <a href='{this.props.projectUrl}'
+            <a href={this.props.projectUrl}
               className='waves-effect waves-teal btn-flat teal lighteen-5 right'
               target='_blank'>Proyecto
             </a>
