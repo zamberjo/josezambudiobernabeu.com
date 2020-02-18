@@ -1,54 +1,81 @@
 {
     "projects": [
         {
-            "src": "hesidohackeado.jpg",
-            "name": "HeSidoHackeadoBot",
-            "description": "Bot de telegram para uso de la API de<a href='https://hesidohackeado.com' target='_blank'>www.hesidohackeado.com</a>.",
-            "projectUrl": "https://github.com/zamberjo/hesidohackeadobot",
+            "src": "cotos.png",
+            "name": "Cotos - backend",
+            "projectUrl": "https://github.com/zamberjo/cotos_backend",
             "categoryGA": "Projects",
-            "actionGA": "heSidoHackeadoBot"
+            "actionGA": "cotosBackend",
+            "description": "Backend de un juego de cartas llamado Cotos.",
+            "tecnologies": [
+                "nodejs",
+                "docker",
+                "socket.io",
+                "mocha"
+            ]
         }, {
-            "src": "docker.png",
-            "name": "Home hosted",
-            "description": "Home self-hosted services which are built with Open Source.",
-            "projectUrl": "https://github.com/zamberjo/home-hosted",
+            "src": "cotos.png",
+            "name": "Cotos - web",
+            "description": "Frontend de un juego de cartas llamado Cotos.",
+            "projectUrl": "https://github.com/zamberjo/cotos_web",
             "categoryGA": "Projects",
-            "actionGA": "homeHosted"
+            "actionGA": "cotosWeb",
+            "tecnologies": [
+                "reactjs",
+                "bootstrap",
+                "docker",
+                "socket.io",
+                "react-redux",
+                "redux-saga"
+            ]
+        }, {
+            "src": "cotos.png",
+            "name": "Cotos - IA",
+            "description": "Proyecto de machine learning (ML) donde se crea la neurona que juega al juego Cotos.",
+            "projectUrl": "https://github.com/zamberjo/cotos_ia",
+            "categoryGA": "Projects",
+            "actionGA": "cotosIA",
+            "tecnologies": []
         }, {
             "src": "josezambudiobernabeu.jpg",
             "name": "josezambudiobernabeu.com",
             "description": "Personal website.",
             "projectUrl": "https://github.com/zamberjo/josezambudiobernabeu.com",
             "categoryGA": "Projects",
-            "actionGA": "josezambudiobernabeuCom"
+            "actionGA": "josezambudiobernabeuCom",
+            "tecnologies": [
+                "materialize",
+                "reactjs",
+                "Analytics",
+                "TagManager"
+            ]
         }, {
             "src": "osint.jpg",
             "name": "GetInfoSocial",
             "description": "OSINT gathering information bot.",
             "projectUrl": "https://github.com/zamberjo/GetInfoSocial",
             "categoryGA": "Projects",
-            "actionGA": "getInfoSocial"
+            "actionGA": "getInfoSocial",
+            "tecnologies": [
+                "python3",
+                "python-telegram-bot"
+            ]
         }, {
-            "src": "cotos.png",
-            "name": "Cotos - backend",
-            "description": "WIP",
-            "projectUrl": "https://github.com/zamberjo/cotos_backend",
+            "src": "docker.png",
+            "name": "Home hosted",
+            "description": "Home self-hosted services which are built with Open Source.",
+            "projectUrl": "https://github.com/zamberjo/home-hosted",
             "categoryGA": "Projects",
-            "actionGA": "cotosBackend"
+            "actionGA": "homeHosted",
+            "tecnologies": []
         }, {
-            "src": "cotos.png",
-            "name": "Cotos - web",
-            "description": "WIP",
-            "projectUrl": "https://github.com/zamberjo/cotos_web",
+            "src": "hesidohackeado.jpg",
+            "name": "HeSidoHackeadoBot",
+            "description": "Bot de telegram para uso de la API de www.hesidohackeado.com.",
+            "projectUrl": "https://github.com/zamberjo/hesidohackeadobot",
             "categoryGA": "Projects",
-            "actionGA": "cotosWeb"
-        }, {
-            "src": "cotos.png",
-            "name": "Cotos - IA",
-            "description": "WIP",
-            "projectUrl": "https://github.com/zamberjo/cotos_ia",
-            "categoryGA": "Projects",
-            "actionGA": "cotosIA"
+            "actionGA": "heSidoHackeadoBot",
+            "tecnologies": []
         }
     ]
 }
