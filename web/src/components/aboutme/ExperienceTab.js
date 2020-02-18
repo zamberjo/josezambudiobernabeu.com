@@ -16,7 +16,7 @@ class ExperienceTab extends Component {
   render() {
     const works = data.works;
     return (
-      <div id='experience' className='container col s12'>
+      <div id='experience' className='col s12'>
         <div className='row'>
           <div className='col s12'>
             <ul className='collection'>
