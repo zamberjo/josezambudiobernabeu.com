@@ -1,3 +1,22 @@
 #projects {
   flex-direction: column;
 }
+
+#projects .card .card-title{
+  font-size: 1.4em;
+}
+
+#projects ul {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+#projects li.tag {
+  border: 1px solid black;
+  padding: 2px;
+  border-radius: 4px;
+  margin-right: 5px;
+  color: white;
+  background-color: #3d5467;
+}

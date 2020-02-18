@@ -13,6 +13,7 @@ class Project extends Component {
     description: PropTypes.string.isRequired,
     projectUrl: PropTypes.string.isRequired,
     categoryGA: PropTypes.string.isRequired,
+    tecnologies: PropTypes.array.isRequired,
     actionGA: PropTypes.string.isRequired,
     ReactGA: PropTypes.object.isRequired,
   };
@@ -43,6 +44,13 @@ class Project extends Component {
               <i className='material-icons right'>close</i>
             </span>
             <p>{ this.props.description }</p>
+            <ul>
+              {this.props.tecnologies.map((item, key) => {
+                return (
+                  <li className="tag" key={key}>{item}</li>
+                );
+              })}
+            </ul>
             <a
               className='waves-effect waves-teal btn-flat teal lighteen-5 right'
               href={this.props.projectUrl}
