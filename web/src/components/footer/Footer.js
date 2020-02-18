@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import 'materialize-css/dist/css/materialize.min.css';
 import './Footer.css';
 
+import data from '../projects/projects.json';
 /**
  * Footer Component
  */
 class Footer extends Component {
+  static propTypes = {
+    ReactGA: PropTypes.object.isRequired,
+  };
+
   /**
    * Component
    * @return {Sidebar} Component
    */
   render() {
+    const projects = data.projects;
     return (
       <footer className='page-footer'>
         <div className='container'>
@@ -22,6 +30,9 @@ class Footer extends Component {
                   <a className='grey-text text-lighten-3'
                     target='_blank'
                     rel="noopener noreferrer"
+                    onClick={
+                      this.props.ReactGA.event({
+                        category: 'Social', action: 'github'})}
                     href='https://github.com/zamberjo?tab=contributions&period=monthly'>
                     GitHub
                   </a>
@@ -30,6 +41,9 @@ class Footer extends Component {
                   <a className='grey-text text-lighten-3'
                     target='_blank'
                     rel="noopener noreferrer"
+                    onClick={
+                      this.props.ReactGA.event({
+                        category: 'Social', action: 'twitter'})}
                     href='https://twitter.com/Zamberjo'>
                     Twitter
                   </a>
@@ -38,6 +52,9 @@ class Footer extends Component {
                   <a className='grey-text text-lighten-3'
                     target='_blank'
                     rel="noopener noreferrer"
+                    onClick={
+                      this.props.ReactGA.event({
+                        category: 'Social', action: 'linkedin'})}
                     href='https://www.linkedin.com/in/zamberjo'>
                     LinkedIn
                   </a>
@@ -47,62 +64,23 @@ class Footer extends Component {
             <div className='col l4 offset-l2 s12'>
               <h5 className='white-text'>Projects</h5>
               <ul>
-                <li>
-                  <a className='grey-text text-lighten-3'
-                    target='_blank'
-                    rel="noopener noreferrer"
-                    href='https://github.com/zamberjo/hesidohackeadobot'>
-                    HeSidoHackeadoBot
-                  </a>
-                </li>
-                <li>
-                  <a className='grey-text text-lighten-3'
-                    target='_blank'
-                    rel="noopener noreferrer"
-                    href='https://github.com/zamberjo/home-hosted'>
-                    Home-Hosted
-                  </a>
-                </li>
-                <li>
-                  <a className='grey-text text-lighten-3'
-                    target='_blank'
-                    rel="noopener noreferrer"
-                    href='https://github.com/zamberjo/josezambudiobernabeu.com'>
-                    Personal website JoseZambudioBernabeu.com
-                  </a>
-                </li>
-                <li>
-                  <a className='grey-text text-lighten-3'
-                    target='_blank'
-                    rel="noopener noreferrer"
-                    href='https://github.com/zamberjo/GetInfoSocial'>
-                    GetInfoSocial
-                  </a>
-                </li>
-                <li>
-                  <a className='grey-text text-lighten-3'
-                    target='_blank'
-                    rel="noopener noreferrer"
-                    href='https://github.com/zamberjo/cotos_backend'>
-                    Cotos - Backend
-                  </a>
-                </li>
-                <li>
-                  <a className='grey-text text-lighten-3'
-                    target='_blank'
-                    rel="noopener noreferrer"
-                    href='https://github.com/zamberjo/cotos_web'>
-                    Cotos - Frontend
-                  </a>
-                </li>
-                <li>
-                  <a className='grey-text text-lighten-3'
-                    target='_blank'
-                    rel="noopener noreferrer"
-                    href='https://github.com/zamberjo/cotos_ia'>
-                    Cotos - IA (ML)
-                  </a>
-                </li>
+                {projects.map((item, key) => {
+                  return (
+                    <li key={key}>
+                      <a className='grey-text text-lighten-3'
+                        target='_blank'
+                        rel="noopener noreferrer"
+                        onClick={
+                          this.props.ReactGA.event({
+                            category: item.categoryGA,
+                            action: item.actionGA,
+                          })}
+                        href={item.projectUrl}>
+                        {item.name}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

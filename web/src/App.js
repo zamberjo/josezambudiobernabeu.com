@@ -21,8 +21,8 @@ function App() {
       <Sidebar/>
       <Name ReactGA={ReactGA}/>
       <AboutMe/>
-      <Projects/>
-      <Footer/>
+      <Projects ReactGA={ReactGA}/>
+      <Footer ReactGA={ReactGA}/>
     </div>
   );
 }

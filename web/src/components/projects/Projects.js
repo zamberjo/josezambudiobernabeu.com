@@ -2,14 +2,21 @@ import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import Parallax from '../parallax/Parallax';
 import Project from './Project';
+import PropTypes from 'prop-types';
+
 import 'materialize-css/dist/css/materialize.min.css';
 import './Projects.css';
+
 import data from './projects.json';
 
 /**
  * Projects Component
  */
 class Projects extends Component {
+  static propTypes = {
+    ReactGA: PropTypes.object.isRequired,
+  };
+
   /**
    * Initialize sidenav Materialize
    * @param {Object} props Props of Component
@@ -52,6 +59,7 @@ class Projects extends Component {
    */
   render() {
     const projects = data.projects;
+    const ReactGA = this.props.ReactGA;
     return (
       <div>
         <Parallax
@@ -63,7 +71,7 @@ class Projects extends Component {
           <div className="row">
             {projects.map((item, key) => {
               return (
-                <Project {...item} key={key}/>
+                <Project {...item} key={key} ReactGA={ReactGA}/>
               );
             })}
           </div>

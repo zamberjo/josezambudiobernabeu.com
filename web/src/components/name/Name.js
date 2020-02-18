@@ -10,7 +10,7 @@ import './Name.css';
  */
 class Name extends Component {
   static propTypes = {
-    ReactGA: PropTypes.string.isRequired,
+    ReactGA: PropTypes.object.isRequired,
   };
 
 

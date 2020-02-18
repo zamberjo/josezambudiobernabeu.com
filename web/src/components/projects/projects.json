@@ -4,37 +4,51 @@
             "src": "hesidohackeado.jpg",
             "name": "HeSidoHackeadoBot",
             "description": "Bot de telegram para uso de la API de<a href='https://hesidohackeado.com' target='_blank'>www.hesidohackeado.com</a>.",
-            "projectUrl": "https://github.com/zamberjo/hesidohackeadobot"
+            "projectUrl": "https://github.com/zamberjo/hesidohackeadobot",
+            "categoryGA": "Projects",
+            "actionGA": "heSidoHackeadoBot"
         }, {
             "src": "docker.png",
             "name": "Home hosted",
             "description": "Home self-hosted services which are built with Open Source.",
-            "projectUrl": "https://github.com/zamberjo/home-hosted"
+            "projectUrl": "https://github.com/zamberjo/home-hosted",
+            "categoryGA": "Projects",
+            "actionGA": "homeHosted"
         }, {
             "src": "josezambudiobernabeu.jpg",
             "name": "josezambudiobernabeu.com",
             "description": "Personal website.",
-            "projectUrl": "https://github.com/zamberjo/josezambudiobernabeu.com"
+            "projectUrl": "https://github.com/zamberjo/josezambudiobernabeu.com",
+            "categoryGA": "Projects",
+            "actionGA": "josezambudiobernabeuCom"
         }, {
             "src": "osint.jpg",
             "name": "GetInfoSocial",
             "description": "OSINT gathering information bot.",
-            "projectUrl": "https://github.com/zamberjo/GetInfoSocial"
+            "projectUrl": "https://github.com/zamberjo/GetInfoSocial",
+            "categoryGA": "Projects",
+            "actionGA": "getInfoSocial"
         }, {
             "src": "cotos.png",
             "name": "Cotos - backend",
             "description": "WIP",
-            "projectUrl": "https://github.com/zamberjo/cotos_backend"
+            "projectUrl": "https://github.com/zamberjo/cotos_backend",
+            "categoryGA": "Projects",
+            "actionGA": "cotosBackend"
         }, {
             "src": "cotos.png",
             "name": "Cotos - web",
             "description": "WIP",
-            "projectUrl": "https://github.com/zamberjo/cotos_web"
+            "projectUrl": "https://github.com/zamberjo/cotos_web",
+            "categoryGA": "Projects",
+            "actionGA": "cotosWeb"
         }, {
             "src": "cotos.png",
             "name": "Cotos - IA",
             "description": "WIP",
-            "projectUrl": "https://github.com/zamberjo/cotos_ia"
+            "projectUrl": "https://github.com/zamberjo/cotos_ia",
+            "categoryGA": "Projects",
+            "actionGA": "cotosIA"
         }
     ]
 }
