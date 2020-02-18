@@ -1,5 +1,17 @@
+div.skillContainer {
+  width: 100%;
+  border: 1px solid #26272b;
+  background-color: #ffffff;
+  border-radius: 5px;
+  /* cursor: pointer; */
+  padding: 1vh;
+  min-height: 1vh;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 article.skill img {
-  border: 1px solid #26272b;  
-  background-color: #26272b;
-  cursor: pointer;
+  height: 100%;
 }

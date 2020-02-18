@@ -25,6 +25,9 @@
             "src": "git.png",
             "alt": "Logo skill Git"
         }, {
+            "src": "php.png",
+            "alt": "Logo skill PHP"
+        }, {
             "src": "wordpress.png",
             "alt": "Logo skill Wordpress"
         }, {

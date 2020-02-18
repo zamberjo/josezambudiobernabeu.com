@@ -25,9 +25,11 @@ class Skill extends Component {
   render() {
     return (
       <article className='col s6 m4 l2 skill'>
-        <img src={'assets/img/skills/' + this.props.src}
-          className='hoverable responsive-img'
-          alt={ this.props.alt }/>
+        <div className='skillContainer hoverable'>
+          <img src={'assets/img/skills/' + this.props.src}
+            className='responsive-img'
+            alt={ this.props.alt }/>
+        </div>
       </article>
     );
   }
