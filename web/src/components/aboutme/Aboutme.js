@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import PropTypes from 'prop-types';
+
 import Parallax from '../parallax/Parallax';
 import PresentationTab from './PresentationTab';
 import ExperienceTab from './ExperienceTab';
@@ -13,6 +15,10 @@ import './Aboutme.css';
  * AboutMe Component
  */
 class AboutMe extends Component {
+  static propTypes = {
+    activeTab: PropTypes.string.isRequired,
+  };
+
   /**
    * Initialize sidenav Materialize
    * @param {Object} props Props of Component
@@ -47,8 +53,6 @@ class AboutMe extends Component {
    * Update ScrollSpy && Tabs Materialize
    */
   componentDidUpdate() {
-    const {scrollOptions, tabsOptions} = this.state;
-
     if (typeof M !== 'undefined') {
       this.tabsInst.select(this.props.activeTab);
     }

@@ -10,11 +10,8 @@
   }
 }
 @media only screen and (min-width: 993px) {
-  .parallax img {
+  .parallax-container .parallax img {
     max-height: 170%;
+    /* max-width: 132%; */
   }
-}
-/* TODO: Ver como poner este */
-main #parallax-torvalds img {
-  max-width: 132%;
 }

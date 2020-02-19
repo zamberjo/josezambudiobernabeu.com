@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import PropTypes from 'prop-types';
+
 import 'materialize-css/dist/css/materialize.min.css';
 import './Sidebar.css';
 
@@ -7,6 +9,10 @@ import './Sidebar.css';
  * Sidebar Component
  */
 class Sidebar extends Component {
+  static propTypes = {
+    changeActiveTab: PropTypes.func.isRequired,
+  };
+
   /**
    * Initialize sidenav Materialize
    * @param {Object} props Props of Component

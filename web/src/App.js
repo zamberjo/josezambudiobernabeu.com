@@ -28,10 +28,14 @@ class App extends Component {
     this.changeActiveTab = this.changeActiveTab.bind(this);
   }
 
+  /**
+   * Activa la pestaña seleccionada desde el Sidebar.
+   * @param {String} tab ID html
+   */
   changeActiveTab(tab) {
     this.setState({
       activeTab: tab,
-    })
+    });
   }
 
   /**
