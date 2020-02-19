@@ -64,6 +64,7 @@ class Projects extends Component {
       <div>
         <Parallax
           src='1.png'
+          name='linusTorvalds'
           alt='Talk is cheap. Show me the code. (Linus Torvalds)'/>
         <section id="projects"
           ref={(el) => (this._scrollEl = el)}

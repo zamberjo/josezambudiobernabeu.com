@@ -8,10 +8,12 @@
   .parallax img {
     max-height: 200%;
   }
+  .parallax-container img.linusTorvalds {
+    max-width: 125%;
+  }
 }
 @media only screen and (min-width: 993px) {
   .parallax-container .parallax img {
     max-height: 170%;
-    /* max-width: 132%; */
   }
 }
