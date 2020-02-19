@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactGA from 'react-ga';
 import Sidebar from './components/sidebar/Sidebar';
 import Name from './components/name/Name';
@@ -15,16 +15,44 @@ ReactGA.initialize('UA-144711999-1');
  * Page content
  * @return {Component} Component to render.
  */
-function App() {
-  return (
-    <div>
-      <Sidebar/>
-      <Name ReactGA={ReactGA}/>
-      <AboutMe/>
-      <Projects ReactGA={ReactGA}/>
-      <Footer ReactGA={ReactGA}/>
-    </div>
-  );
+class App extends Component {
+  /**
+   * Initialize website state
+   * @param {Object} props Props of Component
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: 'presentation',
+    };
+    this.changeActiveTab = this.changeActiveTab.bind(this);
+  }
+
+  /**
+   * Activa la pestaña seleccionada desde el Sidebar.
+   * @param {String} tab ID html
+   */
+  changeActiveTab(tab) {
+    this.setState({
+      activeTab: tab,
+    });
+  }
+
+  /**
+   * Component
+   * @return {App} Component
+   */
+  render() {
+    return (
+      <div>
+        <Sidebar changeActiveTab={this.changeActiveTab}/>
+        <Name ReactGA={ReactGA}/>
+        <AboutMe activeTab={this.state.activeTab}/>
+        <Projects ReactGA={ReactGA}/>
+        <Footer ReactGA={ReactGA}/>
+      </div>
+    );
+  }
 }
 
 export default App;

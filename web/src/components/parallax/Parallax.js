@@ -12,6 +12,7 @@ class Parallax extends Component {
   static propTypes = {
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
+    name: PropTypes.string,
   };
 
   /**
@@ -56,6 +57,7 @@ class Parallax extends Component {
         <div className='responsive-img parallax'
           ref={(el) => (this._parallaxEl = el)}>
           <img src={'assets/img/parallax/' + this.props.src}
+            className={this.props.name}
             alt={this.props.alt}/>
         </div>
       </div>

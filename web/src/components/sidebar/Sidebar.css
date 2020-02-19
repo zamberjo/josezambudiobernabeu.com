@@ -8,3 +8,13 @@
   margin-left: 1%;
   color: #3d5467;
 }
+.Sidebar .sidenav {
+  background-color: #da5461;
+  width: auto;
+}
+.Sidebar .sidenav li>a {
+  color: #3d5467;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: right;
+}

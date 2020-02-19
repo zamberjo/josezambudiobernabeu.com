@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
+import PropTypes from 'prop-types';
+
 import 'materialize-css/dist/css/materialize.min.css';
 import './Sidebar.css';
 
@@ -7,6 +9,10 @@ import './Sidebar.css';
  * Sidebar Component
  */
 class Sidebar extends Component {
+  static propTypes = {
+    changeActiveTab: PropTypes.func.isRequired,
+  };
+
   /**
    * Initialize sidenav Materialize
    * @param {Object} props Props of Component
@@ -62,17 +68,37 @@ class Sidebar extends Component {
                   <a href='#presentationName'>Home</a>
                 </li>
                 <li>
-                  <a href='#aboutme'>Sobre mi</a>
-                </li>
-                {/* <li>
-                  <a href='#experience'>Experiencia</a>
+                  <a href='#aboutme'
+                    onClick={() => {
+                      this.props.changeActiveTab('presentation');
+                    }}>
+                    Sobre mi
+                  </a>
                 </li>
                 <li>
-                  <a href='#skills'>Skills</a>
+                  <a href='#aboutme'
+                    onClick={() => {
+                      this.props.changeActiveTab('experience');
+                    }}>
+                    Experiencia
+                  </a>
                 </li>
                 <li>
-                  <a href='#studies'>Estudios</a>
-                </li> */}
+                  <a href='#aboutme'
+                    onClick={() => {
+                      this.props.changeActiveTab('skills');
+                    }}>
+                    Skills
+                  </a>
+                </li>
+                <li>
+                  <a href='#aboutme'
+                    onClick={() => {
+                      this.props.changeActiveTab('studies');
+                    }}>
+                    Estudios
+                  </a>
+                </li>
                 <li>
                   <a href='#projects'>Side Projects</a>
                 </li>
@@ -86,7 +112,36 @@ class Sidebar extends Component {
             <a className='scrollspy' href='#presentationName'>Home</a>
           </li>
           <li>
-            <a className='scrollspy' href='#aboutme'>Sobre mi</a>
+            <a className='scrollspy' href='#aboutme'
+              onClick={() => {
+                this.props.changeActiveTab('presentation');
+              }}>
+              Sobre mi
+            </a>
+          </li>
+          <li>
+            <a className='scrollspy' href='#aboutme'
+              onClick={() => {
+                this.props.changeActiveTab('experience');
+              }}>
+              Experiencia
+            </a>
+          </li>
+          <li>
+            <a className='scrollspy' href='#aboutme'
+              onClick={() => {
+                this.props.changeActiveTab('skills');
+              }}>
+              Skills
+            </a>
+          </li>
+          <li>
+            <a className='scrollspy' href='#aboutme'
+              onClick={() => {
+                this.props.changeActiveTab('studies');
+              }}>
+              Estudios
+            </a>
           </li>
           <li>
             <a className='scrollspy' href='#projects'>Side Projects</a>
