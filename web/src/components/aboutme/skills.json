@@ -42,6 +42,9 @@
         }, {
             "src": "materialize.jpeg",
             "alt": "Logo skill Materialize"
+        }, {
+            "src": "bash.png",
+            "alt": "Logo skill Bash"
         }
     ]
 }
