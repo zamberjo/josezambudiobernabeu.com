@@ -39,10 +39,7 @@ class AboutMe extends Component {
     if (typeof M !== 'undefined') {
       this.scrollInst = M.ScrollSpy.init(this._scrollEl, scrollOptions);
       this.tabsInst = M.Tabs.init(this._tabsEl, tabsOptions);
-      this.eventResize = () => {
-        this.componentDidUpdate();
-      };
-      window.addEventListener('resize', this.eventResize);
+      this.tabsInst.select(this.props.activeTab);
     }
   }
 
@@ -53,10 +50,7 @@ class AboutMe extends Component {
     const {scrollOptions, tabsOptions} = this.state;
 
     if (typeof M !== 'undefined') {
-      this.tabsInst.destroy();
-      this.scrollInst.destroy();
-      this.tabsInst = M.Tabs.init(this._tabsEl, tabsOptions);
-      this.scrollInst = M.ScrollSpy.init(this._scrollEl, scrollOptions);
+      this.tabsInst.select(this.props.activeTab);
     }
   }
 
@@ -67,7 +61,6 @@ class AboutMe extends Component {
     if (typeof M !== 'undefined') {
       this.tabsInst.destroy();
       this.scrollInst.destroy();
-      window.removeEventListener('resize', this.eventResize);
     }
   }
 
