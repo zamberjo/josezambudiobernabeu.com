@@ -23,36 +23,38 @@ class WorkExperience extends Component {
    */
   render() {
     return (
-      <li className='hoverable collection-item'>
+      <li className='hoverable collection-item workExperience'>
         <div className='row'>
-          <div className='col s2 l1'>
-            <img className='responsive-img circle'
-              src={'assets/img/work/' + this.props.image}
-              alt={this.props.alt}/>
+          <div className='col m2 l1 hide-on-small-only'>
+            <div className='workExperienceImg-container'>
+              <img className='responsive-img circle'
+                src={'assets/img/work/' + this.props.image}
+                alt={this.props.alt}/>
+            </div>
           </div>
-          <div className='col s10 l11'>
+          <div className='col s12 m10 l11'>
             <div className='row'>
-              <div className='col m2 l1 job-title hide-on-small-only'>
+              <div className='col m6 l1 job-title hide-on-small-only'>
                 Puesto:
               </div>
-              <div className='col s6 m2 l3 job'>
+              <div className='col s12 m6 l3 job'>
                 {this.props.jobTitle}
               </div>
-              <div className='col m2 l1 company-title hide-on-small-only'>
+              <div className='col m6 l1 company-title hide-on-small-only'>
                 Compañía:
               </div>
-              <div className='col s6 m2 l3 company'>
+              <div className='col s12 m6 l3 company'>
                 {this.props.company}
               </div>
-              <div className='col m2 l1 duration-title hide-on-small-only'>
+              <div className='col m6 l1 duration-title hide-on-small-only'>
                 Duración:
               </div>
-              <div className='col s6 m2 l3 duration'>
+              <div className='col s12 m6 l3 duration'>
                 {this.props.duration}
               </div>
             </div>
           </div>
-          <div className='col s10 l11 content right'>
+          <div className='col s12 m12 l11 content right'>
             <ul>
               {this.props.description.map((item, key) => {
                 return <li key={key}>{item}</li>;

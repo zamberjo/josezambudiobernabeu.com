@@ -1,19 +1,25 @@
-.job-title,
-.company-title,
-.duration-title {
+.workExperience .job-title,
+.workExperience .company-title,
+.workExperience .duration-title {
   color: #3d5467;
   font-weight: bold;
   text-align: right;
 }
-.job {
+.workExperience .job {
   font-weight: bold;
 }
-.job,
-.company,
-.duration {
+.workExperience .job,
+.workExperience .company,
+.workExperience .duration {
   text-align: left;
 }
 .content {
   text-align: justify;
 }
-  
+.workExperienceImg-container {
+  max-width: 100%;
+}
+.workExperienceImg-container img {
+  width: 100%;
+  padding: 5%;
+}
