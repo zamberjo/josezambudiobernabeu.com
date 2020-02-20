@@ -23,7 +23,7 @@ class Footer extends Component {
       <footer className='page-footer'>
         <div className='container'>
           <div className='row'>
-            <div className='col l4 offset-l2 s12'>
+            <div className='col s6 l4 offset-l2'>
               <h5 className='white-text'>Social</h5>
               <ul>
                 <li>
@@ -61,7 +61,7 @@ class Footer extends Component {
                 </li>
               </ul>
             </div>
-            <div className='col l4 offset-l2 s12'>
+            <div className='col s6 l4 offset-l2'>
               <h5 className='white-text'>Projects</h5>
               <ul>
                 {projects.map((item, key) => {
@@ -87,10 +87,14 @@ class Footer extends Component {
         </div>
         <div className='footer-copyright'>
           <div className='container'>
-            © 2020 Jose Zambudio Bernabeu
-            <a className='grey-text text-lighten-4 right'
-              href='/'>JoseZambudioBernabeu.com
-            </a>
+            <div className='col s12 m6 center-align'>
+                © 2020 Jose Zambudio Bernabeu
+            </div>
+            <div className='col s12 m6 center-align'>
+              <a className='grey-text text-lighten-4' href='/'>
+                JoseZambudioBernabeu.com
+              </a>
+            </div>
           </div>
         </div>
       </footer>

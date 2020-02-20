@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import Parallax from '../parallax/Parallax';
 import Project from './Project';
@@ -25,9 +25,7 @@ class Projects extends Component {
     super(props);
     this.state = {
       scrollOptions: {
-        throttle: 100,
-        scrollOfffset: 500,
-        activeClass: 'active',
+        scrollOffset: 64,
       },
     };
   }
@@ -61,14 +59,14 @@ class Projects extends Component {
     const projects = data.projects;
     const ReactGA = this.props.ReactGA;
     return (
-      <div>
+      <Fragment>
         <Parallax
           src='1.png'
           name='linusTorvalds'
           alt='Talk is cheap. Show me the code. (Linus Torvalds)'/>
-        <section id="projects"
+        <div id="projects"
           ref={(el) => (this._scrollEl = el)}
-          className="container scrollspy">
+          className="container section scrollspy">
           <div className="row">
             {projects.map((item, key) => {
               return (
@@ -76,8 +74,8 @@ class Projects extends Component {
               );
             })}
           </div>
-        </section>
-      </div>
+        </div>
+      </Fragment>
     );
   }
 }

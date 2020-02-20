@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import ReactGA from 'react-ga';
 import Sidebar from './components/sidebar/Sidebar';
 import Name from './components/name/Name';
@@ -44,13 +44,13 @@ class App extends Component {
    */
   render() {
     return (
-      <div>
+      <Fragment>
         <Sidebar changeActiveTab={this.changeActiveTab}/>
         <Name ReactGA={ReactGA}/>
         <AboutMe activeTab={this.state.activeTab}/>
         <Projects ReactGA={ReactGA}/>
         <Footer ReactGA={ReactGA}/>
-      </div>
+      </Fragment>
     );
   }
 }

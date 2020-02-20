@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import PropTypes from 'prop-types';
 
@@ -27,9 +27,7 @@ class AboutMe extends Component {
     super(props);
     this.state = {
       scrollOptions: {
-        throttle: 0,
-        scrollOfffset: 500,
-        activeClass: 'active',
+        scrollOffset: 64,
       },
       tabsOptions: {
         swipeable: true,
@@ -74,7 +72,7 @@ class AboutMe extends Component {
    */
   render() {
     return (
-      <div>
+      <Fragment>
         <Parallax
           src='2.jpg'
           alt='Snippet of code'/>
@@ -109,7 +107,7 @@ class AboutMe extends Component {
             <Studies/>
           </div>
         </section>
-      </div>
+      </Fragment>
     );
   }
 }
