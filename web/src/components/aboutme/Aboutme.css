@@ -6,9 +6,6 @@
 #aboutme img {
   border-radius: 1vh;
 }
-section {
-  min-height: 91vh;
-}
 #aboutme .row > .tabs-content,
 #aboutme .col > .tabs-content {
   min-height: 100%;

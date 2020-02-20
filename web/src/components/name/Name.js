@@ -22,9 +22,7 @@ class Name extends Component {
     super(props);
     this.state = {
       'scrollOptions': {
-        throttle: 100,
-        scrollOfffset: 500,
-        activeClass: 'active',
+        scrollOffset: 64,
       },
       'activeAction': 'alias',
     };

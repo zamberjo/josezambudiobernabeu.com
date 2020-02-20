@@ -49,7 +49,7 @@ class PresentationTab extends Component {
    */
   render() {
     return (
-      <div id='presentation' className='col s12'>
+      <section id='presentation' className='col s12'>
         <div className='col s12 m12 l10 offset-l1'>
           <div className='row'>
             <div className='col s12 m3 l4'>
@@ -99,7 +99,7 @@ class PresentationTab extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 }
