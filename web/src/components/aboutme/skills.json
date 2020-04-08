@@ -40,11 +40,26 @@
             "src": "webpack.png",
             "alt": "Logo skill Webpack"
         }, {
+            "src": "bootstrap.jpg",
+            "alt": "Logo skill Bootstrap"
+        }, {
             "src": "materialize.jpeg",
             "alt": "Logo skill Materialize"
         }, {
             "src": "bash.png",
             "alt": "Logo skill Bash"
+        }, {
+            "src": "gactions.jpg",
+            "alt": "Logo Github actions"
+        }, {
+            "src": "firebase.jpg",
+            "alt": "Logo Firebase"
+        }, {
+            "src": "gappengine.jpg",
+            "alt": "Logo Google App Engine"
+        }, {
+            "src": "gcloud.png",
+            "alt": "Logo Google cloud"
         }
     ]
 }

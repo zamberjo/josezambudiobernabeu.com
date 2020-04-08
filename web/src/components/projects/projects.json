@@ -4,20 +4,24 @@
             "src": "cotos.png",
             "name": "Cotos - backend",
             "projectUrl": "https://github.com/zamberjo/cotos_backend",
+            "productionUrl": "https://cotosgame.es",
             "categoryGA": "Projects",
             "actionGA": "cotosBackend",
-            "description": "Backend de un juego de cartas llamado Cotos.",
+            "description": "Backend de un juego de cartas llamado Cotos. Hecho en nodejs, con tests en mocha, código (de momento en un repositorio privado, mandarme un email para invitaciones) en github junto con CI/CD utilizando github actions. Para el deploy utilizo como hosting Google App Engine. En cuanto a development se utiliza un docker-compose junto con nodemon. La comunicación del backend-frontend, este implementa un servidor expressjs junto con socket.io",
             "tecnologies": [
                 "nodejs",
                 "docker",
                 "socket.io",
-                "mocha"
+                "Google App Engine",
+                "github",
+                "github-actions"
             ]
         }, {
             "src": "cotos.png",
             "name": "Cotos - web",
-            "description": "Frontend de un juego de cartas llamado Cotos.",
+            "description": "Frontend de un juego de cartas llamado Cotos. Hecho en reactjs, utilizando bootstrap como framework CSS, y pendiente de añadir cypress para los tests. Comunicación mediante el servidor con socket.io, para ello he implementado una estructura con redux + redux-saga. En cuanto al development se utiliza un docker-compose junto con react-scripts. Para el deploy utilizo como hosting Google App Engine. El código está en github (de momento privado, mandarme un email para poder dar permisos) tanto el CI/CD se realizan mediante github actions.",
             "projectUrl": "https://github.com/zamberjo/cotos_web",
+            "productionUrl": "https://cotosgame.es",
             "categoryGA": "Projects",
             "actionGA": "cotosWeb",
             "tecnologies": [
@@ -26,56 +30,77 @@
                 "docker",
                 "socket.io",
                 "react-redux",
-                "redux-saga"
+                "redux-saga",
+                "Google App Engine",
+                "github",
+                "github-actions"
             ]
         }, {
             "src": "cotos.png",
             "name": "Cotos - IA",
-            "description": "Proyecto de machine learning (ML) donde se crea la neurona que juega al juego Cotos.",
+            "description": "Proyecto de machine learning (ML) donde se crea la neurona que juega al juego Cotos. Este proyecto de momento está muy verde, la idea es utilizar otro proyecto ya n marcha (rlcard) y modificarlo para que juegue sincronamente al juego y poder entrenar la neurona que más tarde se utilizará en el modo IA.",
             "projectUrl": "https://github.com/zamberjo/cotos_ia",
+            "productionUrl": "https://cotosgame.es",
             "categoryGA": "Projects",
             "actionGA": "cotosIA",
-            "tecnologies": []
+            "tecnologies": [
+                "rlcard",
+                "github"
+            ]
         }, {
             "src": "josezambudiobernabeu.jpg",
             "name": "josezambudiobernabeu.com",
-            "description": "Personal website.",
+            "description": "Personal website. Utilizo como framework principal reactjs y materialize como framework CSS, github como control de versiones + junto con CI/CD mediante github actions. Para el deployment se hace uso de Firebase Hosting.",
             "projectUrl": "https://github.com/zamberjo/josezambudiobernabeu.com",
+            "productionUrl": "https://josezambudiobernabeu.es",
             "categoryGA": "Projects",
             "actionGA": "josezambudiobernabeuCom",
             "tecnologies": [
                 "materialize",
                 "reactjs",
                 "Analytics",
-                "TagManager"
+                "TagManager",
+                "Firebase",
+                "github",
+                "github-actions"
             ]
         }, {
             "src": "osint.jpg",
             "name": "GetInfoSocial",
-            "description": "OSINT gathering information bot.",
+            "description": "OSINT gathering information bot. El bot está publicado y corriendo, pero es privado por lo que nunca contestará, está pensado para que cada uno se cree con @botFather un bot privado. Enjoy :D",
             "projectUrl": "https://github.com/zamberjo/GetInfoSocial",
+            "productionUrl": "https://telegram.me/getinfosocial_bot",
             "categoryGA": "Projects",
             "actionGA": "getInfoSocial",
             "tecnologies": [
                 "python3",
-                "python-telegram-bot"
+                "python-telegram-bot",
+                "github"
             ]
         }, {
             "src": "docker.png",
             "name": "Home hosted",
-            "description": "Home self-hosted services which are built with Open Source.",
+            "description": "Compendio de utilidades open-source self-hosted que tengo implementadas en casa.",
             "projectUrl": "https://github.com/zamberjo/home-hosted",
             "categoryGA": "Projects",
             "actionGA": "homeHosted",
-            "tecnologies": []
+            "tecnologies": [
+                "docker",
+                "github"
+            ]
         }, {
             "src": "hesidohackeado.jpg",
             "name": "HeSidoHackeadoBot",
             "description": "Bot de telegram para uso de la API de www.hesidohackeado.com.",
             "projectUrl": "https://github.com/zamberjo/hesidohackeadobot",
+            "productionUrl": "https://haveibeenpwned.com/",
             "categoryGA": "Projects",
             "actionGA": "heSidoHackeadoBot",
-            "tecnologies": []
+            "tecnologies": [
+                "python3",
+                "python-telegram-bot",
+                "github"
+            ]
         }
     ]
 }

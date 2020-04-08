@@ -12,6 +12,7 @@ class Project extends Component {
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     projectUrl: PropTypes.string.isRequired,
+    productionUrl: PropTypes.string.isRequired,
     categoryGA: PropTypes.string.isRequired,
     tecnologies: PropTypes.array.isRequired,
     actionGA: PropTypes.string.isRequired,
@@ -51,8 +52,23 @@ class Project extends Component {
                 );
               })}
             </ul>
+            {this.props.productionUrl &&
+              <a
+                className=
+                  'waves-effect waves-orange btn-flat orange lighteen-4 left'
+                href={this.props.productionUrl}
+                target='_blank'
+                onClick={
+                  ReactGA.event({
+                    category: this.props.categoryGA,
+                    action: this.props.actionGA + 'Production',
+                  })}
+                rel="noopener noreferrer">
+                  Producción
+              </a>
+            }
             <a
-              className='waves-effect waves-teal btn-flat teal lighteen-5 right'
+              className='waves-effect waves-red btn-flat red lighteen-5 right'
               href={this.props.projectUrl}
               target='_blank'
               onClick={
