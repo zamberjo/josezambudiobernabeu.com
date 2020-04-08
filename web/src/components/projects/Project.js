@@ -12,6 +12,7 @@ class Project extends Component {
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     projectUrl: PropTypes.string.isRequired,
+    productionUrl: PropTypes.string.isRequired,
     categoryGA: PropTypes.string.isRequired,
     tecnologies: PropTypes.array.isRequired,
     actionGA: PropTypes.string.isRequired,
@@ -51,9 +52,10 @@ class Project extends Component {
                 );
               })}
             </ul>
-            {this.props.productionUrl && 
+            {this.props.productionUrl &&
               <a
-                className='waves-effect waves-orange btn-flat orange lighteen-4 left'
+                className=
+                  'waves-effect waves-orange btn-flat orange lighteen-4 left'
                 href={this.props.productionUrl}
                 target='_blank'
                 onClick={
