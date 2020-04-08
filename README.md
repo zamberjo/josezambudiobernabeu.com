@@ -1,3 +1,5 @@
+![DEPLOY](https://github.com/zamberjo/josezambudiobernabeu.com/workflows/DEPLOY/badge.svg)
+![CI](https://github.com/zamberjo/josezambudiobernabeu.com/workflows/CI/badge.svg)
 # JoseZambudioBernabeu.com
 
 Personal website.
