@@ -1,0 +1,7 @@
+node_modules/
+.npm/
+.env
+**/__sapper__/
+.sessions/
+!portfolio/src/node_modules/
+!portfolio/src/node_modules/images
