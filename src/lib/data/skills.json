@@ -1,0 +1,43 @@
+{
+	"skills": [
+		{
+			"name": "Python",
+			"level": 45,
+			"accent": true,
+			"detail": { "es": "Odoo · ORM · Scripting", "en": "Odoo · ORM · Scripting" }
+		},
+		{
+			"name": "PostgreSQL",
+			"level": 50,
+			"accent": true,
+			"detail": { "es": "SQL · Modelado de datos", "en": "SQL · Data modelling" }
+		},
+		{
+			"name": "Odoo",
+			"level": 55,
+			"accent": true,
+			"detail": {
+				"es": "Ventas · Compras · CRM · MRP",
+				"en": "Sales · Purchasing · CRM · MRP"
+			}
+		},
+		{
+			"name": "Docker",
+			"level": 60,
+			"accent": false,
+			"detail": { "es": "Self-hosting · Despliegue", "en": "Self-hosting · Deployment" }
+		},
+		{
+			"name": "Linux",
+			"level": 52,
+			"accent": false,
+			"detail": { "es": "Servidores · Shell", "en": "Servers · Shell" }
+		},
+		{
+			"name": "Javascript",
+			"level": 58,
+			"accent": false,
+			"detail": { "es": "ES6 · Frontend", "en": "ES6 · Frontend" }
+		}
+	]
+}

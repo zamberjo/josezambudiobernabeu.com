@@ -1,0 +1,226 @@
+@import 'tailwindcss';
+
+/* Archivo is the Modernist design system's single family: body at 400/500/600,
+   headings at 800, display headings at 900. */
+@import '@fontsource/archivo/400.css';
+@import '@fontsource/archivo/500.css';
+@import '@fontsource/archivo/600.css';
+@import '@fontsource/archivo/800.css';
+@import '@fontsource/archivo/900.css';
+
+/* ── Modernist design tokens ───────────────────────────────────────────────
+   Mirrors _ds/modernist/styles.css from the Claude Design project. The tonal
+   ramps are generated in OKLCH on one shared lightness scale, so the same step
+   of any role matches the others in visual value. */
+@theme {
+	--color-bg: #f3f2f2;
+	--color-surface: #eae9e9;
+	--color-ink: #201e1d;
+	--color-accent: #ec3013;
+
+	--color-neutral-100: #f8f4f4;
+	--color-neutral-200: #eae7e7;
+	--color-neutral-300: #d7d3d3;
+	--color-neutral-400: #bab6b6;
+	--color-neutral-500: #9b9797;
+	--color-neutral-600: #7d7979;
+	--color-neutral-700: #605d5d;
+	--color-neutral-800: #444141;
+	--color-neutral-900: #2d2b2b;
+
+	--color-accent-100: #fff2ef;
+	--color-accent-200: #ffe0d9;
+	--color-accent-300: #ffc4b8;
+	--color-accent-400: #ff9783;
+	--color-accent-500: #ff563c;
+	--color-accent-600: #dd2b0f;
+	--color-accent-700: #ae1800;
+	--color-accent-800: #7c1405;
+	--color-accent-900: #4d170e;
+
+	--font-sans: 'Archivo', system-ui, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+	/* Every section shares one fluid gutter and one fluid vertical rhythm, so
+	   the 2px rules between them line up at any viewport width. */
+	--spacing-gutter: clamp(16px, 4vw, 56px);
+	--spacing-band: clamp(56px, 8vw, 120px);
+}
+
+@theme inline {
+	--color-divider: color-mix(in srgb, var(--color-ink) 40%, transparent);
+	--color-muted: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+/* Element defaults belong in `base` so any `text-*` utility on an element still
+   wins: an unlayered rule would beat every layered utility Tailwind emits. */
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		/* Fragment links must clear the sticky nav. */
+		scroll-padding-top: 5rem;
+	}
+
+	body {
+		margin: 0;
+		background: var(--color-bg);
+		color: var(--color-ink);
+		font-family: var(--font-sans);
+		font-size: 15px;
+		line-height: 1.55;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	a {
+		color: var(--color-accent-700);
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: var(--color-accent);
+	}
+}
+
+::selection {
+	background: var(--color-accent-200);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────────
+   Reveals and the progress bar are decorative progressive enhancement: they
+   only exist where scroll-driven animations are supported, so browsers without
+   them (Firefox today) simply render the finished state. */
+@media (prefers-reduced-motion: no-preference) {
+	@supports ((animation-timeline: view()) and (animation-range: entry)) {
+		@keyframes rev-up {
+			from {
+				opacity: 0;
+				transform: translateY(52px);
+			}
+		}
+		@keyframes rev-left {
+			from {
+				opacity: 0;
+				transform: translateX(-56px);
+			}
+		}
+		@keyframes rev-right {
+			from {
+				opacity: 0;
+				transform: translateX(56px);
+			}
+		}
+		@keyframes grow-x {
+			from {
+				transform: scaleX(0);
+			}
+		}
+		@keyframes grow-y {
+			from {
+				transform: scaleY(0);
+			}
+		}
+
+		.reveal-up,
+		.reveal-left,
+		.reveal-right {
+			animation-duration: 0.9s;
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 90%;
+		}
+		.reveal-up {
+			animation-name: rev-up;
+		}
+		.reveal-left {
+			animation-name: rev-left;
+		}
+		.reveal-right {
+			animation-name: rev-right;
+		}
+
+		/* Bars that fill as their section scrolls into view. The range is set
+		   per element with --bar-end so the skill meters read as different
+		   levels rather than one synchronised sweep. */
+		.bar-grow {
+			transform-origin: 0 50%;
+			animation: grow-x linear both;
+			animation-timeline: view();
+			animation-range: entry 10% cover var(--bar-end, 50%);
+		}
+
+		.rule-grow {
+			transform-origin: 50% 0;
+			animation: grow-y linear both;
+			animation-timeline: view();
+			animation-range: entry 60% cover 70%;
+		}
+
+		.scroll-progress {
+			transform-origin: 0 50%;
+			animation: grow-x linear both;
+			animation-timeline: scroll(root block);
+		}
+
+		.scroll-progress-nearest {
+			transform-origin: 0 50%;
+			animation: grow-x linear both;
+			animation-timeline: scroll(nearest block);
+		}
+	}
+}
+
+/* The motion actions only write custom properties; these classes decide how an
+   element spends them, so one node can take magnetism, parallax and the
+   velocity skew in a single transform. */
+.magnet {
+	transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+	transition:
+		transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+		background 0.2s,
+		color 0.2s;
+}
+
+.magnet-skew {
+	transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) skewY(var(--skew, 0deg));
+	transition:
+		transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+		background 0.2s,
+		color 0.2s;
+}
+
+.parallax-y {
+	transform: translate3d(0, var(--py, 0px), 0);
+}
+
+.magnet-parallax {
+	transform: translate3d(var(--mx, 0px), calc(var(--my, 0px) + var(--py, 0px)), 0)
+		skewY(var(--skew, 0deg));
+	transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes caret-blink {
+	50% {
+		opacity: 0;
+	}
+}
+
+.caret {
+	animation: caret-blink 1.1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.caret {
+		animation: none;
+	}
+}
+
+.grayscale-print {
+	filter: grayscale(1) contrast(1.08);
+}

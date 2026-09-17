@@ -1,0 +1,110 @@
+{
+	"posts": [
+		{
+			"slug": "primer-articulo",
+			"status": "published",
+			"date": "2026-09-17",
+			"readingTime": 6,
+			"cover": null,
+			"tags": ["Odoo", "Python", "Backend"],
+			"title": {
+				"es": "Título de tu primer artículo",
+				"en": "Title of your first post"
+			},
+			"excerpt": {
+				"es": "Aquí va la entradilla: de qué trata, qué problema resuelve y qué has aprendido montándolo. Sustituye este texto cuando publiques.",
+				"en": "Your intro goes here: what it is about, the problem it solves and what you learned building it. Replace this text when you publish."
+			},
+			"body": [
+				{
+					"type": "lede",
+					"text": {
+						"es": "Entradilla del artículo: el contexto en dos frases y por qué te metiste en esto. Sustituye todo este texto por el tuyo.",
+						"en": "Article intro: the context in two sentences and why you got into it. Replace all this text with your own."
+					}
+				},
+				{
+					"type": "heading",
+					"text": { "es": "El problema", "en": "The problem" }
+				},
+				{
+					"type": "paragraph",
+					"text": {
+						"es": "Aquí va el cuerpo del artículo. Párrafos normales, listas cuando hagan falta, y el código en su bloque. El ancho está limitado para que la línea no pase de unos 68 caracteres.",
+						"en": "Here goes the body of the article. Normal paragraphs, lists where needed, and code in its own block. The measure is capped at around 68 characters per line."
+					}
+				},
+				{
+					"type": "quote",
+					"text": {
+						"es": "Una frase que resuma el artículo, destacada.",
+						"en": "One sentence that sums up the post, pulled out."
+					}
+				},
+				{
+					"type": "heading",
+					"text": { "es": "La implementación", "en": "The implementation" }
+				},
+				{
+					"type": "code",
+					"code": "$ docker compose up -d\n$ odoo -u my_module -d production",
+					"comment": {
+						"es": "# pega aquí el snippet del artículo",
+						"en": "# paste the article snippet here"
+					}
+				},
+				{
+					"type": "paragraph",
+					"text": {
+						"es": "Explica el snippet: qué hace, qué decisiones tomaste y qué descartaste por el camino.",
+						"en": "Explain the snippet: what it does, which decisions you made and what you discarded along the way."
+					}
+				},
+				{
+					"type": "heading",
+					"text": { "es": "Qué aprendí", "en": "What I learned" }
+				},
+				{
+					"type": "paragraph",
+					"text": {
+						"es": "Cierra con la conclusión y, si procede, el enlace al repositorio.",
+						"en": "Close with the conclusion and, if it applies, the link to the repository."
+					}
+				}
+			]
+		},
+		{
+			"slug": "borrador-odoo-mrp",
+			"status": "draft",
+			"date": null,
+			"readingTime": null,
+			"cover": null,
+			"tags": ["Odoo", "MRP"],
+			"title": { "es": "Idea o artículo pendiente", "en": "Draft idea or post" },
+			"excerpt": { "es": "", "en": "" },
+			"body": []
+		},
+		{
+			"slug": "borrador-docker-selfhosting",
+			"status": "draft",
+			"date": null,
+			"readingTime": null,
+			"cover": null,
+			"tags": ["Docker", "Self-hosting"],
+			"title": { "es": "Idea o artículo pendiente", "en": "Draft idea or post" },
+			"excerpt": { "es": "", "en": "" },
+			"body": []
+		},
+		{
+			"slug": "borrador-python-postgresql",
+			"status": "draft",
+			"date": null,
+			"readingTime": null,
+			"cover": null,
+			"tags": ["Python", "PostgreSQL"],
+			"title": { "es": "Idea o artículo pendiente", "en": "Draft idea or post" },
+			"excerpt": { "es": "", "en": "" },
+			"body": []
+		}
+	]
+}

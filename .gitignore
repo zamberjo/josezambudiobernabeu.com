@@ -1,7 +1,18 @@
 node_modules/
-.npm/
+/build
+/.svelte-kit
+/package
+.svelte-kit/
+
 .env
-**/__sapper__/
-.sessions/
-!portfolio/src/node_modules/
-!portfolio/src/node_modules/images
+.env.*
+!.env.example
+
+test-results/
+playwright-report/
+
+.firebase/
+.DS_Store
+
+# Índice local de CodeGraph, no es código del proyecto
+.codegraph/
