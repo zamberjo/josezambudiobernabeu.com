@@ -7,7 +7,7 @@ export type Project = {
 	featured: boolean;
 	projectUrl: string;
 	productionUrl: string | null;
-	tecnologies: string[];
+	technologies: string[];
 	description: T;
 };
 

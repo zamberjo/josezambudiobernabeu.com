@@ -15,7 +15,7 @@ pnpm check                  # svelte-check (types + Svelte diagnostics)
 pnpm lint                   # prettier --check && eslint
 pnpm format                 # prettier --write
 pnpm test                   # Playwright; builds and previews on :3000 first
-pnpm exec playwright test tests/example.spec.ts -g "blog reader"   # one test
+pnpm exec playwright test tests/page.spec.ts -g "blog reader"      # one test
 ```
 
 Deploy:
@@ -100,5 +100,7 @@ inerting the page come from the platform; do not reintroduce manual scroll locki
 - Tailwind utilities with arbitrary `clamp()` values carry the fluid type scale. Prefer the theme
   tokens (`px-gutter`, `py-band`, `text-ink`, `bg-accent`) over re-deriving values.
 - Playwright specs live in `tests/` and run against a production build, not the dev server.
+  `page.spec.ts` covers structure and behaviour (sections, language toggle, the reader dialog);
+  `content.spec.ts` asserts the JSON in `src/lib/data/` really drives the page.
 - `firebase.json` points at `build/` and rewrites every path to `/index.html`, which is right for
   this single-page site — an unknown URL lands on the page rather than a 404.
