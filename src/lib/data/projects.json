@@ -5,7 +5,7 @@
 			"featured": true,
 			"projectUrl": "https://github.com/zamberjo/cotos_backend",
 			"productionUrl": "https://cotosgame.es",
-			"tecnologies": [
+			"technologies": [
 				"nodejs",
 				"docker",
 				"socket.io",
@@ -23,7 +23,7 @@
 			"featured": true,
 			"projectUrl": "https://github.com/zamberjo/cotos_web",
 			"productionUrl": "https://cotosgame.es",
-			"tecnologies": [
+			"technologies": [
 				"reactjs",
 				"bootstrap",
 				"docker",
@@ -44,7 +44,7 @@
 			"featured": false,
 			"projectUrl": "https://github.com/zamberjo/cotos_ia",
 			"productionUrl": "https://cotosgame.es",
-			"tecnologies": ["rlcard", "github"],
+			"technologies": ["rlcard", "github"],
 			"description": {
 				"es": "Proyecto de machine learning donde se entrena la neurona que juega a Cotos. Está muy verde: la idea es partir de rlcard y adaptarlo para que juegue de forma síncrona y poder entrenar la red que luego usará el modo IA.",
 				"en": "A machine learning project that trains the network which plays Cotos. Still very early: the idea is to start from rlcard and adapt it to play synchronously, so the network behind the AI mode can be trained."
@@ -55,7 +55,7 @@
 			"featured": true,
 			"projectUrl": "https://github.com/zamberjo/josezambudiobernabeu.com",
 			"productionUrl": "https://josezambudiobernabeu.es",
-			"tecnologies": ["sveltekit", "tailwindcss", "Firebase", "github", "github-actions"],
+			"technologies": ["sveltekit", "tailwindcss", "Firebase", "github", "github-actions"],
 			"description": {
 				"es": "Esta misma web. SvelteKit como framework, TailwindCSS para los estilos, github como control de versiones con CI/CD en github actions y Firebase Hosting para el despliegue.",
 				"en": "This very site. SvelteKit as the framework, TailwindCSS for styling, github for version control with CI/CD on github actions, and Firebase Hosting for deployment."
@@ -66,7 +66,7 @@
 			"featured": false,
 			"projectUrl": "https://github.com/zamberjo/GetInfoSocial",
 			"productionUrl": "https://telegram.me/getinfosocial_bot",
-			"tecnologies": ["python3", "python-telegram-bot", "github"],
+			"technologies": ["python3", "python-telegram-bot", "github"],
 			"description": {
 				"es": "Bot de recopilación de información OSINT. Está publicado y corriendo, pero es privado, así que nunca contestará: la idea es que cada uno se cree su propio bot con @botFather. Enjoy :D",
 				"en": "An OSINT information-gathering bot. It is published and running, but private, so it will never answer: the idea is that everyone creates their own bot with @botFather. Enjoy :D"
@@ -77,7 +77,7 @@
 			"featured": false,
 			"projectUrl": "https://github.com/zamberjo/home-hosted",
 			"productionUrl": null,
-			"tecnologies": ["docker", "github"],
+			"technologies": ["docker", "github"],
 			"description": {
 				"es": "Compendio de utilidades open-source self-hosted que tengo montadas en casa.",
 				"en": "A collection of self-hosted open-source utilities I run at home."
@@ -88,7 +88,7 @@
 			"featured": false,
 			"projectUrl": "https://github.com/zamberjo/hesidohackeadobot",
 			"productionUrl": "https://haveibeenpwned.com/",
-			"tecnologies": ["python3", "python-telegram-bot", "github"],
+			"technologies": ["python3", "python-telegram-bot", "github"],
 			"description": {
 				"es": "Bot de telegram para usar la API de www.hesidohackeado.com.",
 				"en": "A telegram bot for the www.hesidohackeado.com API."
