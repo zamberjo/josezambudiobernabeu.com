@@ -4,10 +4,17 @@
 	import { about } from '../data/content';
 	import ImageSlot from './ImageSlot.svelte';
 	import SectionHeading from './SectionHeading.svelte';
+
+	interface Props {
+		/** Two-digit band number; +page.svelte owns the sequence. */
+		number: string;
+	}
+
+	let { number }: Props = $props();
 </script>
 
 <section id="sobre-mi" class="border-b-2 border-ink px-gutter py-band">
-	<SectionHeading number="01" title={t({ es: 'Sobre mí', en: 'About me' })} />
+	<SectionHeading {number} title={t({ es: 'Sobre mí', en: 'About me' })} />
 
 	<div
 		class="grid grid-cols-[repeat(auto-fit,minmax(min(280px,100%),1fr))] items-start gap-[clamp(24px,4vw,56px)]"

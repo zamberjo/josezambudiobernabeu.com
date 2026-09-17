@@ -3,10 +3,17 @@
 	import { magnetic } from '../motion.svelte';
 	import { experience } from '../data/content';
 	import SectionHeading from './SectionHeading.svelte';
+
+	interface Props {
+		/** Two-digit band number; +page.svelte owns the sequence. */
+		number: string;
+	}
+
+	let { number }: Props = $props();
 </script>
 
 <section id="experiencia" class="overflow-clip border-b-2 border-ink px-gutter py-band">
-	<SectionHeading number="03" title={t({ es: 'Experiencia', en: 'Experience' })} />
+	<SectionHeading {number} title={t({ es: 'Experiencia', en: 'Experience' })} />
 
 	<div class="relative grid">
 		<!-- The spine draws itself downward as the list scrolls into view. -->

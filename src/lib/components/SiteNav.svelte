@@ -2,6 +2,11 @@
 	import { lang, t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
 	import { nav } from '../data/content';
+	import { hasPosts } from '../data/blog';
+
+	// Never link to a band the page did not render: with no posts written,
+	// +page.svelte drops the Blog section and this drops its entry.
+	const links = nav.filter((link) => link.href !== '#blog' || hasPosts);
 </script>
 
 <!-- Purely decorative: the accent rule that fills as the page scrolls. -->
@@ -19,7 +24,7 @@
 		<div
 			class="flex min-w-0 flex-nowrap items-center gap-[clamp(12px,1.6vw,24px)] overflow-x-auto py-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 		>
-			{#each nav as link (link.href)}
+			{#each links as link (link.href)}
 				<a
 					use:magnetic={8}
 					href={link.href}

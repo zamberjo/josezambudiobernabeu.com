@@ -3,10 +3,17 @@
 	import { magnetic } from '../motion.svelte';
 	import { projects } from '../data/projects';
 	import SectionHeading from './SectionHeading.svelte';
+
+	interface Props {
+		/** Two-digit band number; +page.svelte owns the sequence. */
+		number: string;
+	}
+
+	let { number }: Props = $props();
 </script>
 
 <section id="projects" class="overflow-clip border-b-2 border-ink px-gutter py-band">
-	<SectionHeading number="06" title="Side Projects" />
+	<SectionHeading {number} title="Side Projects" />
 
 	<div class="grid grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))] gap-0.5">
 		{#each projects as project, i (project.name)}

@@ -31,6 +31,13 @@ export type Post = {
 
 const all = data.posts as Post[];
 
+/**
+ * With no posts the section has nothing to say, so the page drops it and the
+ * nav and footer drop their links to it: a portfolio is better off without a
+ * blog than with an empty one.
+ */
+export const hasPosts: boolean = all.length > 0;
+
 /** Newest published post first; it gets the wide card at the top of the section. */
 export const featuredPost: Post | undefined = all
 	.filter((post) => post.status === 'published')
