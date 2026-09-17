@@ -36,7 +36,10 @@ There is still no test job.
 
 A single prerendered page (`adapter-static`, `prerender = true` in `src/routes/+layout.ts`). There
 is no routing, no server code, and no client-side data fetching — `+page.svelte` composes one
-section component per band of the design, in order, and that is the whole site.
+section component per band of the design, in order, and that is the whole site. It also owns the
+band numbers: each section takes a `number` prop and `+page.svelte` derives the sequence from the
+bands it actually renders, so an optional section (today only Blog) never leaves a gap like
+01, 03, 04. Hardcoding the digits back into a section would reintroduce that gap.
 
 The design is the **Modernist** system from a Claude Design canvas: `--color-bg` off-white,
 `--color-accent` red, Archivo at weights 400–900, square corners, 2px rules between sections.
@@ -59,8 +62,10 @@ The design is the **Modernist** system from a Claude Design canvas: `--color-bg`
     `paragraph`, `quote`, `list`, `code`, `image`); `BlogReader.svelte` has one branch per kind and
     `outline()` numbers the headings into the sticky side index. The newest `published` post takes
     the wide feature card; everything else falls into the grid, and a post with an empty `body`
-    renders as an inert card rather than opening an empty reader. Adding a block kind means editing
-    both the union in `blog.ts` and the branches in `BlogReader.svelte`.
+    renders as an inert card rather than opening an empty reader. With `posts` empty, `hasPosts`
+    is false and the whole band disappears — section, nav entry and footer column — because an
+    empty blog reads worse than no blog. Adding a block kind means editing both the union in
+    `blog.ts` and the branches in `BlogReader.svelte`.
   - `skills.json` → `skills.ts`. `level` is 0–100 and becomes the `--bar-end` of the meter's
     scroll-driven fill; `accent` picks the red meter over the ink one.
   - `projects.json` → `projects.ts`. Holds the real repository and production URLs. `featured: true`

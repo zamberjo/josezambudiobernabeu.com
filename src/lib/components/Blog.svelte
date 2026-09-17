@@ -15,6 +15,13 @@
 
 	/** A post is only openable once it actually has a body written. */
 	const readable = (post: Post) => post.body.length > 0;
+
+	interface Props {
+		/** Two-digit band number; +page.svelte owns the sequence. */
+		number: string;
+	}
+
+	let { number }: Props = $props();
 </script>
 
 {#snippet card(post: Post, position: number)}
@@ -44,7 +51,7 @@
 {/snippet}
 
 <section id="blog" class="overflow-clip border-b-2 border-ink px-gutter py-band">
-	<SectionHeading number="02" title="Blog">
+	<SectionHeading {number} title="Blog">
 		{#snippet aside()}{t(blog.intro)}{/snippet}
 	</SectionHeading>
 

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { lang, t } from '$lib/i18n.svelte';
 	import { motionRoot } from '$lib/motion.svelte';
+	import { hasPosts } from '$lib/data/blog';
 	import About from '$lib/components/About.svelte';
 	import Blog from '$lib/components/Blog.svelte';
 	import CodeLoop from '$lib/components/CodeLoop.svelte';
@@ -14,6 +15,14 @@
 	import SkillsGrid from '$lib/components/SkillsGrid.svelte';
 
 	$effect(() => lang.restore());
+
+	// The bands are numbered by what actually renders, so dropping a section
+	// never leaves a hole in the sequence. Blog is the only optional one: with
+	// no posts written it disappears, and SiteNav and SiteFooter drop their
+	// links to it.
+	const bands = ['sobre-mi', hasPosts && 'blog', 'experiencia', 'skills', 'estudios', 'projects']
+		.filter((id): id is string => id !== false);
+	const band = (id: string) => String(bands.indexOf(id) + 1).padStart(2, '0');
 
 	const description = {
 		es: 'Jose Zambudio Bernabeu — Odoo senior developer en Alcoi. Python, PostgreSQL, Linux y Docker.',
@@ -34,13 +43,15 @@
 	<main>
 		<Hero />
 		<CodeLoop />
-		<About />
-		<Blog />
-		<ExperienceTimeline />
-		<SkillsGrid />
-		<Education />
+		<About number={band('sobre-mi')} />
+		{#if hasPosts}
+			<Blog number={band('blog')} />
+		{/if}
+		<ExperienceTimeline number={band('experiencia')} />
+		<SkillsGrid number={band('skills')} />
+		<Education number={band('estudios')} />
 		<Quote />
-		<SideProjects />
+		<SideProjects number={band('projects')} />
 	</main>
 	<SiteFooter />
 </div>

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import blog from '../src/lib/data/blog.json' with { type: 'json' };
 
 /**
  * The page's own structure and behaviour: that every section is there, that the
@@ -15,9 +16,11 @@ test('hero shows the name and the social links', async ({ page }) => {
 	);
 });
 
-test('every numbered section is on the page', async ({ page }) => {
+// Blog is left out here because it is optional; content.spec.ts covers both of
+// its states.
+test('every permanent section is on the page', async ({ page }) => {
 	await page.goto('/');
-	for (const id of ['sobre-mi', 'blog', 'experiencia', 'skills', 'estudios', 'projects']) {
+	for (const id of ['sobre-mi', 'experiencia', 'skills', 'estudios', 'projects']) {
 		await expect(page.locator(`#${id}`)).toBeVisible();
 	}
 });
@@ -38,6 +41,8 @@ test('the language toggle switches the copy between Spanish and English', async 
 });
 
 test('the blog reader opens and closes with Escape', async ({ page }) => {
+	test.skip(blog.posts.length === 0, 'no posts written yet, so there is no reader to open');
+
 	await page.goto('/');
 	await page.getByRole('button', { name: 'EN', exact: true }).click();
 

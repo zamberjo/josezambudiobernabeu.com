@@ -50,6 +50,10 @@ and does not open the reader.
 
 `heading` blocks are numbered automatically and build the reader's side index.
 
+While `posts` is empty the whole Blog section is hidden — along with its nav entry and footer
+column — and the remaining sections renumber themselves. Adding the first post brings it all
+back with no other change.
+
 ## Deploy
 
 Pushing to `master` builds and deploys through `.github/workflows/deploy.yaml`. It needs a

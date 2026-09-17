@@ -79,8 +79,9 @@ _Aceptación_: cada ADR cabe en una pantalla y explica una alternativa descartad
 
 El trabajo técnico prepara la estructura; el texto lo escribe Jose.
 
-- [ ] **4.1** Pasar el post de relleno a `"status": "draft"` y vaciar su `body` hasta que haya
-      artículo real. Un blog vacío es neutro; uno con lorem ipsum publicado resta.
+- [x] **4.1** Fuera el post de relleno: `blog.json` queda con `posts: []` y la sección entera
+      (banda, entrada de nav y columna del footer) desaparece hasta que haya artículo real.
+      Las bandas se renumeran solas. **Hecho.**
 - [ ] **4.2** Rediseñar el modelo de `Skill`: fuera `level` 0–100 y su barra. Sustituir por
       evidencia — años, contexto y proyecto donde se usó. Implica tocar `skills.json`,
       `skills.ts`, `SkillsGrid.svelte` y el CSS de `.bar-grow` en `app.css`.

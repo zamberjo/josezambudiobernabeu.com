@@ -2,10 +2,17 @@
 	import { t } from '../i18n.svelte';
 	import { education } from '../data/content';
 	import SectionHeading from './SectionHeading.svelte';
+
+	interface Props {
+		/** Two-digit band number; +page.svelte owns the sequence. */
+		number: string;
+	}
+
+	let { number }: Props = $props();
 </script>
 
 <section id="estudios" class="border-b-2 border-ink px-gutter py-band">
-	<SectionHeading number="05" title={t({ es: 'Estudios', en: 'Education' })} />
+	<SectionHeading {number} title={t({ es: 'Estudios', en: 'Education' })} />
 
 	<div
 		class="reveal-up grid grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))] gap-[clamp(20px,3vw,48px)]"
