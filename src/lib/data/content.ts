@@ -46,6 +46,10 @@ export const about = {
 		{
 			es: 'A lo largo de mi vida laboral me he dedicado tanto a frontend, como backend, habiéndome centrado los últimos años en backend pero sin perder nunca la mirada al resto de frameworks.',
 			en: 'Throughout my working life I have worked on both frontend and backend, focusing on backend in recent years but never losing sight of the rest of the frameworks.'
+		},
+		{
+			es: 'Soy el puto GOAT',
+			en: 'I am the fucking GOAT'
 		}
 	] satisfies T[],
 	degree: {
