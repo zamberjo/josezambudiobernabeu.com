@@ -14,11 +14,11 @@ de datos y editarlo desde un backoffice local.
 La web es estática (un único HTML prerenderizado) y se sirve desde Firebase Hosting. Había tres
 opciones:
 
-| Opción                               | SEO/LCP       | Si la BD no responde        |
-| ------------------------------------ | ------------- | --------------------------- |
-| A. El navegador llama a Supabase     | Empeora       | La web se rompe             |
+| Opción                                | SEO/LCP       | Si la BD no responde         |
+| ------------------------------------- | ------------- | ---------------------------- |
+| A. El navegador llama a Supabase      | Empeora       | La web se rompe              |
 | **B. La CI lee Supabase en el build** | Igual que hoy | Solo falla el próximo deploy |
-| C. Backoffice que escribe JSON a git | Igual que hoy | No aplica                   |
+| C. Backoffice que escribe JSON a git  | Igual que hoy | No aplica                    |
 
 CORS no era un factor: PostgREST responde con `Access-Control-Allow-Origin: *`. Lo que pesa en
 contra de A es perder el prerender y que el plan gratuito de Supabase pausa los proyectos
