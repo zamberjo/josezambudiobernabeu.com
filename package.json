@@ -11,10 +11,12 @@
 		"check": "pnpm --recursive --if-present check",
 		"lint": "prettier --ignore-path .gitignore --ignore-path .prettierignore --check . && eslint .",
 		"format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write .",
-		"test": "pnpm --filter web test"
+		"test": "pnpm --filter web test",
+		"test:unit": "vitest run"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.0",
+		"@types/node": "^24.13.6",
 		"eslint": "^10.10.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.23.0",
@@ -23,6 +25,7 @@
 		"prettier-plugin-svelte": "^4.1.1",
 		"svelte": "^5.57.0",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.70.0"
+		"typescript-eslint": "^8.70.0",
+		"vitest": "^5.0.1"
 	}
 }

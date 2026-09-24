@@ -1,0 +1,16 @@
+{
+	"name": "@jzb/application",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"description": "Use cases and the ports they depend on.",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"check": "tsc -p ."
+	},
+	"dependencies": {
+		"@jzb/domain": "workspace:*"
+	}
+}

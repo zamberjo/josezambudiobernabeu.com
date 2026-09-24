@@ -1,0 +1,21 @@
+{
+	"name": "@jzb/adapters",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"description": "Implementations of the application ports: JSON, Supabase, GitHub, memory.",
+	"exports": {
+		"./json": "./src/json/index.ts",
+		"./memory": "./src/memory/index.ts",
+		"./supabase": "./src/supabase/index.ts",
+		"./github": "./src/github/index.ts"
+	},
+	"scripts": {
+		"check": "tsc -p ."
+	},
+	"dependencies": {
+		"@jzb/application": "workspace:*",
+		"@jzb/domain": "workspace:*",
+		"@supabase/supabase-js": "^2.117.1"
+	}
+}
