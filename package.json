@@ -19,7 +19,8 @@
 		"db:reset": "supabase db reset",
 		"db:types": "pnpm --filter @jzb/adapters db:types",
 		"content:seed": "pnpm --filter @jzb/adapters content:seed",
-		"content:export": "pnpm --filter @jzb/adapters content:export"
+		"content:export": "pnpm --filter @jzb/adapters content:export",
+		"backoffice": "pnpm --filter backoffice dev"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.0",
