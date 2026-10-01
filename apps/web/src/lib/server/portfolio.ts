@@ -1,5 +1,6 @@
 import { loadPortfolioView, type PortfolioReader, type ReadError } from '@jzb/application';
 import { jsonPortfolioReader } from '@jzb/adapters/json';
+import { createContentClient, supabasePortfolioReader } from '@jzb/adapters/supabase';
 import { describeValidation, unwrap } from '@jzb/domain';
 
 /*
@@ -13,12 +14,21 @@ type Source = 'json' | 'supabase';
 /** Strategy table: one reader factory per content source. */
 const readers: Record<Source, () => PortfolioReader> = {
 	json: () => jsonPortfolioReader(async () => (await import('$content/portfolio.json')).default),
-	supabase: () => {
-		throw new Error('CONTENT_SOURCE=supabase is not wired yet');
-	}
+	// The publishable key only reads the `api` views; row level security keeps
+	// everything else out of reach even if it leaked.
+	supabase: () =>
+		supabasePortfolioReader(
+			createContentClient(required('SUPABASE_URL'), required('SUPABASE_PUBLISHABLE_KEY'))
+		)
 };
 
 const source = (process.env.CONTENT_SOURCE ?? 'json') as Source;
+
+function required(name: string): string {
+	const value = process.env[name];
+	if (!value) throw new Error(`CONTENT_SOURCE=${source} needs ${name}`);
+	return value;
+}
 
 const describe = (error: ReadError): string =>
 	error.kind === 'validation'

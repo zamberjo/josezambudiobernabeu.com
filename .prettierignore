@@ -5,3 +5,5 @@ test-results/
 playwright-report/
 .codegraph/
 pnpm-lock.yaml
+packages/adapters/src/supabase/database.types.ts
+supabase/seeds/10_content.sql

@@ -12,7 +12,14 @@
 		"lint": "prettier --ignore-path .gitignore --ignore-path .prettierignore --check . && eslint .",
 		"format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write .",
 		"test": "pnpm --filter web test",
-		"test:unit": "vitest run"
+		"test:unit": "vitest run",
+		"test:db": "sh scripts/with-local-supabase.sh vitest run packages/adapters/src/supabase",
+		"build:local": "sh scripts/with-local-supabase.sh env CONTENT_SOURCE=supabase pnpm build",
+		"db:start": "supabase start",
+		"db:reset": "supabase db reset",
+		"db:types": "pnpm --filter @jzb/adapters db:types",
+		"content:seed": "pnpm --filter @jzb/adapters content:seed",
+		"content:export": "pnpm --filter @jzb/adapters content:export"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.0",
