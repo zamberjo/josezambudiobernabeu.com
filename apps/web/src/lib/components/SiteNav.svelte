@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { lang, t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
-	import { nav } from '../data/content';
-	import { hasPosts } from '../data/blog';
+	import type { NavLink } from '@jzb/domain';
 
-	// Never link to a band the page did not render: with no posts written,
-	// +page.svelte drops the Blog section and this drops its entry.
-	const links = nav.filter((link) => link.href !== '#blog' || hasPosts);
+	// Only links to bands that render: the read model already dropped the Blog
+	// entry when there are no posts, so the nav never points at a missing band.
+	let { links }: { links: NavLink[] } = $props();
 </script>
 
 <!-- Purely decorative: the accent rule that fills as the page scrolls. -->

@@ -8,7 +8,12 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		alias: {
+			// The content snapshot lives at the repo root, shared with the seed
+			// script, the unit tests and the backoffice.
+			$content: '../../content'
+		}
 	}
 };
 

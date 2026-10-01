@@ -1,19 +1,21 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
-	import { experience } from '../data/content';
+	import type { Experience, Localized } from '@jzb/domain';
 	import SectionHeading from './SectionHeading.svelte';
 
 	interface Props {
 		/** Two-digit band number; +page.svelte owns the sequence. */
 		number: string;
+		title: Localized;
+		experience: Experience[];
 	}
 
-	let { number }: Props = $props();
+	let { number, title, experience }: Props = $props();
 </script>
 
 <section id="experiencia" class="overflow-clip border-b-2 border-ink px-gutter py-band">
-	<SectionHeading {number} title={t({ es: 'Experiencia', en: 'Experience' })} />
+	<SectionHeading {number} title={t(title)} />
 
 	<div class="relative grid">
 		<!-- The spine draws itself downward as the list scrolls into view. -->

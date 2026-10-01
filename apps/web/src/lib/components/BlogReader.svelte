@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
 	import { parallax } from '../motion.svelte';
-	import { outline, type Post } from '../data/blog';
-	import { footer } from '../data/content';
+	import { numberBlocks, outline, type Post, type Ui } from '@jzb/domain';
 	import ImageSlot from './ImageSlot.svelte';
 	import Tag from './Tag.svelte';
 
@@ -12,7 +11,10 @@
 	let scroller: HTMLDivElement;
 	let post = $state<Post | null>(null);
 
-	const index = $derived(post ? outline(post) : []);
+	let { site, ui }: { site: string; ui: Ui } = $props();
+
+	const index = $derived(post ? outline(post.body) : []);
+	const blocks = $derived(post ? numberBlocks(post.body) : []);
 
 	export function open(next: Post) {
 		post = next;
@@ -22,13 +24,6 @@
 
 	function close() {
 		dialog.close();
-	}
-
-	/** Headings carry the running number the side index also shows. */
-	function headingNumber(upTo: number) {
-		return String(
-			post!.body.slice(0, upTo + 1).filter((block) => block.type === 'heading').length
-		).padStart(2, '0');
 	}
 </script>
 
@@ -44,7 +39,7 @@
 					onclick={close}
 					class="cursor-pointer appearance-none border-2 border-ink bg-transparent px-3.5 py-2.5 text-left text-xs font-bold tracking-[0.12em] uppercase text-ink transition-colors hover:bg-ink hover:text-bg"
 				>
-					← {t({ es: 'Volver al blog', en: 'Back to blog' })}
+					← {t(ui.backToBlog)}
 				</button>
 				<span class="text-[15px] font-black tracking-[-0.01em]">Zambu · Blog</span>
 			</div>
@@ -72,7 +67,7 @@
 						<span aria-hidden="true">— · —</span>
 						<span>
 							{post.readingTime}
-							{t({ es: 'min de lectura', en: 'min read' })}
+							{t(ui.minRead)}
 						</span>
 					{/if}
 				</div>
@@ -85,10 +80,7 @@
 						<ImageSlot
 							src={post.cover ?? undefined}
 							alt={t(post.title)}
-							placeholder={t({
-								es: 'Imagen de portada del artículo',
-								en: 'Cover image for the article'
-							})}
+							placeholder={t(ui.coverImage)}
 						/>
 					</div>
 				</div>
@@ -98,11 +90,11 @@
 				>
 					{#if index.length}
 						<nav
-							aria-label={t({ es: 'En este artículo', en: 'In this post' })}
+							aria-label={t(ui.inThisPost)}
 							class="sticky top-[clamp(90px,14vh,130px)] flex max-w-[240px] flex-col gap-3 text-xs tracking-[0.14em] uppercase text-neutral-700"
 						>
 							<span class="font-bold text-accent-700">
-								{t({ es: 'En este artículo', en: 'In this post' })}
+								{t(ui.inThisPost)}
 							</span>
 							{#each index as entry (entry.number)}
 								<a href="#post-{entry.number}" class="text-neutral-700 hover:text-accent">
@@ -115,17 +107,17 @@
 					<div
 						class="flex max-w-[68ch] flex-col gap-6 text-[clamp(16px,1.5vw,19px)] leading-[1.65] text-neutral-900"
 					>
-						{#each post.body as block, i (i)}
+						{#each blocks as { block, heading }, i (i)}
 							{#if block.type === 'lede'}
 								<p class="m-0 text-[clamp(19px,2vw,25px)] leading-[1.45] font-medium">
 									{t(block.text)}
 								</p>
 							{:else if block.type === 'heading'}
 								<h2
-									id="post-{headingNumber(i)}"
+									id="post-{heading}"
 									class="mt-4 mb-0 scroll-mt-28 text-[clamp(22px,2.6vw,34px)] font-black tracking-[-0.02em]"
 								>
-									{headingNumber(i)} — {t(block.text)}
+									{heading} — {t(block.text)}
 								</h2>
 							{:else if block.type === 'paragraph'}
 								<p class="m-0">{t(block.text)}</p>
@@ -151,7 +143,7 @@
 										<ImageSlot
 											src={block.src}
 											alt={block.alt ? t(block.alt) : ''}
-											placeholder={t({ es: 'Imagen del artículo', en: 'Image for the post' })}
+											placeholder={t(ui.postImage)}
 										/>
 									</div>
 									{#if block.caption}
@@ -174,13 +166,13 @@
 							onclick={close}
 							class="cursor-pointer appearance-none self-start border-2 border-ink bg-transparent px-[18px] py-3 text-left text-[13px] font-bold tracking-[0.1em] uppercase text-ink transition-colors hover:bg-ink hover:text-bg"
 						>
-							← {t({ es: 'Volver al blog', en: 'Back to blog' })}
+							← {t(ui.backToBlog)}
 						</button>
 					</div>
 				</div>
 
 				<p class="mt-band mb-0 text-xs tracking-[0.14em] uppercase text-neutral-600">
-					{footer.site}
+					{site}
 				</p>
 			</article>
 		{/if}

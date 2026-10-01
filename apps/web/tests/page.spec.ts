@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import blog from '../src/lib/data/blog.json' with { type: 'json' };
+import content from '../../../content/portfolio.json' with { type: 'json' };
 
 /**
  * The page's own structure and behaviour: that every section is there, that the
@@ -41,7 +41,7 @@ test('the language toggle switches the copy between Spanish and English', async 
 });
 
 test('the blog reader opens and closes with Escape', async ({ page }) => {
-	test.skip(blog.posts.length === 0, 'no posts written yet, so there is no reader to open');
+	test.skip(content.posts.length === 0, 'no posts written yet, so there is no reader to open');
 
 	await page.goto('/');
 	await page.getByRole('button', { name: 'EN', exact: true }).click();

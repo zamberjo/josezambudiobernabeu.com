@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { parallax } from '../motion.svelte';
-	import { quote } from '../data/content';
+	import type { Site } from '@jzb/domain';
+
+	let { quote }: { quote: Site['quote'] } = $props();
 </script>
 
 <section class="overflow-clip bg-accent px-gutter py-[clamp(64px,11vw,160px)] text-white">

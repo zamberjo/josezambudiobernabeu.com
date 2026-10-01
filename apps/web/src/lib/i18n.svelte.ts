@@ -1,7 +1,9 @@
-export type Lang = 'es' | 'en';
+import { translate, type Lang, type Localized } from '@jzb/domain';
+
+export type { Lang };
 
 /** A string that exists in both languages. */
-export type T = Record<Lang, string>;
+export type T = Localized;
 
 const STORAGE_KEY = 'jzb-lang';
 
@@ -35,5 +37,5 @@ export const lang = new LangStore();
 
 /** Picks the active translation of a bilingual string. */
 export function t(value: T): string {
-	return value[lang.current];
+	return translate(value, lang.current);
 }
