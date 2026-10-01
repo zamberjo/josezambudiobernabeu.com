@@ -328,6 +328,12 @@ insert into storage.buckets (id, name, public)
 values ('media', 'media', true)
 on conflict (id) do nothing;
 
+-- A public bucket serves files by URL to anyone, but listing them is a
+-- `select` on storage.objects, which needs its own policy.
+create policy "admins list media" on storage.objects
+  for select to authenticated
+  using (bucket_id = 'media' and (select public.is_admin()));
+
 create policy "admins upload media" on storage.objects
   for insert to authenticated
   with check (bucket_id = 'media' and (select public.is_admin()));
