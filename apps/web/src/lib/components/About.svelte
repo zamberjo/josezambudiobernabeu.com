@@ -1,20 +1,22 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
 	import { magnetic, parallax } from '../motion.svelte';
-	import { about } from '../data/content';
+	import type { Site, Ui } from '@jzb/domain';
 	import ImageSlot from './ImageSlot.svelte';
 	import SectionHeading from './SectionHeading.svelte';
 
 	interface Props {
 		/** Two-digit band number; +page.svelte owns the sequence. */
 		number: string;
+		about: Site['about'];
+		ui: Ui;
 	}
 
-	let { number }: Props = $props();
+	let { number, about, ui }: Props = $props();
 </script>
 
 <section id="sobre-mi" class="border-b-2 border-ink px-gutter py-band">
-	<SectionHeading {number} title={t({ es: 'Sobre mí', en: 'About me' })} />
+	<SectionHeading {number} title={t(ui.aboutTitle)} />
 
 	<div
 		class="grid grid-cols-[repeat(auto-fit,minmax(min(280px,100%),1fr))] items-start gap-[clamp(24px,4vw,56px)]"
@@ -32,7 +34,7 @@
 				<ImageSlot
 					src="/assets/img/me.jpg"
 					alt="Jose Zambudio Bernabeu"
-					placeholder={t({ es: 'Arrastra aquí tu foto de perfil', en: 'Drop your portrait here' })}
+					placeholder={t(ui.portraitPlaceholder)}
 				/>
 			</div>
 			<p class="mt-3 mb-0 text-xs tracking-[0.16em] uppercase text-neutral-700">

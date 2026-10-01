@@ -9,6 +9,9 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"moduleResolution": "bundler"
+		"moduleResolution": "bundler",
+		// The workspace packages import each other with explicit .ts extensions.
+		"allowImportingTsExtensions": true,
+		"noEmit": true
 	}
 }

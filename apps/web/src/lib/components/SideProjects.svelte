@@ -1,19 +1,22 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
-	import { projects } from '../data/projects';
+	import type { Localized, Project } from '@jzb/domain';
 	import SectionHeading from './SectionHeading.svelte';
 
 	interface Props {
 		/** Two-digit band number; +page.svelte owns the sequence. */
 		number: string;
+		title: Localized;
+		/** Already in display order: featured first. */
+		projects: Project[];
 	}
 
-	let { number }: Props = $props();
+	let { number, title, projects }: Props = $props();
 </script>
 
 <section id="projects" class="overflow-clip border-b-2 border-ink px-gutter py-band">
-	<SectionHeading {number} title="Side Projects" />
+	<SectionHeading {number} title={t(title)} />
 
 	<div class="grid grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))] gap-0.5">
 		{#each projects as project, i (project.name)}

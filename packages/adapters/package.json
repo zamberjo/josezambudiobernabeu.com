@@ -15,7 +15,6 @@
 	},
 	"dependencies": {
 		"@jzb/application": "workspace:*",
-		"@jzb/domain": "workspace:*",
-		"@supabase/supabase-js": "^2.117.1"
+		"@jzb/domain": "workspace:*"
 	}
 }

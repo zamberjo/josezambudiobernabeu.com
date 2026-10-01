@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
 	import { magnetic, parallax } from '../motion.svelte';
-	import { hero, social } from '../data/content';
+	import type { Site } from '@jzb/domain';
+
+	interface Props {
+		hero: Site['hero'];
+		social: Site['social']['links'];
+	}
+
+	let { hero, social }: Props = $props();
 
 	// The three names occupy the same grid cell and cross-fade in place, so the
 	// heading never reflows as they rotate.

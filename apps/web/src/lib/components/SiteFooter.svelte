@@ -1,8 +1,16 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
-	import { footer, social } from '../data/content';
-	import { projects } from '../data/projects';
-	import { hasPosts } from '../data/blog';
+	import type { Project, Site } from '@jzb/domain';
+
+	interface Props {
+		footer: Site['footer'];
+		social: Site['social']['links'];
+		projects: Project[];
+		/** Mirrors +page.svelte: no posts, no Blog band, so no link to it. */
+		hasPosts: boolean;
+	}
+
+	let { footer, social, projects, hasPosts }: Props = $props();
 </script>
 
 <footer class="bg-neutral-900 px-gutter pt-[clamp(48px,7vw,96px)] pb-8 text-neutral-200">
@@ -48,7 +56,6 @@
 			</ul>
 		</nav>
 
-		<!-- Mirrors +page.svelte: no posts, no Blog band, so no link to it. -->
 		{#if hasPosts}
 			<nav aria-label="Blog">
 				<h2 class="mb-4 text-xs font-bold tracking-[0.18em] uppercase text-accent-400">Blog</h2>

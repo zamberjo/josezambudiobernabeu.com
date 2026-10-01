@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
-	import { featuredPost, otherPosts, type Post } from '../data/blog';
-	import { blog } from '../data/content';
+	import { isReadable, type BlogView, type Localized, type Post, type Ui } from '@jzb/domain';
 	import BlogReader from './BlogReader.svelte';
 	import ImageSlot from './ImageSlot.svelte';
 	import SectionHeading from './SectionHeading.svelte';
@@ -10,18 +9,20 @@
 
 	let reader: BlogReader;
 
-	// Captured locally so the click handler keeps the narrowed, defined value.
-	const featured = featuredPost;
-
-	/** A post is only openable once it actually has a body written. */
-	const readable = (post: Post) => post.body.length > 0;
-
 	interface Props {
 		/** Two-digit band number; +page.svelte owns the sequence. */
 		number: string;
+		blog: BlogView;
+		intro: Localized;
+		/** Printed at the foot of the reader. */
+		site: string;
+		ui: Ui;
 	}
 
-	let { number }: Props = $props();
+	let { number, blog, intro, site, ui }: Props = $props();
+
+	// Captured locally so the click handler keeps the narrowed, defined value.
+	const featured = $derived(blog.featured);
 </script>
 
 {#snippet card(post: Post, position: number)}
@@ -29,7 +30,7 @@
 		<ImageSlot
 			src={post.cover ?? undefined}
 			alt={t(post.title)}
-			placeholder={t({ es: 'Imagen del artículo', en: 'Image for the post' })}
+			placeholder={t(ui.postImage)}
 		/>
 	</div>
 	<div class="flex flex-1 flex-col gap-4 p-[clamp(18px,2.4vw,28px)]">
@@ -43,16 +44,14 @@
 		</div>
 		<div class="mt-auto text-xs tracking-[0.14em] uppercase text-neutral-700">
 			{String(position).padStart(2, '0')} ·
-			{post.status === 'draft'
-				? t({ es: 'Borrador', en: 'Draft' })
-				: t({ es: 'Leer', en: 'Read' })}
+			{t(post.status === 'draft' ? ui.draft : ui.read)}
 		</div>
 	</div>
 {/snippet}
 
 <section id="blog" class="overflow-clip border-b-2 border-ink px-gutter py-band">
-	<SectionHeading {number} title="Blog">
-		{#snippet aside()}{t(blog.intro)}{/snippet}
+	<SectionHeading {number} title={t(ui.blogTitle)}>
+		{#snippet aside()}{t(intro)}{/snippet}
 	</SectionHeading>
 
 	{#if featured}
@@ -66,14 +65,14 @@
 				<ImageSlot
 					src={featured.cover ?? undefined}
 					alt={t(featured.title)}
-					placeholder={t({ es: 'Imagen del último artículo', en: 'Image for the latest post' })}
+					placeholder={t(ui.latestPostImage)}
 				/>
 			</div>
 			<div
 				class="flex flex-col gap-4 bg-bg p-[clamp(20px,3.5vw,48px)] shadow-[0_0_0_1px_var(--color-ink)]"
 			>
 				<div class="flex flex-wrap gap-2">
-					<Tag variant="solid">{t({ es: 'Último artículo', en: 'Latest post' })}</Tag>
+					<Tag variant="solid">{t(ui.latestPost)}</Tag>
 					{#each featured.tags as tag (tag)}
 						<Tag>{tag}</Tag>
 					{/each}
@@ -92,25 +91,25 @@
 						<span aria-hidden="true">— · —</span>
 						<span>
 							{featured.readingTime}
-							{t({ es: 'min de lectura', en: 'min read' })}
+							{t(ui.minRead)}
 						</span>
 					{/if}
 				</div>
 				<button
 					type="button"
-					onclick={() => reader.open(featured)}
+					onclick={() => featured && reader.open(featured)}
 					class="mt-auto cursor-pointer appearance-none self-start border-2 border-accent bg-accent px-[18px] py-3 text-left text-[13px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:border-accent-600 hover:bg-accent-600"
 				>
-					{t({ es: 'Leer', en: 'Read' })}
+					{t(ui.read)}
 				</button>
 			</div>
 		</article>
 	{/if}
 
 	<div class="mt-0.5 grid grid-cols-[repeat(auto-fit,minmax(min(240px,100%),1fr))] gap-0.5">
-		{#each otherPosts as post, i (post.slug)}
+		{#each blog.others as post, i (post.slug)}
 			<div class="reveal-up">
-				{#if readable(post)}
+				{#if isReadable(post)}
 					<button
 						type="button"
 						use:magnetic={14}
@@ -135,4 +134,4 @@
 	</div>
 </section>
 
-<BlogReader bind:this={reader} />
+<BlogReader bind:this={reader} {site} {ui} />

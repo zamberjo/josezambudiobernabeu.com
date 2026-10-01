@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import blog from '../src/lib/data/blog.json' with { type: 'json' };
+import content from '../../../content/portfolio.json' with { type: 'json' };
 
 /**
- * These assert the JSON files in src/lib/data actually drive the page, rather
+ * These assert the content snapshot (content/portfolio.json) actually drives the page, rather
  * than the markup carrying a hardcoded copy of the same content.
  */
 
-const posts = blog.posts as { status: string; date: string | null; body: unknown[] }[];
+const posts = content.posts as { status: string; date: string | null; body: unknown[] }[];
 const readable = posts.filter((post) => post.body.length > 0);
 
 test('side projects link out to their repositories', async ({ page }) => {
@@ -15,11 +15,11 @@ test('side projects link out to their repositories', async ({ page }) => {
 	await expect(card).toHaveAttribute('href', 'https://github.com/zamberjo/home-hosted');
 });
 
-// The Blog band is the only optional one: with blog.json empty the section, the
+// The Blog band is the only optional one: with no posts in the snapshot the section, the
 // nav entry and the footer column all go away, and the bands renumber around
 // the hole. These cover both states so the suite keeps its meaning once the
 // first post is written.
-test('the blog band appears only when blog.json has posts', async ({ page }) => {
+test('the blog band appears only when the content has posts', async ({ page }) => {
 	await page.goto('/');
 
 	const section = page.locator('#blog');
@@ -47,7 +47,7 @@ test('the bands are numbered without gaps', async ({ page }) => {
 	}
 });
 
-test('the reader renders the post body and index from blog.json', async ({ page }) => {
+test('the reader renders the post body and index from the content', async ({ page }) => {
 	test.skip(readable.length === 0, 'no post with a body written yet');
 
 	await page.goto('/');
@@ -61,7 +61,7 @@ test('the reader renders the post body and index from blog.json', async ({ page 
 	await expect(reader.getByRole('heading', { name: /^01 — / })).toBeVisible();
 });
 
-test('skills come from skills.json, featured projects lead the grid', async ({ page }) => {
+test('skills come from the content, featured projects lead the grid', async ({ page }) => {
 	await page.goto('/');
 	await expect(page.locator('#skills li')).toHaveCount(6);
 	await expect(page.locator('#skills li').first()).toContainText('Python');
