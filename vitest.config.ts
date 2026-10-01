@@ -4,6 +4,8 @@ import { defineConfig } from 'vitest/config';
 // runs against the production build.
 export default defineConfig({
 	test: {
-		include: ['packages/*/src/**/*.test.ts']
+		include: ['packages/*/src/**/*.test.ts'],
+		// The Supabase tests share one database, so they must not run in parallel.
+		fileParallelism: false
 	}
 });

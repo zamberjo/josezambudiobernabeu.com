@@ -162,3 +162,10 @@ export const naturalKey: { [K in CollectionName]: (entity: Entities[K]) => strin
 	skills: (skill) => skill.name,
 	experience: (role) => role.role
 };
+
+/** Builds a record with one value per collection. */
+export const byCollection = <T>(f: (collection: CollectionName) => T): Record<CollectionName, T> =>
+	Object.fromEntries(COLLECTIONS.map((collection) => [collection, f(collection)])) as Record<
+		CollectionName,
+		T
+	>;

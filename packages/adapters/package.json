@@ -11,10 +11,14 @@
 		"./github": "./src/github/index.ts"
 	},
 	"scripts": {
-		"check": "tsc -p ."
+		"check": "tsc -p .",
+		"content:seed": "node scripts/content-seed.ts",
+		"content:export": "node scripts/content-export.ts",
+		"db:types": "supabase gen types typescript --local --schema public,api > src/supabase/database.types.ts"
 	},
 	"dependencies": {
 		"@jzb/application": "workspace:*",
-		"@jzb/domain": "workspace:*"
+		"@jzb/domain": "workspace:*",
+		"@supabase/supabase-js": "^2.117.1"
 	}
 }
