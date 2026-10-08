@@ -9,5 +9,7 @@ export const env = {
 	supabaseUrl: required('SUPABASE_URL'),
 	supabaseKey: required('SUPABASE_PUBLISHABLE_KEY'),
 	githubToken: process.env.GITHUB_TOKEN || undefined,
-	githubRepository: process.env.GITHUB_REPOSITORY || 'zamberjo/josezambudiobernabeu.com'
+	githubRepository: process.env.GITHUB_REPOSITORY || 'zamberjo/josezambudiobernabeu.com',
+	/** Where `pnpm preview:content` serves the site, reading this same database. */
+	previewUrl: process.env.PREVIEW_URL || 'http://localhost:5173'
 };

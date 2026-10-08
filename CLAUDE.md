@@ -21,6 +21,8 @@ pnpm db:start               # supabase start; this project uses ports 544xx
 pnpm db:reset               # migrations + supabase/seeds/*.sql
 pnpm test:db                # adapter integration tests against the local stack
 pnpm build:local            # build the site from the local database
+pnpm preview:content        # site dev server reading the backoffice's DB: preview before publishing
+pnpm dev:local              # site dev server reading the local stack
 pnpm backoffice             # the local editor on :5174 (needs apps/backoffice/.env)
 pnpm --filter backoffice test   # backoffice e2e; writes to the DB, db:reset afterwards
 pnpm content:seed           # content/portfolio.json → supabase/seeds/10_content.sql

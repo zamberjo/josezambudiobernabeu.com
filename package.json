@@ -20,7 +20,9 @@
 		"db:types": "pnpm --filter @jzb/adapters db:types",
 		"content:seed": "pnpm --filter @jzb/adapters content:seed",
 		"content:export": "pnpm --filter @jzb/adapters content:export",
-		"backoffice": "pnpm --filter backoffice dev"
+		"backoffice": "pnpm --filter backoffice dev",
+		"preview:content": "sh scripts/preview-content.sh",
+		"dev:local": "sh scripts/with-local-supabase.sh env CONTENT_SOURCE=supabase pnpm --filter web dev"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.0",

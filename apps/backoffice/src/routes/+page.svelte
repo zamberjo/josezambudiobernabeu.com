@@ -28,6 +28,12 @@
 		<pre class="alert" role="alert">{data.health.message}</pre>
 	{/if}
 
+	<p>
+		Para ver cómo quedará antes de publicar, arranca <code>pnpm preview:content</code> y abre la
+		<a href={data.previewUrl} target="_blank" rel="noopener">vista previa</a>: lee esta misma base de
+		datos y muestra cada cambio guardado al recargar.
+	</p>
+
 	<form method="POST" action="?/publish">
 		<button type="submit" class="primary" disabled={!data.health.ok}>Publicar la web</button>
 	</form>
