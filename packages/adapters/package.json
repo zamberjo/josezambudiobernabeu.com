@@ -13,7 +13,7 @@
 	"scripts": {
 		"check": "tsc -p .",
 		"content:seed": "node scripts/content-seed.ts",
-		"content:export": "node scripts/content-export.ts",
+		"content:export": "node scripts/content-export.ts && prettier --write ../../content/portfolio.json",
 		"db:types": "supabase gen types typescript --local --schema public,api > src/supabase/database.types.ts"
 	},
 	"dependencies": {

@@ -5,7 +5,7 @@ on:
 
 jobs:
   lint:
-    name: Lint and type-check
+    name: Lint, type-check and unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,3 +26,8 @@ jobs:
 
       - name: Check types
         run: pnpm run check
+
+      # Domain, use cases and adapters. The Supabase integration suite skips
+      # itself here: it needs a running stack (pnpm test:db locally).
+      - name: Unit tests
+        run: pnpm run test:unit

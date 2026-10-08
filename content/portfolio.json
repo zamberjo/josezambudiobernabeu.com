@@ -200,33 +200,33 @@
 	},
 	"experience": [
 		{
+			"role": "Odoo senior developer",
 			"period": {
 				"es": "Actualidad",
 				"en": "Present"
 			},
-			"role": "Odoo senior developer",
 			"summary": {
 				"es": "Experiencia en multitud de sectores, pequeñas como grandes empresas, abarcando campos como Ventas, Compras, CRM, MRP, Almacén...",
 				"en": "Experience across many sectors, in small and large companies, covering Sales, Purchasing, CRM, MRP, Inventory..."
 			}
 		},
 		{
+			"role": "Backend",
 			"period": {
 				"es": "Últimos años",
 				"en": "Recent years"
 			},
-			"role": "Backend",
 			"summary": {
 				"es": "Centrado en backend pero sin perder nunca la mirada al resto de frameworks. Python, PostgreSQL, Linux, Docker.",
 				"en": "Focused on backend but never losing sight of the rest of the frameworks. Python, PostgreSQL, Linux, Docker."
 			}
 		},
 		{
+			"role": "Frontend & backend",
 			"period": {
 				"es": "Trayectoria",
 				"en": "Career"
 			},
-			"role": "Frontend & backend",
 			"summary": {
 				"es": "A lo largo de mi vida laboral me he dedicado tanto a frontend como a backend. Javascript (ES6).",
 				"en": "Throughout my working life I have worked on both frontend and backend. Javascript (ES6)."
