@@ -2,8 +2,7 @@
 
 Personal portfolio. SvelteKit + Tailwind, built as a static site and served from Firebase Hosting.
 Content lives in Supabase and is edited from a local backoffice; the site reads it **at build
-time**, so visitors get plain prerendered HTML and never talk to the database
-([ADR 0005](docs/adr/0005-supabase-leido-en-build-con-puertos-y-adaptadores.md)).
+time**, so visitors get plain prerendered HTML and never talk to the database.
 
 ```
 apps/backoffice ──ContentCommands──▶ Supabase ◀──PortfolioReader── CI: build apps/web ──▶ Firebase
@@ -54,6 +53,18 @@ Locally, sign in as `admin@josezambudiobernabeu.local` / `admin-local` (seeded b
 `supabase/seeds/00_local_admin.sql`). Saving writes to Supabase; **Publish** validates the whole
 content and triggers the deploy workflow, which needs `GITHUB_TOKEN` in the backoffice's `.env`.
 `pnpm --filter backoffice test` drives it end to end.
+
+### Previewing before publishing
+
+```bash
+pnpm preview:content     # the site on :5173, reading the database in apps/backoffice/.env
+pnpm dev:local           # the same, but always against the local stack
+```
+
+Both run the site in dev mode, where the page's content is loaded on every request: save in the
+backoffice, reload the preview, and the change is there. Nothing is built or deployed until you
+press **Publish**. For a check of the exact production output, `pnpm build:local && pnpm preview`
+prerenders from the local database and serves the result.
 
 ## Content
 

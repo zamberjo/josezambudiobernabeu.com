@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { COLLECTIONS, describeValidation } from '@jzb/domain';
+import { env } from '$lib/server/env';
 
 export const load = async ({ locals }) => {
 	const { queries, reader } = locals.services;
@@ -11,6 +12,7 @@ export const load = async ({ locals }) => {
 	]);
 
 	return {
+		previewUrl: env.previewUrl,
 		counts: lists.map(([collection, result]) => ({
 			collection,
 			count: result.ok ? result.value.length : null
