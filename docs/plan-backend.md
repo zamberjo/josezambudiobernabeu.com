@@ -13,49 +13,62 @@ apps/backoffice ──ContentCommands/Queries──▶ Supabase (public: tablas 
 
 ## Fase 1 — Monorepo
 
-- [ ] `pnpm-workspace.yaml`; la web pasa a `apps/web` sin cambios de comportamiento.
-- [ ] Scripts raíz que delegan (`pnpm dev`, `build`, `test`, `check`, `lint`).
+- [x] `pnpm-workspace.yaml`; la web pasa a `apps/web` sin cambios de comportamiento.
+- [x] Scripts raíz que delegan (`pnpm dev`, `build`, `test`, `check`, `lint`).
 
 _Aceptación_: `pnpm lint && pnpm check && pnpm test` en verde.
 
 ## Fase 2 — Dominio y aplicación
 
-- [ ] `packages/domain`: schemas Valibot de `Localized`, `Block`, `Post`, `Project`, `Skill`,
+- [x] `packages/domain`: schemas Valibot de `Localized`, `Block`, `Post`, `Project`, `Skill`,
       `Experience`, `Site` y `Portfolio`; reglas (un post publicado exige fecha, tiempo de lectura
       y cuerpo); selectores puros (`toPortfolioView`, `outline`, `bands`).
-- [ ] `packages/application`: puertos y casos de uso, con `Result`.
-- [ ] Vitest para ambos, contra un adaptador en memoria.
+- [x] `packages/application`: puertos y casos de uso, con `Result`.
+- [x] Vitest para ambos, contra un adaptador en memoria.
 
 _Aceptación_: un post publicado sin `date` devuelve un error con la ruta del campo.
 
 ## Fase 3 — La web consume el puerto
 
-- [ ] `content/portfolio.json` sustituye `src/lib/data/`, incluidos los textos de interfaz.
-- [ ] `+page.server.ts` compone `loadPortfolioView(jsonReader)`; los componentes reciben props.
+- [x] `content/portfolio.json` sustituye `src/lib/data/`, incluidos los textos de interfaz.
+- [x] `+page.server.ts` compone `loadPortfolioView(jsonReader)`; los componentes reciben props.
 
 _Aceptación_: el HTML prerenderizado muestra lo mismo y los tests de Playwright siguen en verde.
 
 ## Fase 4 — Supabase
 
-- [ ] `supabase/migrations`: tablas, `is_localized()`, `pg_jsonschema` para los bloques, RLS con
+- [x] `supabase/migrations`: tablas, `is_localized()`, `pg_jsonschema` para los bloques, RLS con
       `admins` y vistas `api.*`.
-- [ ] `pnpm content:seed` genera `supabase/seed.sql` desde la instantánea.
-- [ ] Adaptador de lectura y escritura con tipos generados; `CONTENT_SOURCE=supabase`.
+- [x] `pnpm content:seed` genera `supabase/seeds/10_content.sql` desde la instantánea.
+- [x] Adaptador de lectura y escritura con tipos generados; `CONTENT_SOURCE=supabase`.
+- [x] Tests de integración (`pnpm test:db`): el contrato de store, RLS y los `CHECK` de la BD.
 
 _Aceptación_: con `supabase start` y `CONTENT_SOURCE=supabase pnpm build`, la web es idéntica.
 
 ## Fase 5 — Backoffice
 
-- [ ] `apps/backoffice` (SvelteKit y adapter-node, solo en local): login con Supabase Auth, CRUD
+- [x] `apps/backoffice` (SvelteKit y adapter-node, solo en local): login con Supabase Auth, CRUD
       por colección con formularios guiados por descriptores, editor de bloques, reordenar,
       secciones del sitio.
-- [ ] Botón «Publicar» → `repository_dispatch`.
+- [x] Botón «Publicar» → `repository_dispatch`.
 
-_Aceptación_: editar una skill, publicar y ver el cambio tras el deploy.
+_Aceptación_: editar una skill, publicar y ver el cambio tras el deploy. En local está cubierto por
+`pnpm --filter backoffice test` hasta el `repository_dispatch`; ver el deploy real requiere el
+proyecto remoto (ver «Pendiente»).
 
 ## Fase 6 — CI y documentación
 
-- [ ] `deploy.yaml` escucha `repository_dispatch` y construye con Supabase.
-- [ ] Tests unitarios en la CI de PRs.
-- [ ] `pnpm content:export` para volcar la BD a la instantánea.
-- [ ] README y CLAUDE.md al día.
+- [x] `deploy.yaml` escucha `repository_dispatch` y construye con Supabase.
+- [x] Tests unitarios en la CI de PRs.
+- [x] `pnpm content:export` para volcar la BD a la instantánea.
+- [x] README y CLAUDE.md al día.
+
+## Pendiente (requiere cuentas, no código)
+
+- [ ] Crear el proyecto remoto de Supabase, `supabase link` + `supabase db push`, y cargar
+      `supabase/seeds/10_content.sql` una vez.
+- [ ] Crear el usuario editor en el dashboard y añadirlo a `public.admins`.
+- [ ] Secrets del repositorio: `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY`. Hasta que existan,
+      `deploy.yaml` sigue construyendo desde la instantánea.
+- [ ] Token fine-grained con permiso _Contents: read and write_ en `apps/backoffice/.env`
+      (`GITHUB_TOKEN`) para el botón Publicar.

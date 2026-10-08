@@ -47,6 +47,10 @@ propósito bloquea el merge.
 
 ## Fase 2 — Validación en la frontera (una tarde)
 
+> **Absorbida por [plan-backend.md](plan-backend.md)**: los schemas Valibot viven en
+> `packages/domain` y se validan en cada adaptador. La decisión de no usar puertos quedó revocada
+> por el [ADR 0005](adr/0005-supabase-leido-en-build-con-puertos-y-adaptadores.md).
+
 Hoy `blog.ts` y `projects.ts` hacen `data.posts as Post[]`: un cast, no un parse. Un error en el
 JSON llega a producción en silencio.
 

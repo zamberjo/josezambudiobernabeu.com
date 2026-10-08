@@ -56,5 +56,5 @@ inactivos: la web dependería en ejecución de un servicio que se duerme.
   ejecución.
 - Añadir un idioma requiere tres cambios: `LOCALES` en el dominio, `is_localized()` en una
   migración y rellenar las filas existentes.
-- El build de producción necesita `SUPABASE_URL` y `SUPABASE_ANON_KEY`. Si Supabase está pausado,
+- El build de producción necesita `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` (la clave publicable o la anon heredada). Si Supabase está pausado,
   el deploy falla y la versión publicada sigue en pie.
