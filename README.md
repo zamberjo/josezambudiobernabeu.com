@@ -90,14 +90,39 @@ Until `SUPABASE_URL` exists, the build falls back to the committed snapshot.
 
 ### First-time Supabase setup
 
-```bash
-supabase link --project-ref <ref>
-supabase db push                                      # apply supabase/migrations
-psql "$REMOTE_DB_URL" -f supabase/seeds/10_content.sql # load the current content once
-```
+1. **Schema and policies.** `supabase db push` applies `supabase/migrations`:
 
-Then create your user in the dashboard (Authentication → Users) and make it an editor:
-`insert into public.admins (user_id) values ('<uuid>');`.
+   ```bash
+   supabase link --project-ref <ref>
+   supabase db push
+   ```
+
+2. **Expose the `api` schema.** In the dashboard, go to _Project Settings → Data API → Exposed
+   schemas_ and add `api`, keeping `public` and `graphql_public`. Locally `supabase/config.toml`
+   does this, but it is a project setting, not part of the database, so `db push` does not carry
+   it. Without it every read fails with `Invalid schema: api`.
+
+3. **Content, once.** The migrations create empty tables. Load the snapshot either by pasting
+   `supabase/seeds/10_content.sql` into the _SQL Editor_, or with the connection string from
+   _Connect_:
+
+   ```bash
+   psql "$REMOTE_DB_URL" -f supabase/seeds/10_content.sql
+   ```
+
+   Run it only once: a second run fails on the unique keys. Until it has run, reads fail with
+   `site.meta: Invalid key: Expected "meta" but received undefined` (and the same for every
+   section), and the backoffice refuses to publish.
+
+4. **An editor.** Sign-ups are disabled, so create your user by hand under _Authentication → Users
+   → Add user_, with _Auto Confirm User_ checked. Then grant it write access in the SQL Editor:
+
+   ```sql
+   insert into public.admins (user_id) select id from auth.users where email = 'you@example.com';
+   ```
+
+5. **Point the backoffice at it.** In `apps/backoffice/.env`, set `SUPABASE_URL` and
+   `SUPABASE_PUBLISHABLE_KEY` from _Project Settings → API Keys_.
 
 To deploy by hand:
 
