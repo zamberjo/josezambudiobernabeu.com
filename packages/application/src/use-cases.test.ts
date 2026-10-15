@@ -55,7 +55,11 @@ describe('assembling', () => {
 
 describe('use cases', () => {
 	it('loadPortfolioView maps the aggregate to the read model', async () => {
-		const view = await loadPortfolioView(reader(portfolio), (html) => ({ html, outline: [] }))();
+		const view = await loadPortfolioView(reader(portfolio), (html) => ({
+			html,
+			outline: [],
+			words: 0
+		}))();
 		expect(view.ok && view.value.blog).toBeNull();
 	});
 

@@ -40,7 +40,6 @@ export type Database = {
           excerpt: Json | null
           position: number | null
           published_on: string | null
-          reading_time: number | null
           slug: string | null
           status: Database["public"]["Enums"]["post_status"] | null
           tags: string[] | null
@@ -52,7 +51,6 @@ export type Database = {
           excerpt?: Json | null
           position?: number | null
           published_on?: string | null
-          reading_time?: number | null
           slug?: string | null
           status?: Database["public"]["Enums"]["post_status"] | null
           tags?: string[] | null
@@ -64,7 +62,6 @@ export type Database = {
           excerpt?: Json | null
           position?: number | null
           published_on?: string | null
-          reading_time?: number | null
           slug?: string | null
           status?: Database["public"]["Enums"]["post_status"] | null
           tags?: string[] | null
@@ -208,7 +205,6 @@ export type Database = {
           id: string
           position: number
           published_on: string | null
-          reading_time: number | null
           slug: string
           status: Database["public"]["Enums"]["post_status"]
           tags: string[]
@@ -223,7 +219,6 @@ export type Database = {
           id?: string
           position?: number
           published_on?: string | null
-          reading_time?: number | null
           slug: string
           status?: Database["public"]["Enums"]["post_status"]
           tags?: string[]
@@ -238,7 +233,6 @@ export type Database = {
           id?: string
           position?: number
           published_on?: string | null
-          reading_time?: number | null
           slug?: string
           status?: Database["public"]["Enums"]["post_status"]
           tags?: string[]

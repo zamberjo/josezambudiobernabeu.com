@@ -65,10 +65,10 @@
 					class="my-[clamp(24px,3vw,40px)] flex flex-wrap gap-6 border-t-2 border-b-2 border-t-ink border-b-divider py-4 text-xs font-bold tracking-[0.14em] uppercase text-neutral-700"
 				>
 					<span>Jose Zambudio Bernabeu</span>
-					{#if post.readingTime}
+					{#if article}
 						<span aria-hidden="true">— · —</span>
 						<span>
-							{post.readingTime}
+							{article.minutes}
 							{t(ui.minRead)}
 						</span>
 					{/if}

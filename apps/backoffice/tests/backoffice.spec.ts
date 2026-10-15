@@ -85,10 +85,11 @@ test('an editor can sign in, edit every kind of content and publish', async ({ p
 	await page.getByRole('tab', { name: 'EN' }).click();
 	await expect(editor).toHaveText('Hello world');
 
-	// Publishing it without a date or reading time is refused by the domain.
+	// Publishing it without a date is refused by the domain, on that field.
 	await page.getByLabel('Estado').selectOption('published');
 	await page.getByRole('button', { name: 'Guardar' }).click();
-	await expect(page.locator('.field.invalid')).toHaveCount(2);
+	await expect(page.locator('.field.invalid')).toHaveCount(1);
+	await expect(page.locator('.field.invalid')).toContainText('A published post needs a date');
 
 	// site section
 	await page.goto('/site/quote');

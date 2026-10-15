@@ -27,6 +27,12 @@ describe('article renderer', () => {
 		]);
 	});
 
+	it('counts the words a reader reads, not the markup', () => {
+		expect(
+			render('<h2>Dos palabras</h2><p>y <strong>tres</strong> más</p><script>x y z</script>').words
+		).toBe(5);
+	});
+
 	it('restarts the numbering for every article', () => {
 		render('<h2>a</h2><h2>b</h2>');
 		expect(render('<h2>c</h2>').outline[0]?.id).toBe('post-01');
