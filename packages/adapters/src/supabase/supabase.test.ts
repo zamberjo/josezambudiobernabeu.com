@@ -78,13 +78,44 @@ describe.skipIf(!url || !key)('supabase adapters', () => {
 		expect(error?.code).toBe('23514');
 	});
 
-	it('the database rejects an unknown block kind', async () => {
+	it('the database rejects a body that is not HTML per language', async () => {
 		const { error } = await admin.from('posts').insert({
 			slug: 'bad-body',
 			title: { es: 'a', en: 'a' },
 			excerpt: { es: 'a', en: 'a' },
-			body: [{ type: 'video', src: 'x' }]
+			body: [{ type: 'paragraph', text: { es: 'a', en: 'a' } }]
 		});
 		expect(error?.code).toBe('23514');
+	});
+
+	it('the database refuses to publish a post whose body is empty in one language', async () => {
+		const { error } = await admin.from('posts').insert({
+			slug: 'half-written',
+			status: 'published',
+			published_on: '2026-09-30',
+			reading_time: 3,
+			title: { es: 'a', en: 'a' },
+			excerpt: { es: 'a', en: 'a' },
+			body: { es: '<p>Hola</p>', en: '<p></p>' }
+		});
+		expect(error?.code).toBe('23514');
+	});
+
+	it('stores and reads back an HTML post', async () => {
+		const store = supabaseContentStore(admin);
+		const post = {
+			slug: 'html-post',
+			status: 'published' as const,
+			date: '2026-09-30',
+			readingTime: 3,
+			cover: null,
+			tags: ['Svelte'],
+			title: { es: 'Hola', en: 'Hello' },
+			excerpt: { es: 'e', en: 'e' },
+			body: { es: '<h2>Uno</h2><p>Texto</p>', en: '<h2>One</h2><p>Text</p>' }
+		};
+		const saved = await store.commands.save('posts', { data: post });
+		expect(saved.ok && saved.value.data).toEqual(post);
+		if (saved.ok) await store.commands.remove('posts', saved.value.id);
 	});
 });

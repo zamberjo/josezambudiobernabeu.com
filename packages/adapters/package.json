@@ -8,7 +8,8 @@
 		"./json": "./src/json/index.ts",
 		"./memory": "./src/memory/index.ts",
 		"./supabase": "./src/supabase/index.ts",
-		"./github": "./src/github/index.ts"
+		"./github": "./src/github/index.ts",
+		"./html": "./src/html/index.ts"
 	},
 	"scripts": {
 		"check": "tsc -p .",
@@ -19,6 +20,12 @@
 	"dependencies": {
 		"@jzb/application": "workspace:*",
 		"@jzb/domain": "workspace:*",
-		"@supabase/supabase-js": "^2.117.1"
+		"@supabase/supabase-js": "^2.117.1",
+		"domutils": "^4.0.2",
+		"htmlparser2": "^12.0.0",
+		"sanitize-html": "^2.17.7"
+	},
+	"devDependencies": {
+		"@types/sanitize-html": "^2.16.2"
 	}
 }

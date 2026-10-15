@@ -10,11 +10,11 @@
 	const empty = (field: Field): unknown => {
 		switch (field.kind) {
 			case 'localized':
+			case 'richText':
 				return blankLocalized();
 			case 'strings':
 			case 'localizedList':
 			case 'links':
-			case 'blocks':
 				return [];
 			case 'boolean':
 				return false;

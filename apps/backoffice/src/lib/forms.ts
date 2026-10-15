@@ -1,9 +1,6 @@
 import {
-	BLOCK_TYPES,
 	POST_STATUSES,
 	UI_KEYS,
-	type Block,
-	type BlockType,
 	type CollectionName,
 	type Entities,
 	type Localized,
@@ -29,7 +26,7 @@ export type Field<K extends string = string> =
 	| { kind: 'strings'; key: K; label: string; hint?: string }
 	| { kind: 'localizedList'; key: K; label: string }
 	| { kind: 'links'; key: K; label: string; localized: boolean }
-	| { kind: 'blocks'; key: K; label: string };
+	| { kind: 'richText'; key: K; label: string };
 
 export type FieldKind = Field['kind'];
 
@@ -71,7 +68,7 @@ export const collectionFields: { [K in CollectionName]: FieldsFor<Entities[K]> }
 		{ kind: 'strings', key: 'tags', label: 'Etiquetas', hint: 'Una por línea' },
 		{ kind: 'localized', key: 'title', label: 'Título' },
 		{ kind: 'localized', key: 'excerpt', label: 'Extracto', multiline: true },
-		{ kind: 'blocks', key: 'body', label: 'Cuerpo' }
+		{ kind: 'richText', key: 'body', label: 'Cuerpo' }
 	],
 	projects: [
 		{ kind: 'text', key: 'name', label: 'Nombre' },
@@ -161,7 +158,7 @@ export const blankEntity: { [K in CollectionName]: () => Entities[K] } = {
 		tags: [],
 		title: blankLocalized(),
 		excerpt: blankLocalized(),
-		body: []
+		body: blankLocalized()
 	}),
 	projects: () => ({
 		name: '',
@@ -175,88 +172,6 @@ export const blankEntity: { [K in CollectionName]: () => Entities[K] } = {
 	experience: () => ({ role: '', period: blankLocalized(), summary: blankLocalized() })
 };
 
-export const blockLabels: Record<BlockType, string> = {
-	lede: 'Entradilla',
-	heading: 'Encabezado',
-	paragraph: 'Párrafo',
-	quote: 'Cita',
-	list: 'Lista',
-	code: 'Código',
-	image: 'Imagen'
-};
-
-export { BLOCK_TYPES };
-
-export const blankBlock = (type: BlockType): Block => {
-	switch (type) {
-		case 'lede':
-		case 'heading':
-		case 'paragraph':
-		case 'quote':
-			return { type, text: blankLocalized() };
-		case 'list':
-			return { type, items: [blankLocalized()] };
-		case 'code':
-			return { type, code: '', comment: blankLocalized() };
-		case 'image':
-			return { type, src: '', alt: blankLocalized(), caption: blankLocalized() };
-		default:
-			return exhaustive(type);
-	}
-};
-
-const isBlank = (value: Localized | undefined) => !value || (!value.es.trim() && !value.en.trim());
-
-/**
- * The editor always shows a block's optional translations; an untouched one
- * is dropped before saving rather than stored as `{ es: '', en: '' }`.
- */
-export const pruneBlock = (block: Block): Block => {
-	switch (block.type) {
-		case 'code': {
-			const { comment, ...rest } = block;
-			return isBlank(comment) ? rest : block;
-		}
-		case 'image': {
-			const { alt, caption, ...rest } = block;
-			return {
-				...rest,
-				...(isBlank(alt) ? {} : { alt }),
-				...(isBlank(caption) ? {} : { caption })
-			};
-		}
-		default:
-			return block;
-	}
-};
-
-/** The editor view of a block: optional translations filled in so they can be typed into. */
-export const expandBlock = (block: Block): Block => {
-	switch (block.type) {
-		case 'code':
-			return { comment: blankLocalized(), ...block };
-		case 'image':
-			return { alt: blankLocalized(), caption: blankLocalized(), ...block };
-		default:
-			return block;
-	}
-};
-
 export function exhaustive(value: never): never {
 	throw new Error(`Unhandled case: ${String(value)}`);
 }
-
-/**
- * Collection-specific translation between the stored value and the form's
- * working copy. Only posts need one today; the rest pass through.
- */
-export const formCodec = {
-	toForm: <K extends CollectionName>(collection: K, data: Entities[K]): Entities[K] =>
-		collection === 'posts'
-			? ({ ...data, body: (data as Entities['posts']).body.map(expandBlock) } as Entities[K])
-			: data,
-	fromForm: <K extends CollectionName>(collection: K, data: Entities[K]): Entities[K] =>
-		collection === 'posts'
-			? ({ ...data, body: (data as Entities['posts']).body.map(pruneBlock) } as Entities[K])
-			: data
-};

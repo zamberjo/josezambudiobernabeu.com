@@ -22,41 +22,24 @@ const ImageSrc = v.pipe(
 // --- Blog -------------------------------------------------------------------
 
 /**
- * Article bodies are structured blocks rather than markup, so the reader keeps
- * the design's typography and builds its own index from the headings. Adding a
- * kind here makes every exhaustive switch over `Block['type']` fail to compile
- * until it handles the new one.
+ * Article bodies are HTML, one document per language, written in the
+ * backoffice's WYSIWYG editor (or pasted as source). The domain only stores
+ * it: sanitising it and indexing its headings is the `ArticleRenderer`
+ * port's job at build time, so no untrusted markup reaches the page.
  */
-export const BlockSchema = v.variant('type', [
-	v.strictObject({ type: v.literal('lede'), text: LocalizedSchema }),
-	v.strictObject({ type: v.literal('heading'), text: LocalizedSchema }),
-	v.strictObject({ type: v.literal('paragraph'), text: LocalizedSchema }),
-	v.strictObject({ type: v.literal('quote'), text: LocalizedSchema }),
-	v.strictObject({ type: v.literal('list'), items: v.array(LocalizedSchema) }),
-	v.strictObject({
-		type: v.literal('code'),
-		code: v.string(),
-		comment: v.optional(LocalizedSchema)
-	}),
-	v.strictObject({
-		type: v.literal('image'),
-		src: ImageSrc,
-		alt: v.optional(LocalizedSchema),
-		caption: v.optional(LocalizedSchema)
-	})
-]);
+export const ArticleSchema = LocalizedSchema;
 
-export type Block = v.InferOutput<typeof BlockSchema>;
-export type BlockType = Block['type'];
-export const BLOCK_TYPES = [
-	'lede',
-	'heading',
-	'paragraph',
-	'quote',
-	'list',
-	'code',
-	'image'
-] as const satisfies readonly BlockType[];
+export type Article = v.InferOutput<typeof ArticleSchema>;
+
+/**
+ * Whether an HTML fragment has anything to read. A structural test, not a
+ * parser: it only has to tell an empty editor (`<p></p>`) from an article.
+ */
+export const hasText = (html: string): boolean =>
+	html
+		.replace(/<(img|iframe|video|pre)\b/gi, 'x<')
+		.replace(/<[^>]*>|&nbsp;/g, '')
+		.trim() !== '';
 
 export const POST_STATUSES = ['published', 'draft'] as const;
 
@@ -72,7 +55,7 @@ export const PostSchema = v.pipe(
 		tags: v.array(v.pipe(v.string(), v.nonEmpty())),
 		title: LocalizedSchema,
 		excerpt: LocalizedSchema,
-		body: v.array(BlockSchema)
+		body: ArticleSchema
 	}),
 	v.forward(
 		v.partialCheck(
@@ -93,8 +76,8 @@ export const PostSchema = v.pipe(
 	v.forward(
 		v.partialCheck(
 			[['status'], ['body']],
-			(post) => post.status !== 'published' || post.body.length > 0,
-			'A published post needs a body'
+			(post) => post.status !== 'published' || (hasText(post.body.es) && hasText(post.body.en)),
+			'A published post needs a body in every language'
 		),
 		['body']
 	)

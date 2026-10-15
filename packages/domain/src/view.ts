@@ -1,5 +1,5 @@
-import type { Block, Post, Project } from './entities.ts';
-import type { Localized } from './i18n.ts';
+import { hasText, type Post, type Project } from './entities.ts';
+import { LOCALES, type Lang } from './i18n.ts';
 import type { Portfolio } from './portfolio.ts';
 import type { NavLink, Site } from './site.ts';
 
@@ -29,31 +29,51 @@ export const orderProjects = (projects: readonly Project[]): Project[] => [
 ];
 
 /** Newest published post; it gets the wide card at the top of the section. */
-export const featuredPost = (posts: readonly Post[]): Post | undefined =>
+export const featuredPost = <P extends Pick<Post, 'status' | 'date'>>(
+	posts: readonly P[]
+): P | undefined =>
 	posts
 		.filter((post) => post.status === 'published')
 		.toSorted((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))[0];
 
 /** A post only opens the reader once it actually has a body written. */
-export const isReadable = (post: Post): boolean => post.body.length > 0;
+export const isReadable = (post: Post): boolean => LOCALES.some((lang) => hasText(post.body[lang]));
 
-export type OutlineEntry = { number: string; text: Localized };
+export type OutlineEntry = { id: string; number: string; text: string };
 
-/** The headings, numbered, as the reader's side index. */
-export const outline = (body: readonly Block[]): OutlineEntry[] =>
-	body
-		.filter((block): block is Extract<Block, { type: 'heading' }> => block.type === 'heading')
-		.map((block, i) => ({ number: pad2(i + 1), text: block.text }));
+/** An article body made safe to inject, with its headings indexed for the side nav. */
+export type RenderedArticle = { html: string; outline: OutlineEntry[] };
 
-/** Each block paired with its heading number, so the reader never recounts. */
-export const numberBlocks = (body: readonly Block[]): { block: Block; heading?: string }[] => {
-	let headings = 0;
-	return body.map((block) =>
-		block.type === 'heading' ? { block, heading: pad2(++headings) } : { block }
-	);
+/**
+ * Turns stored HTML into a `RenderedArticle`. Injected rather than imported:
+ * sanitising HTML needs a parser, which belongs in an adapter, and this module
+ * stays pure.
+ */
+export type ArticleRenderer = (html: string) => RenderedArticle;
+
+/**
+ * A post as the page renders it: both languages already rendered at build
+ * time. The stored `body` is left out on purpose, so unsanitised HTML never
+ * reaches the page, not even inside its serialised data.
+ */
+export type PostView = Omit<Post, 'body'> & {
+	article: Record<Lang, RenderedArticle>;
+	/** Whether it opens the reader; see `isReadable`. */
+	readable: boolean;
 };
 
-export type BlogView = { featured: Post | undefined; others: Post[] };
+const renderPost =
+	(render: ArticleRenderer) =>
+	({ body, ...post }: Post): PostView => ({
+		...post,
+		article: Object.fromEntries(LOCALES.map((lang) => [lang, render(body[lang])])) as Record<
+			Lang,
+			RenderedArticle
+		>,
+		readable: isReadable({ ...post, body })
+	});
+
+export type BlogView = { featured: PostView | undefined; others: PostView[] };
 
 export type PortfolioView = {
 	site: Site;
@@ -71,18 +91,17 @@ export type PortfolioView = {
  * With no posts the section has nothing to say, so the page drops it: a
  * portfolio is better off without a blog than with an empty one.
  */
-export const toPortfolioView = (portfolio: Portfolio): PortfolioView => {
+export const toPortfolioView = (portfolio: Portfolio, render: ArticleRenderer): PortfolioView => {
 	const hasPosts = portfolio.posts.length > 0;
 	const rendered = BANDS.filter((band) => band !== 'blog' || hasPosts);
-	const featured = featuredPost(portfolio.posts);
+	const posts = portfolio.posts.map(renderPost(render));
+	const featured = featuredPost(posts);
 
 	return {
 		site: portfolio.site,
 		nav: portfolio.site.nav.links.filter((link) => link.href !== '#blog' || hasPosts),
 		bands: bandNumbers(rendered),
-		blog: hasPosts
-			? { featured, others: portfolio.posts.filter((post) => post !== featured) }
-			: null,
+		blog: hasPosts ? { featured, others: posts.filter((post) => post !== featured) } : null,
 		experience: portfolio.experience,
 		skills: portfolio.skills,
 		projects: orderProjects(portfolio.projects)

@@ -2,16 +2,13 @@
 	import type { Entities } from '@jzb/domain';
 	import { page } from '$app/state';
 	import EntityForm from '$lib/components/EntityForm.svelte';
-	import { collectionFields, collectionLabels, formCodec } from '$lib/forms';
+	import { collectionFields, collectionLabels } from '$lib/forms';
 
 	let { data, form } = $props();
 
 	// After a failed submit, reopen what the editor typed, not the stored value.
 	const initial = $derived(
-		formCodec.toForm(
-			data.collection,
-			(form && 'payload' in form ? form.payload : data.data) as Entities[typeof data.collection]
-		)
+		(form && 'payload' in form ? form.payload : data.data) as Entities[typeof data.collection]
 	);
 	const saved = $derived(form?.saved || page.url.searchParams.has('saved'));
 </script>
@@ -30,6 +27,5 @@
 		fields={collectionFields[data.collection]}
 		initial={initial as Record<string, unknown>}
 		issues={form?.issues ?? []}
-		serialize={(value) => formCodec.fromForm(data.collection, value as never)}
 	/>
 {/key}

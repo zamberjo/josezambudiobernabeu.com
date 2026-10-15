@@ -3,7 +3,8 @@ import { expect, test } from '@playwright/test';
 /*
  * Drives the backoffice against the local Supabase stack, signed in as the
  * seeded editor. It writes to the database, so `pnpm db:reset` afterwards
- * restores the seed. Run with `pnpm --filter backoffice test` after
+ * restores the seed. Run with `pnpm --filter backoffice test` (its own port, local stack, no
+ * GitHub token) after
  * `supabase start`.
  */
 
@@ -42,21 +43,47 @@ test('an editor can sign in, edit every kind of content and publish', async ({ p
 	await page.locator('.entries li').first().getByRole('button', { name: /Bajar/ }).click();
 	await expect(page.locator('.entries li a').nth(1)).toHaveText(first!);
 
-	// new post with blocks
+	// A new post, written in the WYSIWYG editor, one language per tab.
 	await page.goto('/posts/new');
 	await page.waitForLoadState('networkidle');
 	await page.getByLabel('Slug').fill('hola-mundo');
 	await page.getByLabel('Título (es)').fill('Hola');
 	await page.getByLabel('Título (en)').fill('Hello');
-	await page.getByRole('button', { name: 'Encabezado' }).click();
-	await page.getByLabel('Encabezado (es)').fill('Intro');
-	await page.getByLabel('Encabezado (en)').fill('Intro');
-	await page.getByRole('button', { name: 'Código' }).click();
-	await page.getByLabel('Código', { exact: true }).fill('print(1)');
+
+	const editor = page.locator('[role=tabpanel]:visible .ProseMirror');
+	const toolbar = page.locator('[role=tabpanel]:visible [role=toolbar]');
+	await editor.click();
+	await toolbar.getByTitle('Encabezado (entra en el índice)').click();
+	await page.keyboard.type('Intro');
+	await page.keyboard.press('Enter');
+	await page.keyboard.type('Hola ');
+	await toolbar.getByTitle('Negrita').click();
+	await page.keyboard.type('mundo');
+	await expect(editor.locator('h2')).toHaveText('Intro');
+	await expect(editor.locator('strong')).toHaveText('mundo');
+
+	await page.getByRole('tab', { name: 'EN' }).click();
+	await editor.click();
+	await page.keyboard.type('Hello world');
+
+	// Raw HTML: the source view shows what the editor wrote and accepts more.
+	await page.getByRole('tab', { name: 'ES' }).click();
+	await toolbar.getByRole('button', { name: 'HTML' }).click();
+	const source = page.getByLabel('Cuerpo (es) (HTML)');
+	await expect(source).toHaveValue('<h2>Intro</h2><p>Hola <strong>mundo</strong></p>');
+	await source.fill('<h2>Intro</h2><p>Hola</p><table><tr><td>1</td></tr></table>');
+	// The visual editor cannot hold a table: it asks, and declining keeps the HTML.
+	page.once('dialog', (dialog) => dialog.dismiss());
+	await toolbar.getByRole('button', { name: 'HTML' }).click();
+	await expect(source).toBeVisible();
+
 	await page.getByRole('button', { name: 'Guardar' }).click();
 	await expect(page).toHaveURL(/\/posts\/[0-9a-f-]{36}\?saved/);
 	await page.waitForLoadState('networkidle');
-	await expect(page.getByLabel('Código', { exact: true })).toHaveValue('print(1)');
+	// Reopened, an article the visual editor cannot represent opens as HTML.
+	await expect(page.getByLabel('Cuerpo (es) (HTML)')).toHaveValue(/<table>/);
+	await page.getByRole('tab', { name: 'EN' }).click();
+	await expect(editor).toHaveText('Hello world');
 
 	// Publishing it without a date or reading time is refused by the domain.
 	await page.getByLabel('Estado').selectOption('published');

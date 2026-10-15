@@ -52,7 +52,8 @@ pnpm backoffice          # http://localhost:5174
 Locally, sign in as `admin@josezambudiobernabeu.local` / `admin-local` (seeded by
 `supabase/seeds/00_local_admin.sql`). Saving writes to Supabase; **Publish** validates the whole
 content and triggers the deploy workflow, which needs `GITHUB_TOKEN` in the backoffice's `.env`.
-`pnpm --filter backoffice test` drives it end to end.
+`pnpm --filter backoffice test` drives it end to end on its own port (5184), always against the
+local stack and without a GitHub token, so it never touches production or deploys.
 
 ### Previewing before publishing
 
@@ -76,14 +77,17 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
 - **The snapshot** `content/portfolio.json` is what the tests and PR previews build from.
   `pnpm content:export` refreshes it from the database, and `pnpm content:seed` regenerates
   `supabase/seeds/10_content.sql` from it.
-- **Blog posts** are arrays of typed blocks: `lede`, `heading`, `paragraph`, `quote`, `list`, `code`
-  and `image`. Headings are numbered automatically and build the reader's side index. The newest
-  published post becomes the featured card.
+- **Blog posts** have an HTML body per language, written in the backoffice's WYSIWYG editor
+  (Tiptap). Its **HTML** button edits the source directly, so any markup can go in, and an
+  article the visual editor cannot represent, such as one with a table, opens in HTML mode rather
+  than losing it. At build time `packages/adapters/src/html` sanitises the body against an
+  allow-list and numbers every `<h2>`, which also builds the reader's side index. The opening
+  paragraph reads as the lede, and the newest published post becomes the featured card.
 - **An empty blog** hides the whole Blog section, along with its nav entry and footer column, and
   the other sections renumber themselves.
 
-Adding a block kind touches three places: `BlockSchema` in `packages/domain`,
-`post_body_schema()` in a new migration, and a branch in `BlogReader.svelte` and `BlockEditor.svelte`.
+The article typography lives in `apps/web/src/app.css` under `.article`. To allow a new tag in
+articles, add it to the renderer's allow-list and give it a style there.
 
 ## Deploy
 

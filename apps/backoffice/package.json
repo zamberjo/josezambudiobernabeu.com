@@ -17,16 +17,20 @@
 		"@jzb/application": "workspace:*",
 		"@jzb/domain": "workspace:*",
 		"@supabase/ssr": "^0.12.7",
-		"@supabase/supabase-js": "^2.117.1"
+		"@supabase/supabase-js": "^2.117.1",
+		"@tiptap/core": "^3.31.3",
+		"@tiptap/extension-image": "^3.31.3",
+		"@tiptap/pm": "^3.31.3",
+		"@tiptap/starter-kit": "^3.31.3"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.63.0",
 		"@sveltejs/adapter-node": "^5.5.7",
 		"@sveltejs/kit": "^2.70.3",
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
 		"svelte": "^5.57.0",
 		"svelte-check": "^4.7.6",
 		"typescript": "^6.0.3",
-		"vite": "^8.3.0",
-		"@playwright/test": "^1.63.0"
+		"vite": "^8.3.0"
 	}
 }
