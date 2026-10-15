@@ -118,5 +118,12 @@ export const sanitizingArticleRenderer: ArticleRenderer = (source) => {
 		}
 	});
 
-	return { html, outline };
+	// Counted on the clean markup with every tag as a space, so adjacent blocks
+	// ("…fin</h2><p>Otro…") never fuse into one word.
+	const words = clean
+		.replace(/<[^>]*>/g, ' ')
+		.split(/\s+/)
+		.filter(Boolean).length;
+
+	return { html, outline, words };
 };

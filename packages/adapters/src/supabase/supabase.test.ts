@@ -93,7 +93,6 @@ describe.skipIf(!url || !key)('supabase adapters', () => {
 			slug: 'half-written',
 			status: 'published',
 			published_on: '2026-09-30',
-			reading_time: 3,
 			title: { es: 'a', en: 'a' },
 			excerpt: { es: 'a', en: 'a' },
 			body: { es: '<p>Hola</p>', en: '<p></p>' }
@@ -107,7 +106,6 @@ describe.skipIf(!url || !key)('supabase adapters', () => {
 			slug: 'html-post',
 			status: 'published' as const,
 			date: '2026-09-30',
-			readingTime: 3,
 			cover: null,
 			tags: ['Svelte'],
 			title: { es: 'Hola', en: 'Hello' },

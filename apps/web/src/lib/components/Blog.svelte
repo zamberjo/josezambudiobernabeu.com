@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { t } from '../i18n.svelte';
+	import { lang, t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
 	import { type BlogView, type Localized, type PostView, type Ui } from '@jzb/domain';
 	import BlogReader from './BlogReader.svelte';
@@ -87,10 +87,10 @@
 				</p>
 				<div class="flex flex-wrap gap-4 text-xs tracking-[0.14em] uppercase text-neutral-700">
 					<span>Jose Zambudio</span>
-					{#if featured.readingTime}
+					{#if featured.readable}
 						<span aria-hidden="true">— · —</span>
 						<span>
-							{featured.readingTime}
+							{featured.article[lang.current].minutes}
 							{t(ui.minRead)}
 						</span>
 					{/if}

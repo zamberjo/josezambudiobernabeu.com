@@ -81,7 +81,8 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   (Tiptap). Its **HTML** button edits the source directly, so any markup can go in, and an
   article the visual editor cannot represent, such as one with a table, opens in HTML mode rather
   than losing it. At build time `packages/adapters/src/html` sanitises the body against an
-  allow-list and numbers every `<h2>`, which also builds the reader's side index. The opening
+  allow-list and numbers every `<h2>`, which also builds the reader's side index. The reading time is derived per language from the word count
+  (`readingMinutes`, 220 words a minute), so it is never typed and never stale. The opening
   paragraph reads as the lede, and the newest published post becomes the featured card.
 - **An empty blog** hides the whole Blog section, along with its nav entry and footer column, and
   the other sections renumber themselves.

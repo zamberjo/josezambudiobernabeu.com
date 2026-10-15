@@ -57,7 +57,6 @@ export const collectionFields: { [K in CollectionName]: FieldsFor<Entities[K]> }
 		{ kind: 'text', key: 'slug', label: 'Slug', hint: 'minúsculas-con-guiones' },
 		{ kind: 'select', key: 'status', label: 'Estado', options: POST_STATUSES },
 		{ kind: 'date', key: 'date', label: 'Fecha' },
-		{ kind: 'number', key: 'readingTime', label: 'Minutos de lectura', min: 1, nullable: true },
 		{
 			kind: 'text',
 			key: 'cover',
@@ -153,7 +152,6 @@ export const blankEntity: { [K in CollectionName]: () => Entities[K] } = {
 		slug: '',
 		status: 'draft',
 		date: null,
-		readingTime: null,
 		cover: null,
 		tags: [],
 		title: blankLocalized(),

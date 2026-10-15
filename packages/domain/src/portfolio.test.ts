@@ -7,6 +7,7 @@ import {
 	bandNumbers,
 	featuredPost,
 	isReadable,
+	readingMinutes,
 	toPortfolioView,
 	type ArticleRenderer
 } from './view.ts';
@@ -18,7 +19,6 @@ const post = (overrides: Partial<Post> = {}): Post => ({
 	slug: 'a-post',
 	status: 'published',
 	date: '2026-01-01',
-	readingTime: 5,
 	cover: null,
 	tags: [],
 	title: L('Title'),
@@ -30,7 +30,7 @@ const post = (overrides: Partial<Post> = {}): Post => ({
 const parsePost = parseWith(entitySchemas.posts);
 
 /** Stands in for the HTML adapter: marks what it was given so the test can see it ran. */
-const render: ArticleRenderer = (html) => ({ html: `[${html}]`, outline: [] });
+const render: ArticleRenderer = (html) => ({ html: `[${html}]`, outline: [], words: 1 });
 
 const valid = (): Portfolio => {
 	const result = parsePortfolio(snapshot);
@@ -63,21 +63,15 @@ describe('the content snapshot', () => {
 });
 
 describe('post rules', () => {
-	it('a published post needs a date, a reading time and a body', () => {
-		const result = parsePost(post({ date: null, readingTime: null, body: L('<p></p>') }));
+	it('a published post needs a date and a body', () => {
+		const result = parsePost(post({ date: null, body: L('<p></p>') }));
 		expect(result.ok).toBe(false);
 		if (!result.ok)
-			expect(result.error.issues.map((issue) => issue.path).sort()).toEqual([
-				'body',
-				'date',
-				'readingTime'
-			]);
+			expect(result.error.issues.map((issue) => issue.path).sort()).toEqual(['body', 'date']);
 	});
 
 	it('a draft needs none of them', () => {
-		expect(
-			parsePost(post({ status: 'draft', date: null, readingTime: null, body: L('') })).ok
-		).toBe(true);
+		expect(parsePost(post({ status: 'draft', date: null, body: L('') })).ok).toBe(true);
 	});
 
 	it('needs the body in every language to publish', () => {
@@ -101,6 +95,12 @@ describe('read model', () => {
 		expect(featuredPost(posts)?.slug).toBe('new');
 	});
 
+	it('derives reading time from the word count, never under a minute', () => {
+		expect(readingMinutes(0)).toBe(1);
+		expect(readingMinutes(1100)).toBe(5);
+		expect(readingMinutes(1400)).toBe(6);
+	});
+
 	it('tells an empty editor from an article', () => {
 		expect(hasText('<p></p><p>&nbsp;</p><br>')).toBe(false);
 		expect(hasText('<p>Hola</p>')).toBe(true);
@@ -110,7 +110,12 @@ describe('read model', () => {
 
 	it('renders every language of every post through the injected renderer', () => {
 		const view = toPortfolioView({ ...valid(), posts: [post()] }, render);
-		expect(view.blog?.featured?.article.en).toEqual({ html: '[<p>Body</p>]', outline: [] });
+		expect(view.blog?.featured?.article.en).toEqual({
+			html: '[<p>Body</p>]',
+			outline: [],
+			words: 1,
+			minutes: 1
+		});
 	});
 
 	it('drops the blog band, its nav link and renumbers when there are no posts', () => {

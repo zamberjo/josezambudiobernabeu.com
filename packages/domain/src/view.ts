@@ -41,8 +41,21 @@ export const isReadable = (post: Post): boolean => LOCALES.some((lang) => hasTex
 
 export type OutlineEntry = { id: string; number: string; text: string };
 
-/** An article body made safe to inject, with its headings indexed for the side nav. */
-export type RenderedArticle = { html: string; outline: OutlineEntry[] };
+/**
+ * An article body made safe to inject, with its headings indexed for the side
+ * nav and its words counted (the renderer has the parser, so it counts).
+ */
+export type RenderedArticle = { html: string; outline: OutlineEntry[]; words: number };
+
+/** A rendered article plus what the page derives from it. */
+export type ArticleView = RenderedArticle & { minutes: number };
+
+/** Silent reading speed for the "6 min de lectura" label; a common estimate for ES and EN prose. */
+export const WORDS_PER_MINUTE = 220;
+
+/** Reading time in whole minutes, never under one. Derived per language: translations differ. */
+export const readingMinutes = (words: number): number =>
+	Math.max(1, Math.round(words / WORDS_PER_MINUTE));
 
 /**
  * Turns stored HTML into a `RenderedArticle`. Injected rather than imported:
@@ -57,7 +70,7 @@ export type ArticleRenderer = (html: string) => RenderedArticle;
  * reaches the page, not even inside its serialised data.
  */
 export type PostView = Omit<Post, 'body'> & {
-	article: Record<Lang, RenderedArticle>;
+	article: Record<Lang, ArticleView>;
 	/** Whether it opens the reader; see `isReadable`. */
 	readable: boolean;
 };
@@ -66,10 +79,12 @@ const renderPost =
 	(render: ArticleRenderer) =>
 	({ body, ...post }: Post): PostView => ({
 		...post,
-		article: Object.fromEntries(LOCALES.map((lang) => [lang, render(body[lang])])) as Record<
-			Lang,
-			RenderedArticle
-		>,
+		article: Object.fromEntries(
+			LOCALES.map((lang) => {
+				const rendered = render(body[lang]);
+				return [lang, { ...rendered, minutes: readingMinutes(rendered.words) }];
+			})
+		) as Record<Lang, ArticleView>,
 		readable: isReadable({ ...post, body })
 	});
 

@@ -49,8 +49,6 @@ export const PostSchema = v.pipe(
 		/** `draft` posts show in the grid but only open the reader once they have a body. */
 		status: v.picklist(POST_STATUSES),
 		date: v.nullable(IsoDate),
-		/** Minutes; rendered as "6 min de lectura" / "6 min read". */
-		readingTime: v.nullable(v.pipe(v.number(), v.integer(), v.minValue(1))),
 		cover: v.nullable(ImageSrc),
 		tags: v.array(v.pipe(v.string(), v.nonEmpty())),
 		title: LocalizedSchema,
@@ -64,14 +62,6 @@ export const PostSchema = v.pipe(
 			'A published post needs a date'
 		),
 		['date']
-	),
-	v.forward(
-		v.partialCheck(
-			[['status'], ['readingTime']],
-			(post) => post.status !== 'published' || post.readingTime !== null,
-			'A published post needs a reading time'
-		),
-		['readingTime']
 	),
 	v.forward(
 		v.partialCheck(
