@@ -24,7 +24,7 @@ pnpm build:local            # build the site from the local database
 pnpm preview:content        # site dev server reading the backoffice's DB: preview before publishing
 pnpm dev:local              # site dev server reading the local stack
 pnpm backoffice             # the local editor on :5174 (needs apps/backoffice/.env)
-pnpm --filter backoffice test   # backoffice e2e; writes to the DB, db:reset afterwards
+pnpm --filter backoffice test   # backoffice e2e on :5184, local DB only; db:reset afterwards
 pnpm content:seed           # content/portfolio.json → supabase/seeds/10_content.sql
 pnpm content:export         # database → content/portfolio.json
 pnpm db:types               # regenerate packages/adapters/src/supabase/database.types.ts
@@ -49,14 +49,15 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
 - `packages/domain` holds no infrastructure. Valibot schemas are the single declaration of the
   model, and every type is `InferOutput` of one. The business rules sit on the schemas: a
   published post needs a date, a reading time and a body, and natural keys are unique. It also
-  has the `Result` type and the pure read-model selectors (`toPortfolioView`, `outline`,
-  `numberBlocks`, band numbering).
+  has the `Result` type and the pure read-model selectors (`toPortfolioView`, `isReadable`, band
+  numbering). `toPortfolioView` takes an injected `ArticleRenderer`, so it stays pure.
 - `packages/application` holds the ports and the use cases. **Ports are function types**, not
   classes: `PortfolioReader`, `ContentQueries`/`ContentCommands` (reads and writes split),
   `PublishTrigger` and `SnapshotSink`. **Use cases are curried**, dependencies first
   (`saveEntry(commands)(collection, input)`), and validate untrusted input with the domain before
   any port sees it. Errors are `Result` values, never thrown.
-- `packages/adapters` provides `json`, `supabase`, `github` and `memory`. In
+- `packages/adapters` provides `json`, `supabase`, `github`, `memory` and `html`. `html` is the build-time
+  `ArticleRenderer` (sanitize-html allow-list, `<h2>` ids and "01 — " numbering, outline). In
   `supabase/codecs.ts`, the codecs are the anti-corruption layer (snake_case rows ↔ domain), and
   generated DB types never leave this package. `src/contract.ts` is the shared store contract:
   the memory and Supabase stores both run it. Keep them in step.
@@ -75,8 +76,8 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
 - In `supabase/migrations`, the tables in `public` are the write model (RLS: public read, writes
   only for `public.admins`). The `security_invoker` views in `api` are the read model and the
   only contract the web builds from. Translations are `jsonb` checked by `is_localized()`. Post
-  bodies are checked by `pg_jsonschema` against `post_body_schema()`, and `reorder()` rewrites
-  positions atomically.
+  bodies are localized HTML too; `html_has_text()` backs the published-post rule. `reorder()`
+  rewrites positions atomically.
 
 The band numbers come from the read model: `toPortfolioView` numbers only the bands that render,
 so an optional section (today only Blog) never leaves a gap like 01, 03, 04. Hardcoding the digits
@@ -100,8 +101,12 @@ The design is the **Modernist** system from a Claude Design canvas: `--color-bg`
 - `content/portfolio.json` is the whole aggregate: `site` sections (including `ui`, the interface
   strings), `experience`, `posts`, `skills` and `projects`. It seeds the database, the unit tests
   and Playwright read it, and it is the fallback content source.
-- Adding a blog block kind means editing `BlockSchema` (domain), `post_body_schema()` (in a new
-  migration), `BlogReader.svelte` and `BlockEditor.svelte`/`blankBlock`. Adding a site section or
+- Post bodies are HTML per language (`{ es, en }`), edited with Tiptap in
+  `apps/backoffice/src/lib/components/RichTextEditor.svelte`, which has an HTML source mode.
+  They are sanitised at build time and injected by `BlogReader.svelte` with `{@html}`. The view
+  model (`PostView`) carries only the rendered article, never the raw `body`, so unsanitised
+  markup never reaches the page data. Article typography is `.article` in `app.css`; a new
+  allowed tag means editing the renderer's allow-list and that stylesheet. Adding a site section or
   UI string means editing `site.ts` (domain), the `site_section` enum (migration) if it is a new
   section, the descriptors in `forms.ts`, and the snapshot.
 - `apps/web/src/lib/components/` has one component per section plus `SectionHeading`, `Tag` and

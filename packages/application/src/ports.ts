@@ -62,6 +62,13 @@ export type ContentCommands = {
 	) => Promise<Result<void, StoreError>>;
 };
 
+/**
+ * Sanitises an article's HTML and indexes its headings. Declared in the
+ * domain, next to the read model that takes it; re-exported here with the
+ * other ports.
+ */
+export type { ArticleRenderer } from '@jzb/domain';
+
 /** Starts a rebuild and redeploy of the static site. */
 export type PublishTrigger = () => Promise<Result<void, PublishError>>;
 

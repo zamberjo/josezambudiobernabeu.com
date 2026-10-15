@@ -1,5 +1,6 @@
 import { loadPortfolioView, type PortfolioReader, type ReadError } from '@jzb/application';
 import { jsonPortfolioReader } from '@jzb/adapters/json';
+import { sanitizingArticleRenderer } from '@jzb/adapters/html';
 import { createContentClient, supabasePortfolioReader } from '@jzb/adapters/supabase';
 import { describeValidation, unwrap } from '@jzb/domain';
 
@@ -39,5 +40,5 @@ const describe = (error: ReadError): string =>
 export async function loadView() {
 	const reader = readers[source];
 	if (!reader) throw new Error(`Unknown CONTENT_SOURCE "${source}"`);
-	return unwrap(await loadPortfolioView(reader())(), describe);
+	return unwrap(await loadPortfolioView(reader(), sanitizingArticleRenderer)(), describe);
 }

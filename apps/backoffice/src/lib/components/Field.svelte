@@ -3,7 +3,8 @@
 	   `value` is whatever the descriptor's key holds; each branch below knows
 	   its kind's shape, and the domain schema re-validates it on submit. */
 	import { exhaustive, blankLocalized, type Field } from '$lib/forms';
-	import BlockEditor from './BlockEditor.svelte';
+	import { LOCALES, type Lang } from '@jzb/domain';
+	import RichTextEditor from './RichTextEditor.svelte';
 	import ListControls from './ListControls.svelte';
 	import LocalizedInput from './LocalizedInput.svelte';
 	import { moved, without } from './list';
@@ -17,6 +18,9 @@
 
 	let { field, value = $bindable(), errors = [] }: Props = $props();
 	const id = $derived(`field-${field.key}`);
+
+	/** Rich text shows one language at a time: a long article side by side is unreadable. */
+	let tab = $state<Lang>('es');
 
 	const lines = {
 		get: () => (value as string[]).join('\n'),
@@ -116,8 +120,24 @@
 				+ Añadir enlace
 			</button>
 		</div>
-	{:else if field.kind === 'blocks'}
-		<BlockEditor bind:blocks={value} />
+	{:else if field.kind === 'richText'}
+		<div class="tabs" role="tablist" aria-label="Idioma de {field.label}">
+			{#each LOCALES as lang (lang)}
+				<button
+					type="button"
+					role="tab"
+					aria-selected={tab === lang}
+					class:on={tab === lang}
+					onclick={() => (tab = lang)}>{lang.toUpperCase()}</button
+				>
+			{/each}
+		</div>
+		<!-- Both editors stay mounted, so switching tabs never loses undo history. -->
+		{#each LOCALES as lang (lang)}
+			<div hidden={tab !== lang} role="tabpanel">
+				<RichTextEditor bind:value={value[lang]} label="{field.label} ({lang})" />
+			</div>
+		{/each}
 	{:else}
 		{exhaustive(field)}
 	{/if}

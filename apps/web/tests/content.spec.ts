@@ -6,8 +6,13 @@ import content from '../../../content/portfolio.json' with { type: 'json' };
  * than the markup carrying a hardcoded copy of the same content.
  */
 
-const posts = content.posts as { status: string; date: string | null; body: unknown[] }[];
-const readable = posts.filter((post) => post.body.length > 0);
+const posts = content.posts as {
+	status: string;
+	date: string | null;
+	body: { es: string; en: string };
+}[];
+// Crude but enough for fixtures: an article with any text between its tags.
+const readable = posts.filter((post) => post.body.en.replace(/<[^>]*>/g, '').trim() !== '');
 
 test('side projects link out to their repositories', async ({ page }) => {
 	await page.goto('/');

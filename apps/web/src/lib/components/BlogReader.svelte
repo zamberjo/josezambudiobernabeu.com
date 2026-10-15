@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { t } from '../i18n.svelte';
+	import { lang, t } from '../i18n.svelte';
 	import { parallax } from '../motion.svelte';
-	import { numberBlocks, outline, type Post, type Ui } from '@jzb/domain';
+	import type { PostView, Ui } from '@jzb/domain';
 	import ImageSlot from './ImageSlot.svelte';
 	import Tag from './Tag.svelte';
 
@@ -9,14 +9,16 @@
 	// behind come from the platform rather than from scroll-locking by hand.
 	let dialog: HTMLDialogElement;
 	let scroller: HTMLDivElement;
-	let post = $state<Post | null>(null);
+	let post = $state<PostView | null>(null);
 
 	let { site, ui }: { site: string; ui: Ui } = $props();
 
-	const index = $derived(post ? outline(post.body) : []);
-	const blocks = $derived(post ? numberBlocks(post.body) : []);
+	// Rendered and sanitised at build time, one document per language: the
+	// toggle swaps which one is shown, and the side index comes with it.
+	const article = $derived(post ? post.article[lang.current] : null);
+	const index = $derived(article?.outline ?? []);
 
-	export function open(next: Post) {
+	export function open(next: PostView) {
 		post = next;
 		dialog.showModal();
 		scroller.scrollTop = 0;
@@ -96,9 +98,9 @@
 							<span class="font-bold text-accent-700">
 								{t(ui.inThisPost)}
 							</span>
-							{#each index as entry (entry.number)}
-								<a href="#post-{entry.number}" class="text-neutral-700 hover:text-accent">
-									{entry.number} — {t(entry.text)}
+							{#each index as entry (entry.id)}
+								<a href="#{entry.id}" class="text-neutral-700 hover:text-accent">
+									{entry.number} — {entry.text}
 								</a>
 							{/each}
 						</nav>
@@ -107,53 +109,13 @@
 					<div
 						class="flex max-w-[68ch] flex-col gap-6 text-[clamp(16px,1.5vw,19px)] leading-[1.65] text-neutral-900"
 					>
-						{#each blocks as { block, heading }, i (i)}
-							{#if block.type === 'lede'}
-								<p class="m-0 text-[clamp(19px,2vw,25px)] leading-[1.45] font-medium">
-									{t(block.text)}
-								</p>
-							{:else if block.type === 'heading'}
-								<h2
-									id="post-{heading}"
-									class="mt-4 mb-0 scroll-mt-28 text-[clamp(22px,2.6vw,34px)] font-black tracking-[-0.02em]"
-								>
-									{heading} — {t(block.text)}
-								</h2>
-							{:else if block.type === 'paragraph'}
-								<p class="m-0">{t(block.text)}</p>
-							{:else if block.type === 'quote'}
-								<blockquote
-									class="m-0 border-l-4 border-accent pl-6 text-[clamp(22px,2.8vw,36px)] leading-[1.15] font-black tracking-[-0.02em]"
-								>
-									{t(block.text)}
-								</blockquote>
-							{:else if block.type === 'list'}
-								<ul class="m-0 flex list-disc flex-col gap-2 pl-6">
-									{#each block.items as item, j (j)}
-										<li>{t(item)}</li>
-									{/each}
-								</ul>
-							{:else if block.type === 'code'}
-								<pre
-									class="m-0 overflow-x-auto bg-neutral-900 p-[clamp(16px,2.4vw,28px)] font-mono text-sm leading-[1.7] text-neutral-200">{block.code}{#if block.comment}
-<span class="text-accent-400">{t(block.comment)}</span>{/if}</pre>
-							{:else if block.type === 'image'}
-								<figure class="m-0">
-									<div class="grayscale-print border-2 border-ink">
-										<ImageSlot
-											src={block.src}
-											alt={block.alt ? t(block.alt) : ''}
-											placeholder={t(ui.postImage)}
-										/>
-									</div>
-									{#if block.caption}
-										<figcaption class="mt-2 text-xs tracking-[0.14em] uppercase text-neutral-600">
-											{t(block.caption)}
-										</figcaption>
-									{/if}
-								</figure>
-							{/if}
-						{/each}
+						<!-- Safe to inject: sanitising is the build-time ArticleRenderer's job
+						     (packages/adapters/src/html), and this string never came from a
+						     visitor. The typography lives in app.css under .article. -->
+						<div class="article">
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							{@html article?.html ?? ''}
+						</div>
 
 						<div class="mt-4 flex flex-wrap gap-3 border-t-2 border-ink pt-6">
 							{#each post.tags as tag (tag)}

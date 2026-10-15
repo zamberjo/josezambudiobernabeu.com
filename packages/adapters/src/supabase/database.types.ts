@@ -342,10 +342,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      html_has_text: { Args: { html: string }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
       is_localized: { Args: { value: Json }; Returns: boolean }
       is_localized_array: { Args: { value: Json }; Returns: boolean }
-      post_body_schema: { Args: never; Returns: Json }
       reorder: {
         Args: { collection: string; ids: string[] }
         Returns: undefined

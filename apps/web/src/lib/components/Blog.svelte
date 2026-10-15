@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
-	import { isReadable, type BlogView, type Localized, type Post, type Ui } from '@jzb/domain';
+	import { type BlogView, type Localized, type PostView, type Ui } from '@jzb/domain';
 	import BlogReader from './BlogReader.svelte';
 	import ImageSlot from './ImageSlot.svelte';
 	import SectionHeading from './SectionHeading.svelte';
@@ -25,7 +25,7 @@
 	const featured = $derived(blog.featured);
 </script>
 
-{#snippet card(post: Post, position: number)}
+{#snippet card(post: PostView, position: number)}
 	<div class="grayscale-print h-[clamp(150px,20vw,210px)] w-full border-b-2 border-ink">
 		<ImageSlot
 			src={post.cover ?? undefined}
@@ -109,7 +109,7 @@
 	<div class="mt-0.5 grid grid-cols-[repeat(auto-fit,minmax(min(240px,100%),1fr))] gap-0.5">
 		{#each blog.others as post, i (post.slug)}
 			<div class="reveal-up">
-				{#if isReadable(post)}
+				{#if post.readable}
 					<button
 						type="button"
 						use:magnetic={14}

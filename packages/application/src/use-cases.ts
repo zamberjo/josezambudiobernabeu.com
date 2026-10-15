@@ -7,6 +7,7 @@ import {
 	toPortfolioView,
 	type CollectionName,
 	type Entities,
+	type ArticleRenderer,
 	type PortfolioView,
 	type Result,
 	type Site,
@@ -34,8 +35,9 @@ import type {
 // --- Web ------------------------------------------------------------------------
 
 export const loadPortfolioView =
-	(read: PortfolioReader) => async (): Promise<Result<PortfolioView, ReadError>> =>
-		map(await read(), toPortfolioView);
+	(read: PortfolioReader, render: ArticleRenderer) =>
+	async (): Promise<Result<PortfolioView, ReadError>> =>
+		map(await read(), (portfolio) => toPortfolioView(portfolio, render));
 
 // --- Backoffice: commands ---------------------------------------------------------
 

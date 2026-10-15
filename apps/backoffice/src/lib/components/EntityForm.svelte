@@ -9,8 +9,6 @@
 		initial: V;
 		/** Issues from the last failed submit, keyed by dotted path. */
 		issues?: ValidationIssue[];
-		/** Maps the working copy to what is posted (e.g. dropping blank optionals). */
-		serialize?: (value: V) => unknown;
 		action?: string;
 		submitLabel?: string;
 	}
@@ -19,7 +17,6 @@
 		fields,
 		initial,
 		issues = [],
-		serialize = (value) => value,
 		action = '?/save',
 		submitLabel = 'Guardar'
 	}: Props = $props();
@@ -31,7 +28,7 @@
 
 	// The whole value travels as one JSON field and the server validates it
 	// against the domain schema: the form never re-implements the rules.
-	const payload = $derived(JSON.stringify(serialize($state.snapshot(value) as V)));
+	const payload = $derived(JSON.stringify($state.snapshot(value)));
 
 	const errorsFor = (key: string) =>
 		issues
