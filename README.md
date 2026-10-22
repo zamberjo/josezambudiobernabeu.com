@@ -94,6 +94,35 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
 The article typography lives in `apps/web/src/app.css` under `.article`. To allow a new tag in
 articles, add it to the renderer's allow-list and give it a style there.
 
+## Images
+
+Every image the site shows should be an optimised set: WebP at 640, 960, 1280 and 1920 px wide,
+named `<stem>-<width>w.webp`. The stored URL is always the widest, and the site derives the
+`srcset` from it (`srcsetFor` in `packages/domain`), so the browser downloads the size the screen
+needs.
+
+- **Through the backoffice** (Media): uploads are optimised automatically with `sharp` before
+  they reach Supabase Storage. Copy the URL it shows.
+- **Committed to the repo** (`apps/web/static/assets/blog/`): drop the PNG/JPEG in and run
+  `pnpm images:optimize`, which writes the variants and removes the original. CI runs
+  `pnpm images:check` and fails if an unoptimised PNG/JPEG over 200 KB is left behind.
+
+The cover on a post's own page is its Largest Contentful Paint, so it loads eagerly with
+`fetchpriority="high"`; every other image is lazy.
+
+## Performance and SEO checks
+
+```bash
+pnpm lighthouse          # production build, every page, 3 runs each; reports in .lighthouseci/
+```
+
+Lighthouse CI audits the **production build**. A Lighthouse run against `pnpm dev` or
+`pnpm preview:content` is not representative: the dev server ships unbundled modules and renders on
+every request, which is where "Duplicated JavaScript", a deep network dependency tree and slow
+document latency come from. Budgets live in `lighthouserc.cjs` (every category ≥ 90, CLS ≤ 0.1),
+and the `lighthouse` job enforces them on each pull request. A draft post's page reports "Page is
+blocked from indexing" on purpose (`noindex`); it goes away once the post is published.
+
 ## Deploy
 
 Pushing to `master`, running the workflow by hand, or pressing **Publish** in the backoffice

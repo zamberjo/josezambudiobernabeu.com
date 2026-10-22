@@ -8,7 +8,7 @@
 </svelte:head>
 
 <main class="grid min-h-screen content-center gap-6 bg-bg px-gutter py-band">
-	<p class="m-0 text-sm font-black text-accent">{page.status}</p>
+	<p class="m-0 text-sm font-black text-accent-700">{page.status}</p>
 	<h1 class="m-0 text-[clamp(40px,8vw,120px)] leading-[0.95] font-black tracking-[-0.04em]">
 		{page.status === 404 ? 'Aquí no hay nada' : 'Algo ha fallado'}
 	</h1>
