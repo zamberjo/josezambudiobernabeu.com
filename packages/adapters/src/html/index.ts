@@ -1,4 +1,4 @@
-import type { ArticleRenderer, OutlineEntry } from '@jzb/domain';
+import { srcsetFor, type ArticleRenderer, type OutlineEntry } from '@jzb/domain';
 import { getElementsByTagName, textContent } from 'domutils';
 import { parseDocument } from 'htmlparser2';
 import sanitizeHtml from 'sanitize-html';
@@ -49,7 +49,7 @@ const OPTIONS: sanitizeHtml.IOptions = {
 	],
 	allowedAttributes: {
 		a: ['href', 'title', 'target', 'rel'],
-		img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+		img: ['src', 'srcset', 'sizes', 'alt', 'title', 'width', 'height', 'loading', 'decoding'],
 		code: ['class'],
 		th: ['colspan', 'rowspan'],
 		td: ['colspan', 'rowspan'],
@@ -76,7 +76,20 @@ export const sanitizingArticleRenderer: ArticleRenderer = (source) => {
 				tagName: 'a',
 				attribs: attribs.target === '_blank' ? { ...attribs, rel: 'noopener noreferrer' } : attribs
 			}),
-			img: (_tagName, attribs) => ({ tagName: 'img', attribs: { loading: 'lazy', ...attribs } })
+			// Optimised uploads get their responsive siblings; the article column is
+			// at most ~700px wide, so phones take 640w and desktops 1280w.
+			img: (_tagName, { srcset: _ignored, ...attribs }) => {
+				const srcset = attribs.src ? srcsetFor(attribs.src) : undefined;
+				return {
+					tagName: 'img',
+					attribs: {
+						loading: 'lazy',
+						decoding: 'async',
+						...attribs,
+						...(srcset && { srcset, sizes: '(min-width: 1024px) 700px, 100vw' })
+					}
+				};
+			}
 		}
 	});
 

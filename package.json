@@ -22,10 +22,14 @@
 		"content:export": "pnpm --filter @jzb/adapters content:export",
 		"backoffice": "pnpm --filter backoffice dev",
 		"preview:content": "sh scripts/preview-content.sh",
-		"dev:local": "sh scripts/with-local-supabase.sh env CONTENT_SOURCE=supabase pnpm --filter web dev"
+		"dev:local": "sh scripts/with-local-supabase.sh env CONTENT_SOURCE=supabase pnpm --filter web dev",
+		"images:optimize": "pnpm --filter @jzb/adapters images:optimize",
+		"images:check": "pnpm --filter @jzb/adapters images:check",
+		"lighthouse": "pnpm build && lhci autorun"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.0",
+		"@lhci/cli": "0.15.1",
 		"@types/node": "^24.13.6",
 		"eslint": "^10.10.0",
 		"eslint-config-prettier": "^10.1.8",

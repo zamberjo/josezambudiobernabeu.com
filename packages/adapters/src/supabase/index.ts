@@ -4,3 +4,4 @@ export type { Database } from './database.types.ts';
 export { supabasePortfolioReader } from './reader.ts';
 export { seedSql } from './seed-sql.ts';
 export { supabaseContentStore } from './store.ts';
+export { supabaseMediaStore } from './media.ts';

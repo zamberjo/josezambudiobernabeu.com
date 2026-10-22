@@ -22,7 +22,7 @@
 		class="grid grid-cols-[repeat(auto-fit,minmax(min(280px,100%),1fr))] items-start gap-[clamp(24px,4vw,56px)]"
 	>
 		<div class="reveal-left">
-			<!-- me.jpg is a 400×400 original, so the panel is capped at the height it
+			<!-- me.webp is a 400×400 original, so the panel is capped at the height it
 			     already clamps to. Past ~1240px the column keeps widening but the
 			     panel stays square: no upscaling blur, and a square box over a square
 			     source means object-cover crops nothing off the portrait. -->
@@ -32,7 +32,7 @@
 				class="magnet-parallax grayscale-print relative h-[clamp(320px,42vw,520px)] max-w-[520px] overflow-hidden border-2 border-ink"
 			>
 				<ImageSlot
-					src="/assets/img/me.jpg"
+					src="/assets/img/me.webp"
 					alt="Jose Zambudio Bernabeu"
 					placeholder={t(ui.portraitPlaceholder)}
 				/>

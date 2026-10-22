@@ -1,5 +1,8 @@
 import {
+	IMAGE_FORMAT,
 	entitySchemas,
+	srcsetFor,
+	variantName,
 	map,
 	ok,
 	parseWith,
@@ -15,6 +18,9 @@ import {
 } from '@jzb/domain';
 import { move, type Direction } from './ordering.ts';
 import type {
+	ImageOptimizer,
+	InvalidImage,
+	MediaStore,
 	ContentCommands,
 	ContentQueries,
 	PortfolioReader,
@@ -97,4 +103,33 @@ export const exportSnapshot =
 	async (): Promise<Result<void, ReadError | Unavailable>> => {
 		const portfolio = await read();
 		return portfolio.ok ? sink(portfolio.value) : portfolio;
+	};
+
+// --- Media ------------------------------------------------------------------------
+
+/**
+ * Optimises an image and stores every variant, so nothing reaches the site as
+ * a multi-megabyte original. Returns the widest variant's URL, which is what
+ * goes in a cover or an <img>, and the srcset derived from it.
+ */
+export const uploadImage =
+	(optimize: ImageOptimizer, media: MediaStore) =>
+	async (
+		stem: string,
+		source: Uint8Array
+	): Promise<Result<{ src: string; srcset: string }, InvalidImage | Unavailable>> => {
+		const encoded = await optimize(source);
+		if (!encoded.ok) return encoded;
+
+		let widest = '';
+		for (const variant of encoded.value) {
+			const stored = await media.put(
+				variantName(stem, variant.width),
+				variant.data,
+				`image/${IMAGE_FORMAT}`
+			);
+			if (!stored.ok) return stored;
+			widest = stored.value;
+		}
+		return ok({ src: widest, srcset: srcsetFor(widest) ?? '' });
 	};

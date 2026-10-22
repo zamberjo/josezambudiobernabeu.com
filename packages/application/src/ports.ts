@@ -69,6 +69,24 @@ export type ContentCommands = {
  */
 export type { ArticleRenderer } from '@jzb/domain';
 
+/** One encoded variant of an image, at a given width. */
+export type EncodedImage = { readonly width: number; readonly data: Uint8Array };
+
+export type InvalidImage = { readonly kind: 'invalid-image'; readonly message: string };
+
+/** Re-encodes any image as the responsive WebP set `IMAGE_WIDTHS` describes. */
+export type ImageOptimizer = (source: Uint8Array) => Promise<Result<EncodedImage[], InvalidImage>>;
+
+/** Where images are kept and served from: Supabase Storage, or the repo's static/. */
+export type MediaStore = {
+	/** Stores `data` under `path` and returns the URL it is served at. */
+	put: (
+		path: string,
+		data: Uint8Array,
+		contentType: string
+	) => Promise<Result<string, Unavailable>>;
+};
+
 /** Starts a rebuild and redeploy of the static site. */
 export type PublishTrigger = () => Promise<Result<void, PublishError>>;
 
