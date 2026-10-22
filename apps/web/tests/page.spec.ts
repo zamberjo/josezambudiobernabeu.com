@@ -40,7 +40,7 @@ test('the language toggle switches the copy between Spanish and English', async 
 	await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
 
-test('the blog reader opens and closes with Escape', async ({ page }) => {
+test('the blog reader opens at the post URL and closes with Escape or Back', async ({ page }) => {
 	test.skip(content.posts.length === 0, 'no posts written yet, so there is no reader to open');
 
 	await page.goto('/');
@@ -49,9 +49,27 @@ test('the blog reader opens and closes with Escape', async ({ page }) => {
 	const reader = page.getByRole('dialog');
 	await expect(reader).toBeHidden();
 
-	await page.getByRole('button', { name: 'Read', exact: true }).click();
+	// Opening moves the address bar to the post's own page, without leaving home.
+	await page.getByRole('link', { name: 'Read', exact: true }).click();
 	await expect(reader).toBeVisible();
+	await expect(page).toHaveURL(/\/blog\/[a-z0-9-]+$/);
 
 	await page.keyboard.press('Escape');
 	await expect(reader).toBeHidden();
+	await expect(page).toHaveURL(/\/$/);
+
+	// The browser's Back button closes it too.
+	await page.getByRole('link', { name: 'Read', exact: true }).click();
+	await expect(reader).toBeVisible();
+	await page.goBack();
+	await expect(reader).toBeHidden();
+});
+
+test('the home page carries its canonical URL and social card', async ({ page }) => {
+	await page.goto('/');
+	await expect(page.locator('link[rel=canonical]')).toHaveAttribute(
+		'href',
+		'https://josezambudiobernabeu.com/'
+	);
+	await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
 });

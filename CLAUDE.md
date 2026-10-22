@@ -61,12 +61,21 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `supabase/codecs.ts`, the codecs are the anti-corruption layer (snake_case rows ↔ domain), and
   generated DB types never leave this package. `src/contract.ts` is the shared store contract:
   the memory and Supabase stores both run it. Keep them in step.
-- `apps/web` is a single prerendered page (`adapter-static`, `prerender = true`). Its composition
-  root, `src/lib/server/portfolio.ts`, runs in `+page.server.ts` **at prerender time only**. It
-  picks a reader by `CONTENT_SOURCE` (`json` by default, or `supabase`), and invalid content
-  fails the build with field paths. The browser never gets an adapter or a key. `+page.svelte`
-  hands each section component its slice of the view by props. Components import types and pure
-  helpers from `@jzb/domain`, never data modules.
+- `apps/web` is fully prerendered (`adapter-static`, `prerender = true`): the home page, one page
+  per readable post at `/blog/[slug]` (from `entries()`, using `postPages`), `/sitemap.xml` and
+  a `404.html` fallback. Its composition root, `src/lib/server/portfolio.ts`, runs in the server
+  loads **at prerender time only**. It picks a reader by `CONTENT_SOURCE` (`json` by default, or
+  `supabase`), and invalid content fails the build with field paths. While building, every page
+  shares one read, so a build is one consistent snapshot; in dev each request reads again. The
+  browser never gets an adapter or a key. Pages hand each section component its slice of the view
+  by props, and components import types and pure helpers from `@jzb/domain`, never data modules.
+- On the home page, a post card is a real link to `/blog/<slug>`. A plain click opens the reader
+  `<dialog>` instead and moves the URL there with SvelteKit shallow routing (`pushState`,
+  `page.state.reader`); Esc, the back button and browser Back all close it and restore `/`.
+  `Article.svelte` is the one article view, shared by the dialog and the post page. `Seo.svelte`
+  writes each page's title, description, canonical, Open Graph/Twitter tags and JSON-LD (`Person`
+  on home, `BlogPosting` on posts). Drafts with a body get a page but `noindex`, and stay out of
+  the sitemap.
 - `apps/backoffice` is SvelteKit + adapter-node, local only. `hooks.server.ts` creates a
   cookie-backed Supabase client per request, so every write carries the editor's session and RLS
   decides. It never uses the secret key. `lib/server/services.ts` is its composition root. Forms
@@ -148,5 +157,7 @@ inerting the page come from the platform; do not reintroduce manual scroll locki
   the scripts in `packages/adapters/scripts` directly.
 - Keep the domain pure and the use cases curried; prefer `Result` over exceptions, and immutable
   updates over mutation. A throw belongs only in a composition root (`unwrap`).
-- `firebase.json` points at `apps/web/build/` and rewrites every path to `/index.html`, which is right for
-  this single-page site — an unknown URL lands on the page rather than a 404.
+- `firebase.json` points at `apps/web/build/` and has **no rewrites**. Every route is a built file
+  (`cleanUrls` maps `/blog/x` to `blog/x.html`), so an unknown path gets Firebase's `404.html`
+  with a real 404 status, not the home page. `svelte.config.js` tolerates `/blog/[slug]` having
+  no pages while there are no posts (`handleUnseenRoutes`), and nothing else.

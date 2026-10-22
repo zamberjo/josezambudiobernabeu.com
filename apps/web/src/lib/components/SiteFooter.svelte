@@ -8,9 +8,11 @@
 		projects: Project[];
 		/** Mirrors +page.svelte: no posts, no Blog band, so no link to it. */
 		hasPosts: boolean;
+		/** `/` on pages other than home, so the `#blog` link leads back to it. */
+		base?: string;
 	}
 
-	let { footer, social, projects, hasPosts }: Props = $props();
+	let { footer, social, projects, hasPosts, base = '' }: Props = $props();
 </script>
 
 <footer class="bg-neutral-900 px-gutter pt-[clamp(48px,7vw,96px)] pb-8 text-neutral-200">
@@ -61,7 +63,7 @@
 				<h2 class="mb-4 text-xs font-bold tracking-[0.18em] uppercase text-accent-400">Blog</h2>
 				<ul class="flex list-none flex-col gap-2 p-0 text-[15px]">
 					<li>
-						<a href="#blog" class="text-neutral-200 hover:text-accent-400">{t(footer.blogLink)}</a>
+						<a href="{base}#blog" class="text-neutral-200 hover:text-accent-400">{t(footer.blogLink)}</a>
 					</li>
 				</ul>
 			</nav>

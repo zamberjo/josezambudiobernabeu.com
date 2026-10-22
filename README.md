@@ -84,6 +84,10 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   allow-list and numbers every `<h2>`, which also builds the reader's side index. The reading time is derived per language from the word count
   (`readingMinutes`, 220 words a minute), so it is never typed and never stale. The opening
   paragraph reads as the lede, and the newest published post becomes the featured card.
+- **Every readable post has its own URL**, `/blog/<slug>`, prerendered with its canonical link,
+  Open Graph card and `BlogPosting` structured data, and listed in `/sitemap.xml` once published.
+  Drafts with a body also get a page, for sharing a preview, but with `noindex`. On the home page
+  a card opens the reader over the page at that same URL.
 - **An empty blog** hides the whole Blog section, along with its nav entry and footer column, and
   the other sections renumber themselves.
 

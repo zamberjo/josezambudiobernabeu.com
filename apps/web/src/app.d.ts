@@ -5,7 +5,10 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			/** Slug of the post open in the reader dialog (shallow routing). */
+			reader?: string;
+		}
 		// interface Platform {}
 	}
 }

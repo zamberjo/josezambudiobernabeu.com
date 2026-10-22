@@ -23,6 +23,18 @@
 
 	// Captured locally so the click handler keeps the narrowed, defined value.
 	const featured = $derived(blog.featured);
+
+	/**
+	 * Every readable card is a real link to /blog/<slug>: crawlers follow it,
+	 * and a new tab or a copied link gets the post's own page. A plain click
+	 * opens the reader over the page instead, at that same URL.
+	 */
+	function openInReader(event: MouseEvent, post: PostView) {
+		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+			return;
+		event.preventDefault();
+		reader.open(post);
+	}
 </script>
 
 {#snippet card(post: PostView, position: number)}
@@ -95,13 +107,13 @@
 						</span>
 					{/if}
 				</div>
-				<button
-					type="button"
-					onclick={() => featured && reader.open(featured)}
-					class="mt-auto cursor-pointer appearance-none self-start border-2 border-accent bg-accent px-[18px] py-3 text-left text-[13px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:border-accent-600 hover:bg-accent-600"
+				<a
+					href="/blog/{featured.slug}"
+					onclick={(event) => featured && openInReader(event, featured)}
+					class="mt-auto self-start border-2 border-accent bg-accent px-[18px] py-3 text-[13px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:border-accent-600 hover:bg-accent-600 hover:text-white"
 				>
 					{t(ui.read)}
-				</button>
+				</a>
 			</div>
 		</article>
 	{/if}
@@ -110,15 +122,15 @@
 		{#each blog.others as post, i (post.slug)}
 			<div class="reveal-up">
 				{#if post.readable}
-					<button
-						type="button"
+					<a
+						href="/blog/{post.slug}"
 						use:magnetic={14}
-						onclick={() => reader.open(post)}
+						onclick={(event) => openInReader(event, post)}
 						aria-label={t(post.title)}
-						class="magnet-skew flex h-full w-full cursor-pointer flex-col bg-bg text-left text-ink shadow-[0_0_0_1px_var(--color-divider)] hover:bg-neutral-200"
+						class="magnet-skew flex h-full w-full flex-col bg-bg text-left text-ink shadow-[0_0_0_1px_var(--color-divider)] hover:bg-neutral-200 hover:text-ink"
 					>
 						{@render card(post, i + 2)}
-					</button>
+					</a>
 				{:else}
 					<!-- A draft with nothing written yet stays inert rather than opening an
 					     empty reader, so the card never lies about being readable. -->
