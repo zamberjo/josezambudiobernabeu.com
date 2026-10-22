@@ -28,6 +28,9 @@ pnpm --filter backoffice test   # backoffice e2e on :5184, local DB only; db:res
 pnpm content:seed           # content/portfolio.json → supabase/seeds/10_content.sql
 pnpm content:export         # database → content/portfolio.json
 pnpm db:types               # regenerate packages/adapters/src/supabase/database.types.ts
+pnpm images:optimize        # PNG/JPEG in apps/web/static/assets/blog → responsive WebP set
+pnpm images:check           # CI: fails on unoptimised PNG/JPEG over 200 KB
+pnpm lighthouse             # Lighthouse CI on the production build (budgets: lighthouserc.cjs)
 ```
 
 Deploy by hand: `CONTENT_SOURCE=supabase SUPABASE_URL=… SUPABASE_PUBLISHABLE_KEY=… pnpm build`, then
@@ -120,6 +123,15 @@ The design is the **Modernist** system from a Claude Design canvas: `--color-bg`
   section, the descriptors in `forms.ts`, and the snapshot.
 - `apps/web/src/lib/components/` has one component per section plus `SectionHeading`, `Tag` and
   `ImageSlot`.
+- Images follow a naming convention instead of a manifest: an optimised image is
+  `<stem>-{640,960,1280,1920}w.webp`, and the stored URL is the widest (`IMAGE_WIDTHS`,
+  `srcsetFor` in `packages/domain/src/images.ts`). `ImageSlot` and the article renderer derive
+  `srcset` from it. Only the LCP image may pass `priority`. The `ImageOptimizer` port (sharp) and
+  the `MediaStore` port (Supabase Storage or the filesystem) meet in the `uploadImage` use case,
+  shared by the backoffice's Media page and `pnpm images:optimize`.
+- Small text uses `accent-700`/`neutral-700`, and white text sits on `accent-600`: the base
+  `accent` red and `neutral-600` are below AA contrast at body sizes. The base red stays for large
+  display type and rules.
 
 ### Motion
 

@@ -31,3 +31,35 @@ jobs:
       # itself here: it needs a running stack (pnpm test:db locally).
       - name: Unit tests
         run: pnpm run test:unit
+
+      # PNG/JPEG over budget under apps/web/static/assets: run pnpm images:optimize.
+      - name: Images are optimised
+        run: pnpm run images:check
+
+  lighthouse:
+    name: Lighthouse (production build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Budgets live in lighthouserc.cjs; the runner's preinstalled Chrome is used.
+      - name: Build and audit
+        run: pnpm run lighthouse
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
