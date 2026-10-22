@@ -105,14 +105,14 @@ sobre `src/lib/data` no devuelve nada.
 - [ ] **5.1** OG + Twitter cards con imagen (`static/assets/og.png`), `canonical` y `theme-color`
       centralizados. Eliminar la duplicación de `title`/`description` entre `app.html` y
       `+page.svelte`.
-- [ ] **5.2** JSON-LD `Person` en la home.
-- [ ] **5.3** `sitemap.xml` y `robots.txt` generados en build, con el sitemap referenciado.
-- [ ] **5.4** Rutas `/blog/[slug]` prerenderizadas, con `entries()` desde `blog.ts`. El `<dialog>`
+- [x] **5.2** JSON-LD `Person` en la home.
+- [x] **5.3** `sitemap.xml` y `robots.txt` generados en build, con el sitemap referenciado.
+- [x] **5.4** Rutas `/blog/[slug]` prerenderizadas, con `entries()` desde `blog.ts`. El `<dialog>`
       se mantiene como mejora progresiva sobre navegación real, para que un artículo se pueda
       enlazar, compartir e indexar. JSON-LD `BlogPosting` por artículo.
 - [ ] **5.5** i18n indexable: `/en` prerenderizada + `hreflang`, o como mínimo resolver el idioma
       antes de hidratar (script inline en `app.html`) para eliminar el flash de español.
-- [ ] **5.6** Revisar el rewrite `**` de `firebase.json`: con rutas reales, un slug inexistente debe
+- [x] **5.6** Revisar el rewrite `**` de `firebase.json`: con rutas reales, un slug inexistente debe
       dar 404, no 200 con la home.
 
 _Aceptación_: compartir la URL en LinkedIn muestra tarjeta con imagen; un artículo tiene URL propia

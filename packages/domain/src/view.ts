@@ -122,3 +122,18 @@ export const toPortfolioView = (portfolio: Portfolio, render: ArticleRenderer): 
 		projects: orderProjects(portfolio.projects)
 	};
 };
+
+/**
+ * Every post with a page of its own at /blog/<slug>: the readable ones. A
+ * draft with a body gets one too (shared for review), but is kept out of
+ * search engines and the sitemap; see `isIndexable`.
+ */
+export const postPages = (view: PortfolioView): PostView[] =>
+	view.blog
+		? [view.blog.featured, ...view.blog.others].filter(
+				(post): post is PostView => post !== undefined && post.readable
+			)
+		: [];
+
+/** Only published posts are meant to be found. */
+export const isIndexable = (post: Pick<Post, 'status'>): boolean => post.status === 'published';

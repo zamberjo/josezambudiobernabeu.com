@@ -12,6 +12,7 @@
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
 	import SiteNav from '$lib/components/SiteNav.svelte';
 	import SkillsGrid from '$lib/components/SkillsGrid.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
 
@@ -27,11 +28,19 @@
 	const band = (id: keyof typeof view.bands) => view.bands[id] ?? '';
 </script>
 
-<svelte:head>
-	<title>Jose Zambudio Bernabeu</title>
-	<meta name="description" content={t(site.meta.description)} />
-	<meta name="theme-color" content="#ec3013" />
-</svelte:head>
+<Seo
+	title="Jose Zambudio Bernabeu"
+	description={t(site.meta.description)}
+	url={site.footer.siteUrl}
+	jsonLd={{
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: 'Jose Zambudio Bernabeu',
+		url: site.footer.siteUrl,
+		jobTitle: 'Odoo senior developer',
+		sameAs: site.social.links.map((link) => link.href)
+	}}
+/>
 
 <!-- The single motion root: it carries the scroll-velocity --skew and --squash
      that individual elements read in their own transforms. -->

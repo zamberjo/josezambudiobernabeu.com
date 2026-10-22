@@ -5,7 +5,13 @@
 
 	// Only links to bands that render: the read model already dropped the Blog
 	// entry when there are no posts, so the nav never points at a missing band.
-	let { links }: { links: NavLink[] } = $props();
+	interface Props {
+		links: NavLink[];
+		/** `/` on pages other than home, so `#section` links lead back to it. */
+		base?: string;
+	}
+
+	let { links, base = '' }: Props = $props();
 </script>
 
 <!-- Purely decorative: the accent rule that fills as the page scrolls. -->
@@ -17,7 +23,7 @@
 <nav
 	class="sticky top-0 z-50 flex items-center justify-between gap-6 border-b-2 border-ink bg-bg px-gutter py-4"
 >
-	<a href="#top" class="text-[22px] font-black tracking-[-0.02em] text-ink">Zambu</a>
+	<a href="{base}#top" class="text-[22px] font-black tracking-[-0.02em] text-ink">Zambu</a>
 
 	<div class="flex min-w-0 flex-1 items-center justify-end gap-[clamp(10px,1.6vw,24px)]">
 		<div
@@ -26,7 +32,7 @@
 			{#each links as link (link.href)}
 				<a
 					use:magnetic={8}
-					href={link.href}
+					href="{base}{link.href}"
 					class="magnet flex-none text-[13px] font-semibold tracking-[0.08em] uppercase {link.href ===
 					'#blog'
 						? 'text-accent-700'

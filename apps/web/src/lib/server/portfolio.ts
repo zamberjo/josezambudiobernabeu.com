@@ -1,3 +1,4 @@
+import { building } from '$app/environment';
 import { loadPortfolioView, type PortfolioReader, type ReadError } from '@jzb/application';
 import { jsonPortfolioReader } from '@jzb/adapters/json';
 import { sanitizingArticleRenderer } from '@jzb/adapters/html';
@@ -36,9 +37,22 @@ const describe = (error: ReadError): string =>
 		? `Content from "${source}" is invalid:\n${describeValidation(error)}`
 		: `Content from "${source}" is unavailable: ${error.message}`;
 
-/** Fails the build, loudly and with field paths, rather than publish broken content. */
-export async function loadView() {
+async function readView() {
 	const reader = readers[source];
 	if (!reader) throw new Error(`Unknown CONTENT_SOURCE "${source}"`);
 	return unwrap(await loadPortfolioView(reader(), sanitizingArticleRenderer)(), describe);
+}
+
+let built: ReturnType<typeof readView> | undefined;
+
+/**
+ * Fails the build, loudly and with field paths, rather than publish broken
+ * content. While building, every page (home, each /blog/<slug>, the sitemap)
+ * shares one read, so a build is one consistent snapshot and one round trip.
+ * In dev each request reads again, which is what makes `preview:content` live.
+ */
+export function loadView() {
+	if (!building) return readView();
+	built ??= readView();
+	return built;
 }

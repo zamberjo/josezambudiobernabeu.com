@@ -7,8 +7,10 @@ import content from '../../../content/portfolio.json' with { type: 'json' };
  */
 
 const posts = content.posts as {
+	slug: string;
 	status: string;
 	date: string | null;
+	title: { es: string; en: string };
 	body: { es: string; en: string };
 }[];
 // Crude but enough for fixtures: an article with any text between its tags.
@@ -57,7 +59,7 @@ test('the reader renders the post body and index from the content', async ({ pag
 
 	await page.goto('/');
 	await page.getByRole('button', { name: 'EN', exact: true }).click();
-	await page.getByRole('button', { name: 'Read', exact: true }).click();
+	await page.getByRole('link', { name: 'Read', exact: true }).click();
 
 	const reader = page.getByRole('dialog');
 	await expect(reader).toBeVisible();
@@ -74,4 +76,42 @@ test('skills come from the content, featured projects lead the grid', async ({ p
 	// Cotos - IA is not featured, so it drops behind josezambudiobernabeu.com.
 	const names = await page.locator('#projects a div:nth-child(2)').allTextContents();
 	expect(names.indexOf('josezambudiobernabeu.com')).toBeLessThan(names.indexOf('Cotos - IA'));
+});
+
+test('every readable post has its own prerendered page, found by search engines', async ({
+	page,
+	request
+}) => {
+	test.skip(readable.length === 0, 'no post with a body written yet');
+
+	for (const post of readable) {
+		// What a crawler gets: the prerendered HTML, with no JavaScript run. It is
+		// in Spanish, the site's default, whatever the browser prefers.
+		const response = await request.get(`/blog/${post.slug}`);
+		expect(response.status()).toBe(200);
+		const html = await response.text();
+		expect(html).toContain(`>${post.title.es}</h1>`);
+		expect(html).toContain(
+			`<link rel="canonical" href="https://josezambudiobernabeu.com/blog/${post.slug}"`
+		);
+		expect(html).toContain('<meta property="og:type" content="article"');
+		expect(html).toContain('"@type":"BlogPosting"');
+		// Drafts can be shared for review but are kept out of search results.
+		expect(html.includes('<meta name="robots" content="noindex"')).toBe(post.status === 'draft');
+	}
+
+	// And in the browser, the page is a working article with the language toggle.
+	const post = readable[0]!;
+	await page.goto(`/blog/${post.slug}`);
+	await page.getByRole('button', { name: 'ES', exact: true }).click();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(post.title.es);
+	await page.getByRole('button', { name: 'EN', exact: true }).click();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(post.title.en);
+});
+
+test('the sitemap lists the home page and every published post', async ({ request }) => {
+	const sitemap = await (await request.get('/sitemap.xml')).text();
+	expect(sitemap).toContain('<loc>https://josezambudiobernabeu.com/</loc>');
+	for (const post of readable)
+		expect(sitemap.includes(`/blog/${post.slug}<`)).toBe(post.status === 'published');
 });

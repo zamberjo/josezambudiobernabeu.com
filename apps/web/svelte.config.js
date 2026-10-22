@@ -8,7 +8,18 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter(),
+		// Every route is prerendered. The fallback is only the 404 page: Firebase
+		// serves it, with a 404 status, for any path that is not a built file.
+		adapter: adapter({ fallback: '404.html' }),
+		prerender: {
+			// Nothing links to the sitemap, so the crawler needs to be told.
+			entries: ['*', '/sitemap.xml'],
+			// With no readable posts, /blog/[slug] has no pages to build, which is
+			// fine; any other prerenderable route left unbuilt is still an error.
+			handleUnseenRoutes: ({ routes, message }) => {
+				if (routes.some((route) => route !== '/blog/[slug]')) throw new Error(message);
+			}
+		},
 		alias: {
 			// The content snapshot lives at the repo root, shared with the seed
 			// script, the unit tests and the backoffice.
