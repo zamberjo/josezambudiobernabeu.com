@@ -8,7 +8,7 @@ import { expect, test } from '@playwright/test';
  * `supabase start`.
  */
 
-const portrait = new URL('../../web/static/assets/img/me.jpg', import.meta.url).pathname;
+const portrait = new URL('../../web/static/assets/img/me.webp', import.meta.url).pathname;
 
 test('an editor can sign in, edit every kind of content and publish', async ({ page }) => {
 	const errors: string[] = [];
@@ -122,6 +122,8 @@ test('an editor can sign in, edit every kind of content and publish', async ({ p
 	await expect(page.getByRole('heading', { name: 'Media' })).toBeVisible();
 	await page.setInputFiles('input[type=file]', portrait);
 	await page.getByRole('button', { name: 'Subir' }).click();
+	// Optimised on upload: four WebP widths, listed once, by the widest URL.
+	await expect(page.getByRole('status')).toContainText(/-1920w\.webp/);
 	await expect(page.locator('.media li')).toHaveCount(1);
 	await page.locator('.media li').getByRole('button', { name: 'Borrar' }).click();
 	await expect(page.locator('.media li')).toHaveCount(0);

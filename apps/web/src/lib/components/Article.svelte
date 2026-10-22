@@ -13,9 +13,11 @@
 		site: string;
 		/** The way back: a button in the reader dialog, a link on the post's own page. */
 		back: Snippet;
+		/** On the post's own page the cover is the LCP element; in the dialog it is not. */
+		priority?: boolean;
 	}
 
-	let { post, ui, site, back }: Props = $props();
+	let { post, ui, site, back, priority = false }: Props = $props();
 
 	// Rendered and sanitised at build time, one document per language: the
 	// toggle swaps which one is shown, and the side index comes with it.
@@ -60,6 +62,7 @@
 					src={post.cover ?? undefined}
 					alt={t(post.title)}
 					placeholder={t(ui.coverImage)}
+					{priority}
 				/>
 			</div>
 		</div>
@@ -104,7 +107,7 @@
 			</div>
 		</div>
 
-		<p class="mt-band mb-0 text-xs tracking-[0.14em] uppercase text-neutral-600">
+		<p class="mt-band mb-0 text-xs tracking-[0.14em] uppercase text-neutral-700">
 			{site}
 		</p>
 	</article>

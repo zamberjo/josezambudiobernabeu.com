@@ -1,10 +1,19 @@
 import { githubPublishTrigger } from '@jzb/adapters/github';
+import { sharpImageOptimizer } from '@jzb/adapters/images';
 import {
 	supabaseContentStore,
+	supabaseMediaStore,
 	supabasePortfolioReader,
 	type ContentClient
 } from '@jzb/adapters/supabase';
-import { moveEntry, publishSite, removeEntry, saveEntry, saveSection } from '@jzb/application';
+import {
+	moveEntry,
+	publishSite,
+	removeEntry,
+	saveEntry,
+	saveSection,
+	uploadImage
+} from '@jzb/application';
 import { env } from './env';
 
 /**
@@ -28,6 +37,8 @@ export const services = (client: ContentClient) => {
 		saveSection: saveSection(commands),
 		/** Validates the whole aggregate first: nothing invalid is ever deployed. */
 		publish: publishSite(reader, publish),
+		/** Every upload is re-encoded as responsive WebP before it is stored. */
+		uploadImage: uploadImage(sharpImageOptimizer, supabaseMediaStore(client)),
 		reader
 	};
 };

@@ -4,3 +4,4 @@ export * from './portfolio.ts';
 export * from './result.ts';
 export * from './site.ts';
 export * from './view.ts';
+export * from './images.ts';

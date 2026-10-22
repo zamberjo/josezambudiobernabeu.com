@@ -33,6 +33,14 @@ describe('article renderer', () => {
 		).toBe(5);
 	});
 
+	it('gives optimised images their srcset, ignoring any the author typed', () => {
+		const { html } = render('<img src="/assets/blog/a-1920w.webp" srcset="evil.png 1x" alt="a">');
+		expect(html).toContain(
+			'srcset="/assets/blog/a-640w.webp 640w, /assets/blog/a-960w.webp 960w, /assets/blog/a-1280w.webp 1280w, /assets/blog/a-1920w.webp 1920w"'
+		);
+		expect(html).not.toContain('evil.png');
+	});
+
 	it('restarts the numbering for every article', () => {
 		render('<h2>a</h2><h2>b</h2>');
 		expect(render('<h2>c</h2>').outline[0]?.id).toBe('post-01');

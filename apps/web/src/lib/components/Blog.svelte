@@ -43,6 +43,7 @@
 			src={post.cover ?? undefined}
 			alt={t(post.title)}
 			placeholder={t(ui.postImage)}
+			sizes="(min-width: 1024px) 33vw, 100vw"
 		/>
 	</div>
 	<div class="flex flex-1 flex-col gap-4 p-[clamp(18px,2.4vw,28px)]">
@@ -78,6 +79,7 @@
 					src={featured.cover ?? undefined}
 					alt={t(featured.title)}
 					placeholder={t(ui.latestPostImage)}
+					sizes="(min-width: 768px) 50vw, 100vw"
 				/>
 			</div>
 			<div
@@ -110,7 +112,7 @@
 				<a
 					href="/blog/{featured.slug}"
 					onclick={(event) => featured && openInReader(event, featured)}
-					class="mt-auto self-start border-2 border-accent bg-accent px-[18px] py-3 text-[13px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:border-accent-600 hover:bg-accent-600 hover:text-white"
+					class="mt-auto self-start border-2 border-accent-600 bg-accent-600 px-[18px] py-3 text-[13px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:border-accent-700 hover:bg-accent-700 hover:text-white"
 				>
 					{t(ui.read)}
 				</a>

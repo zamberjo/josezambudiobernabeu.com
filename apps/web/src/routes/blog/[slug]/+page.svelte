@@ -63,7 +63,7 @@
 <div use:motionRoot class="overflow-x-clip bg-bg">
 	<SiteNav links={view.nav} base="/" />
 	<main>
-		<Article {post} ui={site.ui} site={site.footer.site} {back} />
+		<Article {post} ui={site.ui} site={site.footer.site} {back} priority />
 	</main>
 	<SiteFooter
 		footer={site.footer}
