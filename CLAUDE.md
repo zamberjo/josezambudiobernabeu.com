@@ -129,6 +129,9 @@ The design is the **Modernist** system from a Claude Design canvas: `--color-bg`
   `srcset` from it. Only the LCP image may pass `priority`. The `ImageOptimizer` port (sharp) and
   the `MediaStore` port (Supabase Storage or the filesystem) meet in the `uploadImage` use case,
   shared by the backoffice's Media page and `pnpm images:optimize`.
+- Blog card images are grey (`.tint`) and ease into colour while their card (`.tint-group`) is
+  hovered or focused. Inside a post, the cover and article images are always in colour. The
+  About portrait keeps the permanent `.grayscale-print`.
 - Small text uses `accent-700`/`neutral-700`, and white text sits on `accent-600`: the base
   `accent` red and `neutral-600` are below AA contrast at body sizes. The base red stays for large
   display type and rules.

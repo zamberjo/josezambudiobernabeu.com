@@ -38,7 +38,7 @@
 </script>
 
 {#snippet card(post: PostView, position: number)}
-	<div class="grayscale-print h-[clamp(150px,20vw,210px)] w-full border-b-2 border-ink">
+	<div class="tint h-[clamp(150px,20vw,210px)] w-full border-b-2 border-ink">
 		<ImageSlot
 			src={post.cover ?? undefined}
 			alt={t(post.title)}
@@ -70,10 +70,10 @@
 	{#if featured}
 		<article
 			use:magnetic={8}
-			class="magnet grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-0.5 border-2 border-ink"
+			class="magnet tint-group grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-0.5 border-2 border-ink"
 		>
 			<div
-				class="grayscale-print min-h-[clamp(200px,32vw,420px)] bg-bg shadow-[0_0_0_1px_var(--color-ink)]"
+				class="tint min-h-[clamp(200px,32vw,420px)] bg-bg shadow-[0_0_0_1px_var(--color-ink)]"
 			>
 				<ImageSlot
 					src={featured.cover ?? undefined}
@@ -129,7 +129,7 @@
 						use:magnetic={14}
 						onclick={(event) => openInReader(event, post)}
 						aria-label={t(post.title)}
-						class="magnet-skew flex h-full w-full flex-col bg-bg text-left text-ink shadow-[0_0_0_1px_var(--color-divider)] hover:bg-neutral-200 hover:text-ink"
+						class="magnet-skew tint-group flex h-full w-full flex-col bg-bg text-left text-ink shadow-[0_0_0_1px_var(--color-divider)] hover:bg-neutral-200 hover:text-ink"
 					>
 						{@render card(post, i + 2)}
 					</a>
@@ -138,7 +138,7 @@
 					     empty reader, so the card never lies about being readable. -->
 					<div
 						use:magnetic={14}
-						class="magnet-skew flex h-full w-full flex-col bg-bg text-ink shadow-[0_0_0_1px_var(--color-divider)]"
+						class="magnet-skew tint-group flex h-full w-full flex-col bg-bg text-ink shadow-[0_0_0_1px_var(--color-divider)]"
 					>
 						{@render card(post, i + 2)}
 					</div>
