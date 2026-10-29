@@ -101,8 +101,10 @@ named `<stem>-<width>w.webp`. The stored URL is always the widest, and the site 
 `srcset` from it (`srcsetFor` in `packages/domain`), so the browser downloads the size the screen
 needs.
 
-- **Through the backoffice** (Media): uploads are optimised automatically with `sharp` before
-  they reach Supabase Storage. Copy the URL it shows.
+- **Through the backoffice**: a post's **Portada** field has its own _Subir imagen_ button, and
+  the Media page takes any other image. Either way uploads are optimised with `sharp` before they
+  reach Supabase Storage, and the field keeps the widest variant's URL. A pasted URL that is not an
+  optimised set is flagged, since it would be served at its original size.
 - **Committed to the repo** (`apps/web/static/assets/blog/`): drop the PNG/JPEG in and run
   `pnpm images:optimize`, which writes the variants and removes the original. CI runs
   `pnpm images:check` and fails if an unoptimised PNG/JPEG over 200 KB is left behind.

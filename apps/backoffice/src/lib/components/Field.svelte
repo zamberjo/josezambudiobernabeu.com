@@ -4,6 +4,7 @@
 	   its kind's shape, and the domain schema re-validates it on submit. */
 	import { exhaustive, blankLocalized, type Field } from '$lib/forms';
 	import { LOCALES, type Lang } from '@jzb/domain';
+	import ImageField from './ImageField.svelte';
 	import RichTextEditor from './RichTextEditor.svelte';
 	import ListControls from './ListControls.svelte';
 	import LocalizedInput from './LocalizedInput.svelte';
@@ -120,6 +121,8 @@
 				+ Añadir enlace
 			</button>
 		</div>
+	{:else if field.kind === 'image'}
+		<ImageField bind:value {id} />
 	{:else if field.kind === 'richText'}
 		<div class="tabs" role="tablist" aria-label="Idioma de {field.label}">
 			{#each LOCALES as lang (lang)}

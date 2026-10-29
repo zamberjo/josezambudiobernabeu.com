@@ -16,6 +16,8 @@
 			case 'localizedList':
 			case 'links':
 				return [];
+			case 'image':
+				return null;
 			case 'boolean':
 				return false;
 			case 'number':
