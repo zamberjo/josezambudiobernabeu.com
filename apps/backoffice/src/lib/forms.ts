@@ -26,7 +26,8 @@ export type Field<K extends string = string> =
 	| { kind: 'strings'; key: K; label: string; hint?: string }
 	| { kind: 'localizedList'; key: K; label: string }
 	| { kind: 'links'; key: K; label: string; localized: boolean }
-	| { kind: 'richText'; key: K; label: string };
+	| { kind: 'richText'; key: K; label: string }
+	| { kind: 'image'; key: K; label: string };
 
 export type FieldKind = Field['kind'];
 
@@ -57,13 +58,7 @@ export const collectionFields: { [K in CollectionName]: FieldsFor<Entities[K]> }
 		{ kind: 'text', key: 'slug', label: 'Slug', hint: 'minúsculas-con-guiones' },
 		{ kind: 'select', key: 'status', label: 'Estado', options: POST_STATUSES },
 		{ kind: 'date', key: 'date', label: 'Fecha' },
-		{
-			kind: 'text',
-			key: 'cover',
-			label: 'Portada',
-			nullable: true,
-			hint: '/assets/… o una URL de Media'
-		},
+		{ kind: 'image', key: 'cover', label: 'Portada' },
 		{ kind: 'strings', key: 'tags', label: 'Etiquetas', hint: 'Una por línea' },
 		{ kind: 'localized', key: 'title', label: 'Título' },
 		{ kind: 'localized', key: 'excerpt', label: 'Extracto', multiline: true },

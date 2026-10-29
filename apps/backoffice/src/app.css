@@ -380,6 +380,30 @@ button.on,
 
 /* --- Rich text ------------------------------------------------------------------ */
 
+.image-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.image-field .row {
+	align-items: center;
+}
+
+.image-preview {
+	max-width: 360px;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border: 2px solid var(--ink);
+	background: var(--paper);
+}
+
+.hint.warning {
+	padding: 0.4rem 0.6rem;
+	background: #fff6d6;
+	color: var(--ink);
+}
+
 .rich {
 	display: flex;
 	flex-direction: column;

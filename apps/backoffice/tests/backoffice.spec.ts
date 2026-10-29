@@ -50,6 +50,17 @@ test('an editor can sign in, edit every kind of content and publish', async ({ p
 	await page.getByLabel('Título (es)').fill('Hola');
 	await page.getByLabel('Título (en)').fill('Hello');
 
+	// The cover is uploaded from the form itself and stored as its widest WebP.
+	await page.locator('.image-field input[type=file]').setInputFiles(portrait);
+	await expect(page.getByLabel('Portada')).toHaveValue(/-1920w\.webp$/);
+	await expect(page.locator('.image-preview')).toBeVisible();
+	await expect(page.locator('.image-field .warning')).toHaveCount(0);
+	// A pasted URL that is not an optimised set is flagged.
+	const optimised = await page.getByLabel('Portada').inputValue();
+	await page.getByLabel('Portada').fill('/assets/img/me.webp');
+	await expect(page.locator('.image-field .warning')).toBeVisible();
+	await page.getByLabel('Portada').fill(optimised);
+
 	const editor = page.locator('[role=tabpanel]:visible .ProseMirror');
 	const toolbar = page.locator('[role=tabpanel]:visible [role=toolbar]');
 	await editor.click();
@@ -119,14 +130,17 @@ test('an editor can sign in, edit every kind of content and publish', async ({ p
 	// media page loads
 	await page.goto('/media');
 	await page.waitForLoadState('networkidle');
+	// The post's cover, uploaded above, is already here.
+	const before = await page.locator('.media li').count();
 	await expect(page.getByRole('heading', { name: 'Media' })).toBeVisible();
 	await page.setInputFiles('input[type=file]', portrait);
 	await page.getByRole('button', { name: 'Subir' }).click();
 	// Optimised on upload: four WebP widths, listed once, by the widest URL.
 	await expect(page.getByRole('status')).toContainText(/-1920w\.webp/);
-	await expect(page.locator('.media li')).toHaveCount(1);
-	await page.locator('.media li').getByRole('button', { name: 'Borrar' }).click();
-	await expect(page.locator('.media li')).toHaveCount(0);
+	await expect(page.locator('.media li')).toHaveCount(before + 1);
+	// Newest first; deleting removes all four of its variants.
+	await page.locator('.media li').first().getByRole('button', { name: 'Borrar' }).click();
+	await expect(page.locator('.media li')).toHaveCount(before);
 
 	expect(errors).toEqual([]);
 });

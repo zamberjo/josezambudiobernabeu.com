@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import { IMAGE_WIDTHS, isOptimized, variantName } from '@jzb/domain';
+import { BUCKET, stemFor } from '$lib/server/media';
 
-const BUCKET = 'media';
 const WIDEST = Math.max(...IMAGE_WIDTHS);
 
 /** `…-1920w.webp` → `…`: the name every variant of an upload shares. */
@@ -26,17 +26,6 @@ export const load = async ({ locals }) => {
 			optimized: isOptimized(name)
 		}))
 	};
-};
-
-/** URL-safe and unique, without asking the editor to think about it. */
-const stemFor = (original: string) => {
-	const dot = original.lastIndexOf('.');
-	const base = (dot > 0 ? original.slice(0, dot) : original)
-		.normalize('NFKD')
-		.replace(/[^\w-]+/g, '-')
-		.replace(/^-+|-+$/g, '')
-		.toLowerCase();
-	return `${Date.now()}-${base || 'image'}`;
 };
 
 export const actions = {
