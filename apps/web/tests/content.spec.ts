@@ -115,3 +115,26 @@ test('the sitemap lists the home page and every published post', async ({ reques
 	for (const post of readable)
 		expect(sitemap.includes(`/blog/${post.slug}<`)).toBe(post.status === 'published');
 });
+
+test('the blog has an RSS feed per language, advertised on every page', async ({
+	page,
+	request
+}) => {
+	await page.goto('/');
+	const feeds = page.locator('link[rel=alternate][type="application/rss+xml"]');
+	await expect(feeds).toHaveCount(2);
+	await expect(feeds.first()).toHaveAttribute('href', '/rss.xml');
+
+	for (const [path, lang] of [
+		['/rss.xml', 'es'],
+		['/en/rss.xml', 'en']
+	] as const) {
+		const xml = await (await request.get(path)).text();
+		expect(xml).toContain('<rss version="2.0"');
+		expect(xml).toContain(`<language>${lang}</language>`);
+		for (const post of readable)
+			expect(xml.includes(`<link>https://josezambudiobernabeu.com/blog/${post.slug}</link>`)).toBe(
+				post.status === 'published'
+			);
+	}
+});

@@ -45,6 +45,23 @@
 	<link rel="canonical" href={url} />
 	{#if noindex}<meta name="robots" content="noindex" />{/if}
 
+	<!-- Feed autodiscovery: readers and browsers find the RSS from any page.
+	     Advertised even before the first post, so early subscribers get it. -->
+	<link
+		rel="alternate"
+		type="application/rss+xml"
+		hreflang="es"
+		title="Jose Zambudio Bernabeu · Blog (ES)"
+		href="/rss.xml"
+	/>
+	<link
+		rel="alternate"
+		type="application/rss+xml"
+		hreflang="en"
+		title="Jose Zambudio Bernabeu · Blog (EN)"
+		href="/en/rss.xml"
+	/>
+
 	<meta property="og:type" content={type} />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />

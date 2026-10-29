@@ -88,6 +88,10 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   Open Graph card and `BlogPosting` structured data, and listed in `/sitemap.xml` once published.
   Drafts with a body also get a page, for sharing a preview, but with `noindex`. On the home page
   a card opens the reader over the page at that same URL.
+- **RSS**: `/rss.xml` (Spanish) and `/en/rss.xml` (English) carry the 20 newest published posts
+  with the full article. Every page advertises both in its `<head>`, so feed readers find them
+  from the site's address, and the footer's Blog column links to the one in the visitor's
+  language. Drafts never reach subscribers.
 - **An empty blog** hides the whole Blog section, along with its nav entry and footer column, and
   the other sections renumber themselves.
 

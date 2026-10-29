@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { t } from '../i18n.svelte';
+	import { lang, t } from '../i18n.svelte';
 	import type { Project, Site } from '@jzb/domain';
 
 	interface Props {
@@ -64,6 +64,14 @@
 				<ul class="flex list-none flex-col gap-2 p-0 text-[15px]">
 					<li>
 						<a href="{base}#blog" class="text-neutral-200 hover:text-accent-400">{t(footer.blogLink)}</a>
+					</li>
+					<li>
+						<!-- RSS in the visitor's language; "RSS" needs no translation. -->
+						<a
+							href={lang.current === 'en' ? '/en/rss.xml' : '/rss.xml'}
+							type="application/rss+xml"
+							class="text-neutral-200 hover:text-accent-400">RSS</a
+						>
 					</li>
 				</ul>
 			</nav>
