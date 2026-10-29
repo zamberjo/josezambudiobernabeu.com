@@ -55,7 +55,7 @@
 
 		<div
 			use:parallax={0.08}
-			class="grayscale-print h-[clamp(220px,40vw,560px)] overflow-hidden border-2 border-ink"
+			class="h-[clamp(220px,40vw,560px)] overflow-hidden border-2 border-ink"
 		>
 			<div class="parallax-y h-full scale-[1.06]">
 				<ImageSlot

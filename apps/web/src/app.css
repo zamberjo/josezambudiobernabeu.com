@@ -225,6 +225,26 @@
 	filter: grayscale(1) contrast(1.08);
 }
 
+/* Blog cards: the print-like grey of the design until the card is hovered or
+   focused, when the image eases into its real colours. Inside a post the
+   image is always in colour (no class). Keyboard focus gets the same reward
+   as the pointer. */
+.tint {
+	filter: grayscale(1) contrast(1.08);
+}
+
+.tint-group:hover .tint,
+.tint-group:focus-visible .tint,
+.tint-group:focus-within .tint {
+	filter: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.tint {
+		transition: filter 450ms ease-out;
+	}
+}
+
 /* ── Blog article body ─────────────────────────────────────────────────────
    The reader injects each post's HTML (sanitised at build time), so its
    typography cannot come from utilities on the elements: it is written here,
