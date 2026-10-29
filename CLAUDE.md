@@ -65,8 +65,9 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   generated DB types never leave this package. `src/contract.ts` is the shared store contract:
   the memory and Supabase stores both run it. Keep them in step.
 - `apps/web` is fully prerendered (`adapter-static`, `prerender = true`): the home page, one page
-  per readable post at `/blog/[slug]` (from `entries()`, using `postPages`), `/sitemap.xml` and
-  a `404.html` fallback. Its composition root, `src/lib/server/portfolio.ts`, runs in the server
+  per readable post at `/blog/[slug]` (from `entries()`, using `postPages`), `/sitemap.xml`, the RSS
+  feeds (`/rss.xml`, `/en/rss.xml`, built by `packages/adapters/src/rss`) and a `404.html`
+  fallback. Its composition root, `src/lib/server/portfolio.ts`, runs in the server
   loads **at prerender time only**. It picks a reader by `CONTENT_SOURCE` (`json` by default, or
   `supabase`), and invalid content fails the build with field paths. While building, every page
   shares one read, so a build is one consistent snapshot; in dev each request reads again. The

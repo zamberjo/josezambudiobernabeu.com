@@ -12,8 +12,8 @@ const config = {
 		// serves it, with a 404 status, for any path that is not a built file.
 		adapter: adapter({ fallback: '404.html' }),
 		prerender: {
-			// Nothing links to the sitemap, so the crawler needs to be told.
-			entries: ['*', '/sitemap.xml'],
+			// Nothing links to the sitemap or the feeds, so the crawler is told.
+			entries: ['*', '/sitemap.xml', '/rss.xml', '/en/rss.xml'],
 			// With no readable posts, /blog/[slug] has no pages to build, which is
 			// fine; any other prerenderable route left unbuilt is still an error.
 			handleUnseenRoutes: ({ routes, message }) => {

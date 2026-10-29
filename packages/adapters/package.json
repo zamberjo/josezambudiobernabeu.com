@@ -10,7 +10,8 @@
 		"./supabase": "./src/supabase/index.ts",
 		"./github": "./src/github/index.ts",
 		"./html": "./src/html/index.ts",
-		"./images": "./src/images/index.ts"
+		"./images": "./src/images/index.ts",
+		"./rss": "./src/rss/index.ts"
 	},
 	"scripts": {
 		"check": "tsc -p .",
