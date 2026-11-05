@@ -61,20 +61,21 @@
 	{/each}
 
 	<!-- Feed autodiscovery: readers and browsers find the RSS from any page.
-	     Advertised even before the first post, so early subscribers get it. -->
+	     Advertised even before the first post, so early subscribers get it.
+	     Absolute, like every hreflang link: search engines reject relative ones. -->
 	<link
 		rel="alternate"
 		type="application/rss+xml"
 		hreflang="es"
 		title="Jose Zambudio Bernabeu · Blog (ES)"
-		href="/rss.xml"
+		href={absolute('/rss.xml')}
 	/>
 	<link
 		rel="alternate"
 		type="application/rss+xml"
 		hreflang="en"
 		title="Jose Zambudio Bernabeu · Blog (EN)"
-		href="/en/rss.xml"
+		href={absolute('/en/rss.xml')}
 	/>
 
 	<meta property="og:type" content={type} />

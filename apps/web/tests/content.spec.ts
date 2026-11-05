@@ -157,7 +157,7 @@ test('the blog has an RSS feed per language, advertised on every page', async ({
 	await page.goto('/');
 	const feeds = page.locator('link[rel=alternate][type="application/rss+xml"]');
 	await expect(feeds).toHaveCount(2);
-	await expect(feeds.first()).toHaveAttribute('href', '/rss.xml');
+	await expect(feeds.first()).toHaveAttribute('href', 'https://josezambudiobernabeu.com/rss.xml');
 
 	for (const [path, prefix, lang] of [
 		['/rss.xml', '', 'es'],
