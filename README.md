@@ -181,6 +181,26 @@ It needs a `RENOVATE_TOKEN` secret: a fine-grained token on this repository with
 requests_, _Issues_ and _Workflows_ set to read and write. PRs opened with the default
 `GITHUB_TOKEN` do not trigger other workflows, so CI would never run on them.
 
+## Security headers
+
+`firebase.json` sends, on every response: HSTS, `X-Content-Type-Options: nosniff`,
+`X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, a
+`Permissions-Policy` that turns off camera, microphone, geolocation, payment, USB and Topics, and
+`Cross-Origin-Opener-Policy: same-origin`.
+
+The Content Security Policy is enforced twice, and a page must satisfy both:
+
+- **Per page, in a `<meta>`** (`kit.csp` in `apps/web/svelte.config.js`). SvelteKit hashes the
+  one inline script it writes, the hydration bootstrap, into `script-src`, so that script runs
+  and no other inline script can.
+- **As a header** (`firebase.json`), which adds what a `<meta>` cannot carry:
+  `frame-ancestors 'none'`. A static header cannot know each page's hash, so its `script-src`
+  allows `'unsafe-inline'`. That loosens nothing: the meta policy still demands the hash.
+
+Images may come from any HTTPS origin (`img-src https:`), as covers can live in Supabase Storage.
+Allowing a new kind of resource, such as an embedded video's `frame-src` or an analytics
+script, means editing both policies. The Playwright suite fails on any CSP violation.
+
 ## Deploy
 
 Pushing to `master`, running the workflow by hand, or pressing **Publish** in the backoffice

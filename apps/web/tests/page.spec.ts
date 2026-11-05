@@ -137,3 +137,27 @@ test('robots.txt keeps AI training crawlers out and lets search in', async ({ re
 	expect(groupOf('\\*')).toMatch(/^Allow: \/$/m);
 	expect(robots).toContain('Sitemap: https://josezambudiobernabeu.com/sitemap.xml');
 });
+
+test('the content security policy blocks nothing the site needs', async ({ page }) => {
+	// Collected from the first script on, so a blocked bootstrap is caught too.
+	await page.addInitScript(() => {
+		const seen: string[] = [];
+		Object.assign(window, { cspViolations: seen });
+		document.addEventListener('securitypolicyviolation', (event) =>
+			seen.push(`${event.effectiveDirective} ${event.blockedURI}`)
+		);
+	});
+	const violations = () =>
+		page.evaluate(() => (window as unknown as { cspViolations: string[] }).cspViolations);
+
+	await page.goto('/');
+	await expect(page.locator('meta[http-equiv="content-security-policy"]')).toHaveCount(1);
+	await page.waitForLoadState('networkidle');
+	expect(await violations()).toEqual([]);
+
+	// A client-side navigation fetches page data and fonts under the same policy.
+	await page.getByRole('link', { name: 'EN', exact: true }).click();
+	await expect(page).toHaveURL(/\/en$/);
+	await page.waitForLoadState('networkidle');
+	expect(await violations()).toEqual([]);
+});

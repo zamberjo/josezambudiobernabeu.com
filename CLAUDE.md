@@ -194,6 +194,10 @@ inerting the page come from the platform; do not reintroduce manual scroll locki
   the scripts in `packages/adapters/scripts` directly.
 - Keep the domain pure and the use cases curried; prefer `Result` over exceptions, and immutable
   updates over mutation. A throw belongs only in a composition root (`unwrap`).
+- Security headers live in `firebase.json`. The CSP is enforced twice, as `kit.csp` (a per-page
+  `<meta>` with the hydration script's hash) and as a header (`frame-ancestors`, plus a
+  `'unsafe-inline'` script-src that the meta policy still narrows). A new external resource means
+  editing both, and Playwright fails on any violation.
 - `firebase.json` points at `apps/web/build/` and has **no rewrites**. Every route is a built file
   (`cleanUrls` maps `/blog/x` to `blog/x.html`), so an unknown path gets Firebase's `404.html`
   with a real 404 status, not the home page. `/en` is `en.html`, next to the `en/` folder of
