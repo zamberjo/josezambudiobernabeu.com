@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { localePath } from '@jzb/domain';
 	import { lang, t } from '../i18n.svelte';
 	import type { Project, Site } from '@jzb/domain';
 
@@ -68,7 +69,7 @@
 					<li>
 						<!-- RSS in the visitor's language; "RSS" needs no translation. -->
 						<a
-							href={lang.current === 'en' ? '/en/rss.xml' : '/rss.xml'}
+							href={localePath(lang.current, '/rss.xml')}
 							type="application/rss+xml"
 							class="text-neutral-200 hover:text-accent-400">RSS</a
 						>

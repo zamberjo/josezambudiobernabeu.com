@@ -25,19 +25,55 @@ test('every permanent section is on the page', async ({ page }) => {
 	}
 });
 
-// The page picks its initial language from the browser, so these drive the
-// toggle explicitly rather than assuming which one the test browser lands on.
-test('the language toggle switches the copy between Spanish and English', async ({ page }) => {
+// Each language is its own URL: Spanish at the root, English under /en.
+test('the language toggle links to the page in the other language', async ({ page }) => {
 	await page.goto('/');
 	const heading = page.locator('#sobre-mi').getByRole('heading', { level: 2 });
-
-	await page.getByRole('button', { name: 'ES', exact: true }).click();
 	await expect(heading).toHaveText('Sobre mí');
 	await expect(page.locator('html')).toHaveAttribute('lang', 'es');
+	await expect(page.getByRole('link', { name: 'ES', exact: true })).toHaveAttribute(
+		'aria-current',
+		'page'
+	);
 
-	await page.getByRole('button', { name: 'EN', exact: true }).click();
+	await page.getByRole('link', { name: 'EN', exact: true }).click();
+	await expect(page).toHaveURL(/\/en$/);
 	await expect(heading).toHaveText('About me');
 	await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+
+	await page.getByRole('link', { name: 'ES', exact: true }).click();
+	await expect(page).toHaveURL(/:\d+\/$/);
+	await expect(heading).toHaveText('Sobre mí');
+});
+
+test('each language is prerendered, so a crawler reads it without running scripts', async ({
+	request
+}) => {
+	const es = await (await request.get('/')).text();
+	expect(es).toContain('<html lang="es">');
+	expect(es).toContain('Sobre mí');
+
+	const en = await (await request.get('/en')).text();
+	expect(en).toContain('<html lang="en">');
+	expect(en).toContain('About me');
+	expect(en).toContain('<link rel="canonical" href="https://josezambudiobernabeu.com/en"');
+
+	// Both point at each other, and Spanish is the default for everyone else.
+	for (const html of [es, en]) {
+		expect(html).toContain('hreflang="es" href="https://josezambudiobernabeu.com/"');
+		expect(html).toContain('hreflang="en" href="https://josezambudiobernabeu.com/en"');
+		expect(html).toContain('hreflang="x-default" href="https://josezambudiobernabeu.com/"');
+	}
+});
+
+test('the language chosen with the toggle is kept on the next visit', async ({ page }) => {
+	await page.goto('/');
+	await page.getByRole('link', { name: 'EN', exact: true }).click();
+	await expect(page).toHaveURL(/\/en$/);
+
+	await page.goto('/');
+	await expect(page).toHaveURL(/\/en$/);
+	await expect(page.locator('#sobre-mi h2')).toHaveText('About me');
 });
 
 test('the blog reader opens at the post URL and closes with Escape or Back', async ({ page }) => {
@@ -46,8 +82,7 @@ test('the blog reader opens at the post URL and closes with Escape or Back', asy
 		'no published post, so there is no reader to open'
 	);
 
-	await page.goto('/');
-	await page.getByRole('button', { name: 'EN', exact: true }).click();
+	await page.goto('/en');
 
 	const reader = page.getByRole('dialog');
 	await expect(reader).toBeHidden();
@@ -55,11 +90,11 @@ test('the blog reader opens at the post URL and closes with Escape or Back', asy
 	// Opening moves the address bar to the post's own page, without leaving home.
 	await page.getByRole('link', { name: 'Read', exact: true }).click();
 	await expect(reader).toBeVisible();
-	await expect(page).toHaveURL(/\/blog\/[a-z0-9-]+$/);
+	await expect(page).toHaveURL(/\/en\/blog\/[a-z0-9-]+$/);
 
 	await page.keyboard.press('Escape');
 	await expect(reader).toBeHidden();
-	await expect(page).toHaveURL(/\/$/);
+	await expect(page).toHaveURL(/\/en$/);
 
 	// The browser's Back button closes it too.
 	await page.getByRole('link', { name: 'Read', exact: true }).click();

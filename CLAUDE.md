@@ -68,8 +68,12 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `supabase/codecs.ts`, the codecs are the anti-corruption layer (snake_case rows ↔ domain), and
   generated DB types never leave this package. `src/contract.ts` is the shared store contract:
   the memory and Supabase stores both run it. Keep them in step.
-- `apps/web` is fully prerendered (`adapter-static`, `prerender = true`): the home page, one page
-  per readable post at `/blog/[slug]` (from `entries()`, using `postPages`), `/sitemap.xml`, the RSS
+- `apps/web` is fully prerendered (`adapter-static`, `prerender = true`), **once per language**:
+  every page route sits under `src/routes/[[lang=lang]]/`, Spanish at the root and English under
+  `/en` (the `lang` matcher accepts only the non-default languages, so `/es` is a 404). That gives
+  the home page (`/`, `/en`), one page per readable post and language at `/blog/<slug>` and
+  `/en/blog/<slug>` (from `entries()`, using `postPages`), `/sitemap.xml` (with `xhtml:link`
+  hreflang alternates), the RSS
   feeds (`/rss.xml`, `/en/rss.xml`, built by `packages/adapters/src/rss`) and a `404.html`
   fallback. Its composition root, `src/lib/server/portfolio.ts`, runs in the server
   loads **at prerender time only**. It picks a reader by `CONTENT_SOURCE` (`json` by default, or
@@ -79,7 +83,8 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   by props, and components import types and pure helpers from `@jzb/domain`, never data modules.
 - On the home page, a post card is a real link to `/blog/<slug>`. A plain click opens the reader
   `<dialog>` instead and moves the URL there with SvelteKit shallow routing (`pushState`,
-  `page.state.reader`); Esc, the back button and browser Back all close it and restore `/`.
+  `page.state.reader`); Esc, the back button and browser Back all close it and restore `/` (or
+  `/en`).
   `Article.svelte` is the one article view, shared by the dialog and the post page. `Seo.svelte`
   writes each page's title, description, canonical, Open Graph/Twitter tags and JSON-LD (`Person`
   on home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them
@@ -113,10 +118,15 @@ The design is the **Modernist** system from a Claude Design canvas: `--color-bg`
   rules line up at any width. Element defaults (`html`, `body`, `a`) **must** stay inside
   `@layer base`: an unlayered rule beats every layered Tailwind utility, so a bare `a { color }`
   silently overrides `text-ink` everywhere.
-- `apps/web/src/lib/i18n.svelte.ts` is the ES/EN toggle. Every string is a `Localized` pair and
-  `t()` picks one; the page does not duplicate markup per language. The initial language comes
-  from localStorage, then `navigator.language`, so **tests must drive the toggle explicitly**
-  rather than assume Spanish.
+- The language is in the URL. `apps/web/src/lib/i18n.svelte.ts` reads it from the route
+  (`page.params.lang`), on the server while prerendering and in the browser alike. Every string
+  is a `Localized` pair and `t()` picks one; the page does not duplicate markup per language.
+  Build site paths with `localePath(lang, path)` from `@jzb/domain` (with `langOfPath`,
+  `unlocalizedPath` and `alternatePaths`), never by hand. `hooks.server.ts` fills `<html
+lang="%lang%">` in `app.html`. The ES/EN toggle in `SiteNav` is a pair of links to the same page
+  in each language. An explicit choice is remembered in localStorage and restores that language on
+  the next visit (`+layout.svelte`); `navigator.language` is deliberately ignored, as crawlers
+  announce English. Tests reach English by going to `/en`.
 - `content/portfolio.json` is the whole aggregate: `site` sections (including `ui`, the interface
   strings), `experience`, `posts`, `skills` and `projects`. It seeds the database, the unit tests
   and Playwright read it, and it is the fallback content source.
@@ -184,5 +194,6 @@ inerting the page come from the platform; do not reintroduce manual scroll locki
   updates over mutation. A throw belongs only in a composition root (`unwrap`).
 - `firebase.json` points at `apps/web/build/` and has **no rewrites**. Every route is a built file
   (`cleanUrls` maps `/blog/x` to `blog/x.html`), so an unknown path gets Firebase's `404.html`
-  with a real 404 status, not the home page. `svelte.config.js` tolerates `/blog/[slug]` having
+  with a real 404 status, not the home page. `/en` is `en.html`, next to the `en/` folder of
+  English posts and feed. `svelte.config.js` tolerates `/[[lang=lang]]/blog/[slug]` having
   no pages while there are no posts (`handleUnseenRoutes`), and nothing else.

@@ -1,6 +1,10 @@
 <script lang="ts">
 	import '../app.css';
-	import { lang } from '$lib/i18n.svelte';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { localePath, unlocalizedPath } from '@jzb/domain';
+	import { lang, rememberedLang } from '$lib/i18n.svelte';
 	// The two faces above the fold: body text and the display heading. Without
 	// a preload the browser only finds them after downloading and parsing the
 	// CSS, which puts two round trips in front of the first paint of text. Vite
@@ -10,10 +14,20 @@
 
 	let { children } = $props();
 
-	// Keeps <html lang> in step with the ES/EN toggle, so assistive technology
-	// announces the page in the language it is actually showing.
+	// The prerendered HTML already has the right <html lang> (hooks.server.ts);
+	// this keeps it in step when the toggle navigates client-side.
 	$effect(() => {
 		document.documentElement.lang = lang.current;
+	});
+
+	// A visitor who picked a language with the toggle gets it back on their
+	// next visit, wherever they land. Links and crawlers reach a page in its
+	// own language; only that explicit choice moves them.
+	onMount(() => {
+		const saved = rememberedLang();
+		if (page.status !== 200 || !saved || saved === lang.current) return;
+		const target = localePath(saved, unlocalizedPath(page.url.pathname)) + page.url.hash;
+		goto(target, { replaceState: true, noScroll: true });
 	});
 </script>
 

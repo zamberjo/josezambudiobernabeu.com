@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isIndexable } from '@jzb/domain';
+	import { alternatePaths, isIndexable, localePath } from '@jzb/domain';
 	import { lang, t } from '$lib/i18n.svelte';
 	import { motionRoot } from '$lib/motion.svelte';
 	import Article from '$lib/components/Article.svelte';
@@ -9,7 +9,6 @@
 
 	let { data } = $props();
 
-	$effect(() => lang.restore());
 
 	const view = $derived(data.view);
 	const post = $derived(data.post);
@@ -17,13 +16,14 @@
 	const origin = $derived(site.footer.siteUrl);
 	const absolute = (path: string) => new URL(path, origin).href;
 
-	const url = $derived(absolute(`/blog/${post.slug}`));
+	const path = $derived(`/blog/${post.slug}`);
+	const url = $derived(absolute(localePath(lang.current, path)));
+	const home = $derived(localePath(lang.current, '/'));
 	const image = $derived(post.cover ? absolute(post.cover) : null);
 	const author = $derived({ '@type': 'Person', name: 'Jose Zambudio Bernabeu', url: origin });
 </script>
 
-<!-- The prerendered HTML is in Spanish, like the home page: the ES/EN toggle
-     switches languages in the browser, so English is not a separate URL. -->
+<!-- Prerendered once per language: /blog/<slug> and /en/blog/<slug>. -->
 <Seo
 	title="{t(post.title)} · Jose Zambudio Bernabeu"
 	description={t(post.excerpt)}
@@ -32,7 +32,8 @@
 	type="article"
 	publishedTime={post.date}
 	noindex={!isIndexable(post)}
-	locale={lang.current === 'es' ? 'es_ES' : 'en_GB'}
+	alternates={alternatePaths(path)}
+	locale={lang.current}
 	jsonLd={{
 		'@context': 'https://schema.org',
 		'@type': 'BlogPosting',
@@ -53,7 +54,7 @@
 
 {#snippet back()}
 	<a
-		href="/#blog"
+		href="{localePath(lang.current, '/#blog')}"
 		class="self-start border-2 border-ink px-[18px] py-3 text-[13px] font-bold tracking-[0.1em] uppercase text-ink transition-colors hover:bg-ink hover:text-bg"
 	>
 		← {t(site.ui.backToBlog)}
@@ -61,7 +62,7 @@
 {/snippet}
 
 <div use:motionRoot class="overflow-x-clip bg-bg">
-	<SiteNav links={view.nav} base="/" />
+	<SiteNav links={view.nav} base={home} />
 	<main>
 		<Article {post} ui={site.ui} site={site.footer.site} {back} priority />
 	</main>
@@ -70,6 +71,6 @@
 		social={site.social.links}
 		projects={view.projects}
 		hasPosts={view.blog !== null}
-		base="/"
+		base={home}
 	/>
 </div>

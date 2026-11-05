@@ -2,7 +2,8 @@
 	import type { PostView, Ui } from '@jzb/domain';
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/state';
-	import { t } from '../i18n.svelte';
+	import { localePath } from '@jzb/domain';
+	import { lang, t } from '../i18n.svelte';
 	import Article from './Article.svelte';
 
 	// A native modal dialog, so Esc, focus trapping and inert-ing the page
@@ -16,11 +17,11 @@
 	/**
 	 * Opens over the home page and moves the address bar to the post's own
 	 * URL (shallow routing: no navigation, no reload), so what is on screen
-	 * can be copied, shared and reloaded as /blog/<slug>.
+	 * can be copied, shared and reloaded as /blog/<slug> (or /en/blog/<slug>).
 	 */
 	export function open(next: PostView) {
 		post = next;
-		pushState(`/blog/${next.slug}`, { reader: next.slug });
+		pushState(localePath(lang.current, `/blog/${next.slug}`), { reader: next.slug });
 		dialog.showModal();
 		scroller.scrollTop = 0;
 	}

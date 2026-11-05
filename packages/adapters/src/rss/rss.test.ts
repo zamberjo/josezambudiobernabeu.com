@@ -43,6 +43,13 @@ describe('rss feed', () => {
 		expect(xml).toContain('<lastBuildDate>Mon, 01 Jun 2026 12:00:00 GMT</lastBuildDate>');
 	});
 
+	it('links each language to its own pages', () => {
+		const posts = [post({ slug: 'a' })];
+		expect(feed(posts, 'es')).toContain('<link>https://example.dev/blog/a</link>');
+		expect(feed(posts, 'en')).toContain('<link>https://example.dev/en/blog/a</link>');
+		expect(feed(posts, 'en')).toContain('<link>https://example.dev/en</link>');
+	});
+
 	it('carries the full article with absolute URLs and escapes the metadata', () => {
 		const xml = feed([
 			post({
