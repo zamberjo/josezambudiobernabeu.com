@@ -3,9 +3,8 @@ import { expect, test } from '@playwright/test';
 /*
  * Drives the backoffice against the local Supabase stack, signed in as the
  * seeded editor. It writes to the database, so `pnpm db:reset` afterwards
- * restores the seed. Run with `pnpm --filter backoffice test` (its own port, local stack, no
- * GitHub token) after
- * `supabase start`.
+ * restores the seed. Run `pnpm --filter backoffice test` after `supabase start`
+ * (its own port, local stack, no GitHub token).
  */
 
 const portrait = new URL('../../web/static/assets/img/me.webp', import.meta.url).pathname;

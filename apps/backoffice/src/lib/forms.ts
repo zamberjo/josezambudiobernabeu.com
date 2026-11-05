@@ -9,10 +9,10 @@ import {
 } from '@jzb/domain';
 
 /*
- * Forms are data, not markup: one descriptor list per collection and per site
- * section, rendered by a single <Fields> component. Adding a field is a line
- * here, and a new field kind is a new union member plus one branch in
- * Field.svelte (open for extension, closed for modification).
+ * Forms are data: one descriptor list per collection and per site section.
+ * EntityForm renders each descriptor with Field.svelte. Adding a field is a
+ * line here; a new field kind is a new union member plus one branch in
+ * Field.svelte.
  */
 
 export type Field<K extends string = string> =

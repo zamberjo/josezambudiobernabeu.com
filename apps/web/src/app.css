@@ -94,7 +94,7 @@
 /* ── Motion ───────────────────────────────────────────────────────────────
    Reveals and the progress bar are decorative progressive enhancement: they
    only exist where scroll-driven animations are supported, so browsers without
-   them (Firefox today) simply render the finished state. */
+   them (Firefox today) render the finished state. */
 @media (prefers-reduced-motion: no-preference) {
 	@supports ((animation-timeline: view()) and (animation-range: entry)) {
 		@keyframes rev-up {
@@ -227,8 +227,8 @@
 
 /* Blog cards: the print-like grey of the design until the card is hovered or
    focused, when the image eases into its real colours. Inside a post the
-   image is always in colour (no class). Keyboard focus gets the same reward
-   as the pointer. */
+   image is always in colour (no class). Keyboard focus on the card has the
+   same effect as hovering it. */
 .tint {
 	filter: grayscale(1) contrast(1.08);
 }

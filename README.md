@@ -1,8 +1,8 @@
 # JoseZambudioBernabeu.com
 
 Personal portfolio. SvelteKit + Tailwind, built as a static site and served from Firebase Hosting.
-Content lives in Supabase and is edited from a local backoffice; the site reads it **at build
-time**, so visitors get plain prerendered HTML and never talk to the database.
+Content lives in Supabase and is edited from a local backoffice. The site reads it at build time,
+so visitors get plain prerendered HTML and never talk to the database.
 
 ```
 apps/backoffice ──ContentCommands──▶ Supabase ◀──PortfolioReader── CI: build apps/web ──▶ Firebase
@@ -63,9 +63,9 @@ pnpm dev:local           # the same, but always against the local stack
 ```
 
 Both run the site in dev mode, where the page's content is loaded on every request: save in the
-backoffice, reload the preview, and the change is there. Drafts show here, and only here. Nothing is built or deployed until you
-press **Publish**. For a check of the exact production output, `pnpm build:local && pnpm preview`
-prerenders from the local database and serves the result.
+backoffice, reload the preview, and the change is there. Drafts show here, and only here. Nothing
+is built or deployed until you press **Publish**. For a check of the exact production output,
+`pnpm build:local && pnpm preview` prerenders from the local database and serves the result.
 
 ## Content
 
@@ -81,14 +81,15 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   (Tiptap). Its **HTML** button edits the source directly, so any markup can go in, and an
   article the visual editor cannot represent, such as one with a table, opens in HTML mode rather
   than losing it. At build time `packages/adapters/src/html` sanitises the body against an
-  allow-list and numbers every `<h2>`, which also builds the reader's side index. The reading time is derived per language from the word count
-  (`readingMinutes`, 220 words a minute), so it is never typed and never stale. The opening
-  paragraph reads as the lede, and the newest published post becomes the featured card.
+  allow-list and numbers every `<h2>`; the same headings make the reader's side index. The reading
+  time comes from each language's word count (`readingMinutes`, 220 words a minute), so nobody
+  types it and it cannot go stale. The opening paragraph reads as the lede, and the newest
+  published post becomes the featured card.
 - **Every page exists once per language**: Spanish at the root (`/`, `/blog/<slug>`) and English
   under `/en` (`/en`, `/en/blog/<slug>`). Each is prerendered in its language, with
   `<html lang>` set, and links to its translation with `hreflang` (Spanish is `x-default`), so
-  search engines index both and show each visitor theirs. The ES/EN toggle links between them,
-  and a visitor who uses it gets that language back on their next visit.
+  search engines index both. The ES/EN toggle links between them, and a visitor who uses it gets
+  that language back on their next visit.
 - **Share cards**: every page has an Open Graph/Twitter image, a post's cover or the default
   card `static/assets/og.png`. The card is HTML rendered in Chromium with the site's font and
   colours (`apps/web/scripts/og-image.ts`); after changing it, run `pnpm --filter web og:image`
@@ -100,11 +101,11 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   They only show in the dev preview (`pnpm preview:content`), so they can be read before
   publishing.
 - **RSS**: `/rss.xml` (Spanish) and `/en/rss.xml` (English) carry the 20 newest published posts
-  with the full article, linking to the posts' pages in their own language. Every page advertises both in its `<head>`, so feed readers find them
-  from the site's address, and the footer's Blog column links to the one in the visitor's
-  language. Drafts never reach subscribers.
-- **A blog with nothing published** hides the whole Blog section, along with its nav entry and footer column, and
-  the other sections renumber themselves.
+  with the full article, linking to the posts' pages in their own language. Every page advertises
+  both in its `<head>`, so feed readers find them from the site's address, and the footer's Blog
+  column links to the one in the visitor's language. Drafts never reach subscribers.
+- **A blog with nothing published** hides the whole Blog section, along with its nav entry and
+  footer column, and the other sections renumber themselves.
 
 The article typography lives in `apps/web/src/app.css` under `.article`. To allow a new tag in
 articles, add it to the renderer's allow-list and give it a style there.
@@ -137,7 +138,7 @@ Every pull request also runs the Playwright suite against a production build, an
 deploy before it publishes: a failing spec stops it. When a spec fails, the job uploads the HTML
 report, with a trace of the failure, as the `playwright-report` artifact.
 
-Lighthouse CI audits the **production build**. A Lighthouse run against `pnpm dev` or
+Lighthouse CI audits the production build. A Lighthouse run against `pnpm dev` or
 `pnpm preview:content` is not representative: the dev server ships unbundled modules and renders on
 every request, which is where "Duplicated JavaScript", a deep network dependency tree and slow
 document latency come from. Budgets live in `lighthouserc.cjs` (every category ≥ 90, CLS ≤ 0.1),

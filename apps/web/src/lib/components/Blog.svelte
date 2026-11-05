@@ -136,8 +136,8 @@
 						{@render card(post, i + 2)}
 					</a>
 				{:else}
-					<!-- A draft with nothing written yet stays inert rather than opening an
-					     empty reader, so the card never lies about being readable. -->
+					<!-- A draft with nothing written yet is not a link and opens no reader:
+					     there is nothing to read. -->
 					<div
 						use:magnetic={14}
 						class="magnet-skew tint-group flex h-full w-full flex-col bg-bg text-ink shadow-[0_0_0_1px_var(--color-divider)]"

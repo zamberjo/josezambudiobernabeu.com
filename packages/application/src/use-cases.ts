@@ -88,8 +88,8 @@ export const saveSection =
 
 /**
  * Re-reads the whole aggregate before triggering the deploy, so cross-entity
- * rules (unique keys, every section present) fail here with a readable list,
- * not twenty minutes later in a CI log.
+ * rules (unique keys, every section present) fail here with a readable list
+ * instead of later, in the deploy workflow's log.
  */
 export const publishSite =
 	(read: PortfolioReader, trigger: PublishTrigger) =>

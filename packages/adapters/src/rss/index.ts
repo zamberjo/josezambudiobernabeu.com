@@ -26,7 +26,7 @@ const escape = (text: string) =>
 /** HTML inside CDATA; the only sequence that could end it early is split. */
 const cdata = (html: string) => `<![CDATA[${html.replaceAll(']]>', ']]]]><![CDATA[>')}]]>`;
 
-/** RFC 822, as RSS requires. Dates are days, so noon UTC keeps every timezone on the same day. */
+/** RFC 822, as RSS requires. Dates are days; noon UTC is that same day from UTC−12 to UTC+11. */
 const rfc822 = (date: string) => new Date(`${date}T12:00:00Z`).toUTCString();
 
 /**

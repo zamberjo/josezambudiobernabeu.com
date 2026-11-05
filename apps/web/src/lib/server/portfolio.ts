@@ -49,10 +49,10 @@ async function readView() {
 let built: ReturnType<typeof readView> | undefined;
 
 /**
- * Fails the build, loudly and with field paths, rather than publish broken
- * content. While building, every page (home, each /blog/<slug>, the sitemap)
- * shares one read, so a build is one consistent snapshot and one round trip.
- * In dev each request reads again, which is what makes `preview:content` live.
+ * Fails the build with field paths instead of publishing broken content.
+ * While building, every page (home, each /blog/<slug>, the sitemap) shares one
+ * read, so a build is one consistent snapshot and one round trip. In dev each
+ * request reads again, which is what makes `preview:content` live.
  */
 export function loadView() {
 	if (!building) return readView();

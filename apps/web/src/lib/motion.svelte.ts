@@ -11,7 +11,7 @@ import type { Action } from 'svelte/action';
  * and a CSS reveal without any of them fighting over `transform`.
  *
  * Everything degrades to "no offsets", which is the finished layout: if the
- * loop never starts (reduced motion, no JS) the page is simply static.
+ * loop never starts (reduced motion, no JS) the page stays static.
  */
 
 const MAGNET_RADIUS = 240;
