@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { LOCALES, type Lang } from '@jzb/domain';
+
 	interface Props {
 		title: string;
 		description: string;
@@ -13,7 +15,10 @@
 		noindex?: boolean;
 		/** schema.org structured data. */
 		jsonLd?: Record<string, unknown>;
-		locale?: string;
+		/** The page's language. */
+		locale: Lang;
+		/** Site paths of this page in every language, for hreflang. */
+		alternates: Record<Lang | 'x-default', string>;
 	}
 
 	let {
@@ -25,8 +30,13 @@
 		publishedTime = null,
 		noindex = false,
 		jsonLd,
-		locale = 'es_ES'
+		locale,
+		alternates
 	}: Props = $props();
+
+	const OG_LOCALES: Record<Lang, string> = { es: 'es_ES', en: 'en_GB' };
+	// Same origin as the canonical URL, which is always absolute.
+	const absolute = (path: string) => new URL(path, url).href;
 
 	// JSON-LD is injected as a script element, so no string in it may contain a
 	// closing tag: every '<' is escaped, which JSON parsers read back unchanged.
@@ -44,6 +54,11 @@
 	<meta name="description" content={description} />
 	<link rel="canonical" href={url} />
 	{#if noindex}<meta name="robots" content="noindex" />{/if}
+
+	<!-- Every language of this page, so search engines show each visitor theirs. -->
+	{#each Object.entries(alternates) as [hreflang, path] (hreflang)}
+		<link rel="alternate" {hreflang} href={absolute(path)} />
+	{/each}
 
 	<!-- Feed autodiscovery: readers and browsers find the RSS from any page.
 	     Advertised even before the first post, so early subscribers get it. -->
@@ -66,7 +81,10 @@
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:url" content={url} />
-	<meta property="og:locale" content={locale} />
+	<meta property="og:locale" content={OG_LOCALES[locale]} />
+	{#each LOCALES.filter((other) => other !== locale) as other (other)}
+		<meta property="og:locale:alternate" content={OG_LOCALES[other]} />
+	{/each}
 	<meta property="og:site_name" content="Jose Zambudio Bernabeu" />
 	{#if image}<meta property="og:image" content={image} />{/if}
 	{#if publishedTime}<meta property="article:published_time" content={publishedTime} />{/if}

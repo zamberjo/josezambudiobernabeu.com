@@ -60,8 +60,7 @@ test('the bands are numbered without gaps', async ({ page }) => {
 test('the reader renders the post body and index from the content', async ({ page }) => {
 	test.skip(readable.length === 0, 'no post with a body written yet');
 
-	await page.goto('/');
-	await page.getByRole('button', { name: 'EN', exact: true }).click();
+	await page.goto('/en');
 	await page.getByRole('link', { name: 'Read', exact: true }).click();
 
 	const reader = page.getByRole('dialog');
@@ -88,33 +87,51 @@ test('every published post has its own prerendered page, found by search engines
 	test.skip(readable.length === 0, 'no post with a body written yet');
 
 	for (const post of readable) {
-		// What a crawler gets: the prerendered HTML, with no JavaScript run. It is
-		// in Spanish, the site's default, whatever the browser prefers.
-		const response = await request.get(`/blog/${post.slug}`);
-		expect(response.status()).toBe(200);
-		const html = await response.text();
-		expect(html).toContain(`>${post.title.es}</h1>`);
-		expect(html).toContain(
-			`<link rel="canonical" href="https://josezambudiobernabeu.com/blog/${post.slug}"`
-		);
-		expect(html).toContain('<meta property="og:type" content="article"');
-		expect(html).toContain('"@type":"BlogPosting"');
-		expect(html).not.toContain('<meta name="robots" content="noindex"');
+		// What a crawler gets: the prerendered HTML, with no JavaScript run, once
+		// per language.
+		for (const [path, lang] of [
+			[`/blog/${post.slug}`, 'es'],
+			[`/en/blog/${post.slug}`, 'en']
+		] as const) {
+			const response = await request.get(path);
+			expect(response.status()).toBe(200);
+			const html = await response.text();
+			expect(html).toContain(`<html lang="${lang}">`);
+			expect(html).toContain(`>${post.title[lang]}</h1>`);
+			expect(html).toContain(
+				`<link rel="canonical" href="https://josezambudiobernabeu.com${path}"`
+			);
+			expect(html).toContain(
+				`hreflang="en" href="https://josezambudiobernabeu.com/en/blog/${post.slug}"`
+			);
+			expect(html).toContain('<meta property="og:type" content="article"');
+			expect(html).toContain('"@type":"BlogPosting"');
+			expect(html).not.toContain('<meta name="robots" content="noindex"');
+		}
 	}
 
-	// And in the browser, the page is a working article with the language toggle.
+	// And in the browser, the toggle moves between the two pages of the post.
 	const post = readable[0]!;
-	await page.goto(`/blog/${post.slug}`);
-	await page.getByRole('button', { name: 'ES', exact: true }).click();
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText(post.title.es);
-	await page.getByRole('button', { name: 'EN', exact: true }).click();
+	await page.goto(`/en/blog/${post.slug}`);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(post.title.en);
+	await page.getByRole('link', { name: 'ES', exact: true }).click();
+	await expect(page).toHaveURL(new RegExp(`:\\d+/blog/${post.slug}$`));
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(post.title.es);
 });
 
-test('the sitemap lists the home page and every published post', async ({ request }) => {
+test('the sitemap lists the home page and every published post, in both languages', async ({
+	request
+}) => {
 	const sitemap = await (await request.get('/sitemap.xml')).text();
 	expect(sitemap).toContain('<loc>https://josezambudiobernabeu.com/</loc>');
-	for (const post of readable) expect(sitemap).toContain(`/blog/${post.slug}<`);
+	expect(sitemap).toContain('<loc>https://josezambudiobernabeu.com/en</loc>');
+	expect(sitemap).toContain(
+		'<xhtml:link rel="alternate" hreflang="en" href="https://josezambudiobernabeu.com/en"/>'
+	);
+	for (const post of readable) {
+		expect(sitemap).toContain(`<loc>https://josezambudiobernabeu.com/blog/${post.slug}<`);
+		expect(sitemap).toContain(`<loc>https://josezambudiobernabeu.com/en/blog/${post.slug}<`);
+	}
 	for (const post of drafts) expect(sitemap).not.toContain(`/blog/${post.slug}<`);
 });
 
@@ -124,7 +141,8 @@ test('drafts are not on the built site at all', async ({ page, request }) => {
 	await page.goto('/');
 	for (const post of drafts) {
 		await expect(page.getByText(post.title.es, { exact: true })).toHaveCount(0);
-		expect((await request.get(`/blog/${post.slug}`)).status()).toBe(404);
+		for (const path of [`/blog/${post.slug}`, `/en/blog/${post.slug}`])
+			expect((await request.get(path)).status()).toBe(404);
 	}
 	if (published.length === 0) {
 		await expect(page.locator('#blog')).toHaveCount(0);
@@ -141,15 +159,18 @@ test('the blog has an RSS feed per language, advertised on every page', async ({
 	await expect(feeds).toHaveCount(2);
 	await expect(feeds.first()).toHaveAttribute('href', '/rss.xml');
 
-	for (const [path, lang] of [
-		['/rss.xml', 'es'],
-		['/en/rss.xml', 'en']
+	for (const [path, prefix, lang] of [
+		['/rss.xml', '', 'es'],
+		['/en/rss.xml', '/en', 'en']
 	] as const) {
 		const xml = await (await request.get(path)).text();
 		expect(xml).toContain('<rss version="2.0"');
 		expect(xml).toContain(`<language>${lang}</language>`);
+		// Each feed links to the posts' pages in its own language.
 		for (const post of readable)
-			expect(xml).toContain(`<link>https://josezambudiobernabeu.com/blog/${post.slug}</link>`);
+			expect(xml).toContain(
+				`<link>https://josezambudiobernabeu.com${prefix}/blog/${post.slug}</link>`
+			);
 		for (const post of drafts) expect(xml).not.toContain(`/blog/${post.slug}<`);
 	}
 });

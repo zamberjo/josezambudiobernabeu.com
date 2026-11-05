@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { lang, t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
-	import { type BlogView, type Localized, type PostView, type Ui } from '@jzb/domain';
+	import { localePath, type BlogView, type Localized, type PostView, type Ui } from '@jzb/domain';
 	import BlogReader from './BlogReader.svelte';
 	import ImageSlot from './ImageSlot.svelte';
 	import SectionHeading from './SectionHeading.svelte';
@@ -29,6 +29,8 @@
 	 * and a new tab or a copied link gets the post's own page. A plain click
 	 * opens the reader over the page instead, at that same URL.
 	 */
+	const postPath = (post: PostView) => localePath(lang.current, `/blog/${post.slug}`);
+
 	function openInReader(event: MouseEvent, post: PostView) {
 		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
 			return;
@@ -110,7 +112,7 @@
 					{/if}
 				</div>
 				<a
-					href="/blog/{featured.slug}"
+					href={postPath(featured)}
 					onclick={(event) => featured && openInReader(event, featured)}
 					class="mt-auto self-start border-2 border-accent-600 bg-accent-600 px-[18px] py-3 text-[13px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:border-accent-700 hover:bg-accent-700 hover:text-white"
 				>
@@ -125,7 +127,7 @@
 			<div class="reveal-up">
 				{#if post.readable}
 					<a
-						href="/blog/{post.slug}"
+						href={postPath(post)}
 						use:magnetic={14}
 						onclick={(event) => openInReader(event, post)}
 						aria-label={t(post.title)}

@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { lang, t } from '../i18n.svelte';
+	import { page } from '$app/state';
+	import { LOCALES, localePath, unlocalizedPath } from '@jzb/domain';
+	import { lang, rememberLang, t } from '../i18n.svelte';
 	import { magnetic } from '../motion.svelte';
 	import type { NavLink } from '@jzb/domain';
 
@@ -12,6 +14,10 @@
 	}
 
 	let { links, base = '' }: Props = $props();
+
+	// The toggle links to this same page in the other language. A link rather
+	// than a button: each language is its own prerendered URL.
+	const here = $derived(unlocalizedPath(page.url.pathname));
 </script>
 
 <!-- Purely decorative: the accent rule that fills as the page scrolls. -->
@@ -44,18 +50,19 @@
 		</div>
 
 		<div class="flex flex-none border-2 border-ink" role="group" aria-label="Idioma / Language">
-			{#each ['es', 'en'] as const as code (code)}
-				<button
-					type="button"
-					aria-pressed={lang.current === code}
-					onclick={() => lang.set(code)}
-					class="cursor-pointer appearance-none border-0 px-2.5 py-[5px] text-xs font-bold tracking-[0.06em] {lang.current ===
-					code
-						? 'bg-ink text-bg'
-						: 'bg-transparent text-ink'}"
+			{#each LOCALES as code (code)}
+				<a
+					href={localePath(code, here)}
+					hreflang={code}
+					aria-current={lang.current === code ? 'page' : undefined}
+					data-sveltekit-noscroll
+					onclick={() => rememberLang(code)}
+					class="px-2.5 py-[5px] text-xs font-bold tracking-[0.06em] {lang.current === code
+						? 'bg-ink text-bg hover:text-bg'
+						: 'bg-transparent text-ink hover:text-accent'}"
 				>
 					{code.toUpperCase()}
-				</button>
+				</a>
 			{/each}
 		</div>
 	</div>

@@ -1,4 +1,11 @@
-import { isIndexable, postPages, type Lang, type PortfolioView, type PostView } from '@jzb/domain';
+import {
+	isIndexable,
+	localePath,
+	postPages,
+	type Lang,
+	type PortfolioView,
+	type PostView
+} from '@jzb/domain';
 
 /*
  * The blog as an RSS 2.0 feed, one per language. A pure function of the read
@@ -56,7 +63,8 @@ export const rssFeed = (view: PortfolioView, { lang, origin, self }: FeedOptions
 	const title = `${view.site.footer.brand} · Blog`;
 
 	const items = posts.map((post) => {
-		const link = url(`/blog/${post.slug}`);
+		// Each feed links to the post's page in its own language.
+		const link = url(localePath(lang, `/blog/${post.slug}`));
 		const cover = post.cover
 			? `<p><img src="${escape(url(post.cover))}" alt="${escape(post.title[lang])}"></p>`
 			: '';
@@ -78,7 +86,7 @@ export const rssFeed = (view: PortfolioView, { lang, origin, self }: FeedOptions
 		'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">',
 		'  <channel>',
 		`    <title>${escape(title)}</title>`,
-		`    <link>${escape(url('/'))}</link>`,
+		`    <link>${escape(url(localePath(lang, '/')))}</link>`,
 		`    <description>${escape(view.site.blog.intro[lang])}</description>`,
 		`    <language>${lang}</language>`,
 		`    <atom:link href="${escape(self)}" rel="self" type="application/rss+xml"/>`,

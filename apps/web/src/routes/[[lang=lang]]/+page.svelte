@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { alternatePaths, localePath } from '@jzb/domain';
 	import { lang, t } from '$lib/i18n.svelte';
 	import { motionRoot } from '$lib/motion.svelte';
 	import About from '$lib/components/About.svelte';
@@ -16,7 +17,6 @@
 
 	let { data } = $props();
 
-	$effect(() => lang.restore());
 
 	// Everything below is the read model built at prerender time: which bands
 	// exist and their numbers (Blog disappears with no posts, and the rest
@@ -26,12 +26,16 @@
 	const site = $derived(view.site);
 	const ui = $derived(site.ui);
 	const band = (id: keyof typeof view.bands) => view.bands[id] ?? '';
+	const origin = $derived(site.footer.siteUrl);
+	const absolute = (path: string) => new URL(path, origin).href;
 </script>
 
 <Seo
 	title="Jose Zambudio Bernabeu"
 	description={t(site.meta.description)}
-	url={site.footer.siteUrl}
+	url={absolute(localePath(lang.current, '/'))}
+	alternates={alternatePaths('/')}
+	locale={lang.current}
 	jsonLd={{
 		'@context': 'https://schema.org',
 		'@type': 'Person',

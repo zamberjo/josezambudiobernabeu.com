@@ -84,6 +84,11 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   allow-list and numbers every `<h2>`, which also builds the reader's side index. The reading time is derived per language from the word count
   (`readingMinutes`, 220 words a minute), so it is never typed and never stale. The opening
   paragraph reads as the lede, and the newest published post becomes the featured card.
+- **Every page exists once per language**: Spanish at the root (`/`, `/blog/<slug>`) and English
+  under `/en` (`/en`, `/en/blog/<slug>`). Each is prerendered in its language, with
+  `<html lang>` set, and links to its translation with `hreflang` (Spanish is `x-default`), so
+  search engines index both and show each visitor theirs. The ES/EN toggle links between them,
+  and a visitor who uses it gets that language back on their next visit.
 - **Every published post has its own URL**, `/blog/<slug>`, prerendered with its canonical link,
   Open Graph card and `BlogPosting` structured data, and listed in `/sitemap.xml`. On the home
   page a card opens the reader over the page at that same URL.
@@ -91,7 +96,7 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   They only show in the dev preview (`pnpm preview:content`), so they can be read before
   publishing.
 - **RSS**: `/rss.xml` (Spanish) and `/en/rss.xml` (English) carry the 20 newest published posts
-  with the full article. Every page advertises both in its `<head>`, so feed readers find them
+  with the full article, linking to the posts' pages in their own language. Every page advertises both in its `<head>`, so feed readers find them
   from the site's address, and the footer's Blog column links to the one in the visitor's
   language. Drafts never reach subscribers.
 - **A blog with nothing published** hides the whole Blog section, along with its nav entry and footer column, and
