@@ -6,6 +6,9 @@ on:
       - master
   # Lets you redeploy the current master without pushing a commit.
   workflow_dispatch:
+  # The backoffice's Publish button (packages/adapters/src/github).
+  repository_dispatch:
+    types: [content-published]
 
 concurrency:
   group: deploy-hosting
@@ -32,8 +35,18 @@ jobs:
       - name: Check types
         run: pnpm run check
 
+      - name: Unit tests
+        run: pnpm run test:unit
+
+      # Content comes from Supabase once its secrets exist, and from the
+      # committed snapshot until then, so deploys keep working either way.
+      # A repository_dispatch always builds master, whatever branch sent it.
       - name: Build
         run: pnpm run build
+        env:
+          CONTENT_SOURCE: ${{ secrets.SUPABASE_URL != '' && 'supabase' || 'json' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
 
       - name: Deploy
         uses: FirebaseExtended/action-hosting-deploy@v0

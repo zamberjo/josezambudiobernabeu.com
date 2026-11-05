@@ -1,0 +1,17 @@
+{
+	"name": "@jzb/domain",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"description": "Entities, validation and pure read-model selectors. No infrastructure.",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"check": "tsc -p ."
+	},
+	"dependencies": {
+		"valibot": "^1.5.0"
+	},
+	"sideEffects": false
+}

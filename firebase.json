@@ -1,15 +1,9 @@
 {
 	"hosting": {
-		"public": "build",
+		"public": "apps/web/build",
 		"cleanUrls": true,
 		"trailingSlash": false,
 		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-		"rewrites": [
-			{
-				"source": "**",
-				"destination": "/index.html"
-			}
-		],
 		"headers": [
 			{
 				"source": "/_app/immutable/**",
@@ -35,6 +29,19 @@
 					{
 						"key": "Cache-Control",
 						"value": "public, max-age=0, must-revalidate"
+					}
+				]
+			},
+			{
+				"source": "**/rss.xml",
+				"headers": [
+					{
+						"key": "Content-Type",
+						"value": "application/rss+xml; charset=utf-8"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "public, max-age=3600"
 					}
 				]
 			}

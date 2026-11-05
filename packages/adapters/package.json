@@ -1,0 +1,36 @@
+{
+	"name": "@jzb/adapters",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"description": "Implementations of the application ports: JSON, Supabase, GitHub, memory.",
+	"exports": {
+		"./json": "./src/json/index.ts",
+		"./memory": "./src/memory/index.ts",
+		"./supabase": "./src/supabase/index.ts",
+		"./github": "./src/github/index.ts",
+		"./html": "./src/html/index.ts",
+		"./images": "./src/images/index.ts",
+		"./rss": "./src/rss/index.ts"
+	},
+	"scripts": {
+		"check": "tsc -p .",
+		"content:seed": "node scripts/content-seed.ts",
+		"content:export": "node scripts/content-export.ts && prettier --write ../../content/portfolio.json",
+		"db:types": "supabase gen types typescript --local --schema public,api > src/supabase/database.types.ts",
+		"images:optimize": "node scripts/images.ts optimize",
+		"images:check": "node scripts/images.ts check"
+	},
+	"dependencies": {
+		"@jzb/application": "workspace:*",
+		"@jzb/domain": "workspace:*",
+		"@supabase/supabase-js": "^2.117.1",
+		"domutils": "^4.0.2",
+		"htmlparser2": "^12.0.0",
+		"sanitize-html": "^2.17.7",
+		"sharp": "~0.35.5"
+	},
+	"devDependencies": {
+		"@types/sanitize-html": "^2.16.2"
+	}
+}

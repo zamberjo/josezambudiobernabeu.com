@@ -27,8 +27,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Previews build from the committed snapshot: a PR changes code, and the
+      # snapshot is what its tests assert against.
       - name: Build
         run: pnpm run build
+        env:
+          CONTENT_SOURCE: json
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

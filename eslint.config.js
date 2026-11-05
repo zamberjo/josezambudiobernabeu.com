@@ -15,6 +15,13 @@ export default [
 				...globals.browser,
 				...globals.node
 			}
+		},
+		rules: {
+			// `_name` marks a binding that exists only to be left out of a rest spread.
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{ varsIgnorePattern: '^_', argsIgnorePattern: '^_' }
+			]
 		}
 	},
 	{
@@ -39,6 +46,6 @@ export default [
 	},
 	prettier,
 	{
-		ignores: ['build/', '.svelte-kit/', 'dist/', 'node_modules/']
+		ignores: ['**/build/', '**/.svelte-kit/', '**/dist/', '**/node_modules/']
 	}
 ];
