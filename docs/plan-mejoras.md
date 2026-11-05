@@ -35,12 +35,13 @@ _Aceptación_: `pnpm lint && pnpm check && pnpm test` en verde. **Hecho** — 7 
 
 El punto que más resta hoy: hay tests buenos y no los ejecuta nadie.
 
-- [ ] **1.1** Job de Playwright en `lint.yaml` (o workflow `test.yaml`) para pull requests:
+- [x] **1.1** Job de Playwright en `lint.yaml` (o workflow `test.yaml`) para pull requests:
       instalar navegadores con `pnpm exec playwright install --with-deps chromium`, build y test.
-- [ ] **1.2** Añadir el mismo job a `deploy.yaml` como puerta previa al deploy: si los tests fallan,
+- [x] **1.2** Añadir el mismo job a `deploy.yaml` como puerta previa al deploy: si los tests fallan,
       no se publica.
-- [ ] **1.3** Subir el reporte HTML de Playwright como artifact en caso de fallo.
-- [ ] **1.4** Renovate o Dependabot semanal, agrupando devDependencies.
+- [x] **1.3** Subir el reporte HTML de Playwright como artifact en caso de fallo.
+      **Hecho** (1.1–1.3) en #50.
+- [x] **1.4** Renovate los jueves a las 17:00, agrupando devDependencies, con todas las versiones fijadas (PR #46).
 
 _Aceptación_: un PR de prueba muestra los checks de lint, types y tests; romper una aserción a
 propósito bloquea el merge.
@@ -54,14 +55,14 @@ propósito bloquea el merge.
 Hoy `blog.ts` y `projects.ts` hacen `data.posts as Post[]`: un cast, no un parse. Un error en el
 JSON llega a producción en silencio.
 
-- [ ] **2.1** Añadir Valibot (más ligero que Zod para lo que necesitamos).
-- [ ] **2.2** `src/lib/data/schema.ts`: schema de `T`, `Block`, `Post`, `Project`, `Skill`. Los tipos
+- [x] **2.1** Añadir Valibot (más ligero que Zod para lo que necesitamos).
+- [x] **2.2** `src/lib/data/schema.ts`: schema de `T`, `Block`, `Post`, `Project`, `Skill`. Los tipos
       del dominio pasan a derivarse del schema (`InferOutput`), no a declararse dos veces.
-- [ ] **2.3** Los loaders (`blog.ts`, `projects.ts`, `skills.ts`) parsean en vez de castear. Un JSON
+- [x] **2.3** Los loaders (`blog.ts`, `projects.ts`, `skills.ts`) parsean en vez de castear. Un JSON
       inválido lanza en tiempo de build, con el path del campo en el mensaje.
-- [ ] **2.4** Reglas de negocio junto al schema, no dispersas: un `Post` `published` exige `date`,
+- [x] **2.4** Reglas de negocio junto al schema, no dispersas: un `Post` `published` exige `date`,
       `readingTime` y `body` no vacío; un `Project` exige URL de repositorio válida.
-- [ ] **2.5** Test unitario (Vitest o un spec de node) que comprueba que un JSON malformado falla.
+- [x] **2.5** Test unitario (Vitest o un spec de node) que comprueba que un JSON malformado falla.
 
 _Aceptación_: quitar `date` de un post publicado rompe `pnpm build` con un error legible.
 
@@ -69,13 +70,16 @@ _Aceptación_: quitar `date` de un post publicado rompe `pnpm build` con un erro
 
 Documentar decisiones **ya tomadas**, en formato corto (contexto / decisión / consecuencias).
 
-- [ ] **3.1** `docs/adr/0001-sitio-estatico-y-firebase-hosting.md`
-- [ ] **3.2** `docs/adr/0002-i18n-sin-routing.md` — y sus consecuencias en SEO, que la fase 5 corrige.
-- [ ] **3.3** `docs/adr/0003-motion-css-scroll-driven-vs-js.md` — por qué el scroll va en CSS y el
+- [x] **3.1** `docs/adr/0001-sitio-estatico-y-firebase-hosting.md`
+- [x] **3.2** `docs/adr/0002-i18n-sin-routing.md` — y sus consecuencias en SEO, que la fase 5 corrige.
+- [x] **3.3** `docs/adr/0003-motion-css-scroll-driven-vs-js.md` — por qué el scroll va en CSS y el
       puntero en JS, y por qué el reveal nunca sale del `@supports`.
-- [ ] **3.4** `docs/adr/0004-contenido-en-json-validado-en-la-frontera.md` — incluyendo por qué **no**
+- [x] **3.4** `docs/adr/0004-contenido-en-json-validado-en-la-frontera.md` — incluyendo por qué **no**
       se ha montado un puerto/adapter hexagonal en un sitio de este tamaño.
-- [ ] **3.5** Enlazar el índice de ADRs desde el README.
+- [x] **3.5** Enlazar el índice de ADRs desde el README.
+
+**Hecho** en `docs/adrs`, con nombres algo distintos (ver [el índice](adr/README.md)). Se añade
+el ADR 0006, que sustituye al 0002 tras la tarea 5.5.
 
 _Aceptación_: cada ADR cabe en una pantalla y explica una alternativa descartada.
 
@@ -102,31 +106,43 @@ sobre `src/lib/data` no devuelve nada.
 
 ## Fase 5 — Alcance y descubribilidad (la fase grande)
 
-- [ ] **5.1** OG + Twitter cards con imagen (`static/assets/og.png`), `canonical` y `theme-color`
+- [x] **5.1** OG + Twitter cards con imagen (`static/assets/og.png`), `canonical` y `theme-color`
       centralizados. Eliminar la duplicación de `title`/`description` entre `app.html` y
-      `+page.svelte`.
+      `+page.svelte`. **Hecho**: `Seo.svelte` centraliza canonical y tarjetas desde la rama del
+      backend; la imagen por defecto (`og.png`) llegó en #52.
 - [x] **5.2** JSON-LD `Person` en la home.
 - [x] **5.3** `sitemap.xml` y `robots.txt` generados en build, con el sitemap referenciado.
 - [x] **5.4** Rutas `/blog/[slug]` prerenderizadas, con `entries()` desde `blog.ts`. El `<dialog>`
       se mantiene como mejora progresiva sobre navegación real, para que un artículo se pueda
       enlazar, compartir e indexar. JSON-LD `BlogPosting` por artículo.
-- [ ] **5.5** i18n indexable: `/en` prerenderizada + `hreflang`, o como mínimo resolver el idioma
+- [x] **5.5** i18n indexable: `/en` prerenderizada + `hreflang`, o como mínimo resolver el idioma
       antes de hidratar (script inline en `app.html`) para eliminar el flash de español.
+      **Hecho** en #51, con la opción completa: ver el
+      [ADR 0006](adr/0006-idioma-en-la-url.md).
 - [x] **5.6** Revisar el rewrite `**` de `firebase.json`: con rutas reales, un slug inexistente debe
       dar 404, no 200 con la home.
+- [ ] **5.7** Imagen OG propia de cada post. Hoy un post comparte su portada, o la tarjeta
+      genérica `og.png` si no tiene; ninguna de las dos lleva el título. Generar en build una
+      imagen de 1200×630 por post e idioma, con el diseño de `og.png` más el título, la fecha y
+      las etiquetas, y la portada si la tiene. Sirve como `og:image` en `/blog/<slug>/og.png` y
+      `/en/blog/<slug>/og.png`, prerenderizada desde un `+server.ts`. Para no depender de
+      Chromium en el build, renderizarla con satori y resvg, usando la Archivo de fontsource
+      que ya tiene el sitio.
 
 _Aceptación_: compartir la URL en LinkedIn muestra tarjeta con imagen; un artículo tiene URL propia
 y aparece en el sitemap; la versión EN es rastreable.
 
 ## Fase 6 — Plataforma y accesibilidad
 
-- [ ] **6.1** Cabeceras de seguridad en `firebase.json`: CSP, `X-Content-Type-Options`,
+- [x] **6.1** Cabeceras de seguridad en `firebase.json`: CSP, `X-Content-Type-Options`,
       `Referrer-Policy`, `Permissions-Policy`, HSTS. Objetivo A+ en securityheaders.com.
-- [ ] **6.2** `404.html` propio, coherente con el diseño.
+      **Hecho** en #52; la CSP lleva hashes por página (`kit.csp`).
+- [x] **6.2** `404.html` propio, coherente con el diseño. **Hecho** en la rama del backend.
 - [ ] **6.3** Skip-link al contenido principal y repaso de `:focus-visible` en nav, tarjetas y el
       reader.
 - [ ] **6.4** Test de accesibilidad con `@axe-core/playwright` en el spec, corriendo en CI.
-- [ ] **6.5** Presupuesto de rendimiento (Lighthouse CI) sobre el preview de cada PR.
+- [x] **6.5** Presupuesto de rendimiento (Lighthouse CI) sobre el preview de cada PR. **Hecho**
+      en la rama del backend, sobre el build de producción en vez del preview.
 
 _Aceptación_: axe sin violaciones críticas; Lighthouse ≥ 95 en las cuatro categorías.
 
@@ -134,9 +150,33 @@ _Aceptación_: axe sin violaciones críticas; Lighthouse ≥ 95 en las cuatro ca
 
 ## Fuera de alcance, y por qué
 
-- **Puerto `ContentRepository` + adapters hexagonales**: en un sitio de ~1.200 líneas sería
-  ceremonia sin beneficio, y un revisor con criterio lo lee como over-engineering. El corte que sí
-  aporta —dominio independiente del formato— lo da la fase 2. Queda documentado en el ADR 0004.
-- **CMS / markdown para el blog**: solo merece la pena a partir de una decena de artículos. La
-  validación de la fase 2 deja la puerta abierta sin pagar nada hoy.
-- **Analítica**: opcional y con coste de privacidad; decidir aparte.
+- **CMS externo para el blog**: el backoffice local con Tiptap cubre la edición, y el contenido
+  ya vive en Supabase ([ADR 0005](adr/0005-supabase-leido-en-build-con-puertos-y-adaptadores.md)).
+- **Analítica**: opcional y con coste de privacidad; decidir aparte. Si se añade, hay que abrirle
+  la CSP en `svelte.config.js` y en `firebase.json`.
+
+La primera versión de esta sección descartaba los puertos y adaptadores por ceremonia. Dejó de
+valer cuando hubo dos fuentes de contenido; el [ADR 0004](adr/0004-contenido-en-json-validado-en-la-frontera.md)
+cuenta la decisión original y el 0005 por qué cambió.
+
+---
+
+## Stack de PRs y orden de merge
+
+Ya fusionados en `master`: el plan del backend (#45, con 6.2 y 6.5), Renovate con versiones
+fijadas (#46), borradores fuera del sitio publicado (#47), `robots.txt` sin crawlers de
+entrenamiento (#48), el aviso de sanitize-html en el renderer (#49), Playwright en CI (#50, 1.1–1.3),
+una URL por idioma (#51, 5.5) y cabeceras de seguridad con imagen OG (#52, 6.1 y 5.1).
+
+Quedan dos ramas apiladas, que se fusionan en este orden:
+
+| Orden | PR  | Rama                 | Base        | Qué implementa                                          |
+| ----- | --- | -------------------- | ----------- | ------------------------------------------------------- |
+| 1     | #53 | `docs/adrs`          | `master`    | Fase 3: ADRs 0001–0004, 0006 e índice; este plan al día |
+| 2     | #54 | `docs/estilo-humano` | `docs/adrs` | Repaso de comentarios y documentación con la guía       |
+
+Con «Create a merge commit», al borrar la rama fusionada GitHub cambia solo la base del PR
+siguiente a `master` y no hay que tocar nada. «Squash and merge» (#45) y «Rebase and merge»
+(#50, #51) reescriben los commits en `master`, así que la rama siguiente sigue arrastrando los
+originales y hay que rebasarla antes de fusionarla:
+`git rebase --onto master <rama-anterior> <rama-siguiente>`.

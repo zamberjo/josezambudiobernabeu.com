@@ -2,8 +2,7 @@
 
 - **Estado**: aceptada
 - **Fecha**: 2026-09-24
-- **Revoca**: la decisión «validación en la frontera, no puerto/adapter» de `docs/plan-mejoras.md`
-  (y el ADR 0004 que la iba a documentar).
+- **Sustituye**: [ADR 0004](0004-contenido-en-json-validado-en-la-frontera.md), «contenido en JSON validado en la frontera, sin puertos».
 
 ## Contexto
 
@@ -43,7 +42,7 @@ inactivos: la web dependería en ejecución de un servicio que se duerme.
    del schema `api`, que es el contrato público y permite refactorizar las tablas sin romper la web.
 5. **Publicación explícita**: el backoffice lanza `repository_dispatch` y la CI reconstruye y
    despliega. No se usa un webhook por cada escritura.
-6. `content/portfolio.json` es la instantánea del contenido. De ella se genera `supabase/seed.sql`,
+6. `content/portfolio.json` es la instantánea del contenido. De ella se genera `supabase/seeds/10_content.sql`,
    Playwright la usa (así la CI no depende de Supabase) y `pnpm content:export` la regenera desde
    la BD como copia de seguridad versionada.
 
