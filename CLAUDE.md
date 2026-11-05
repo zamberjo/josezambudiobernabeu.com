@@ -64,35 +64,34 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `PublishTrigger` and `SnapshotSink`. **Use cases are curried**, dependencies first
   (`saveEntry(commands)(collection, input)`), and validate untrusted input with the domain before
   any port sees it. Errors are `Result` values, never thrown.
-- `packages/adapters` provides `json`, `supabase`, `github`, `memory` and `html`. `html` is the build-time
-  `ArticleRenderer` (sanitize-html allow-list, `<h2>` ids and "01 — " numbering, outline). In
-  `supabase/codecs.ts`, the codecs are the anti-corruption layer (snake_case rows ↔ domain), and
-  generated DB types never leave this package. `src/contract.ts` is the shared store contract:
-  the memory and Supabase stores both run it. Keep them in step.
+- `packages/adapters` provides `json`, `supabase`, `github`, `memory` and `html`. `html` is the
+  build-time `ArticleRenderer` (sanitize-html allow-list, `<h2>` ids and "01 — " numbering,
+  outline). In `supabase/codecs.ts`, the codecs are the anti-corruption layer (snake_case rows ↔
+  domain), and generated DB types never leave this package. `src/contract.ts` is the shared
+  store contract: the memory and Supabase stores both run it. Keep them in step.
 - `apps/web` is fully prerendered (`adapter-static`, `prerender = true`), **once per language**:
   every page route sits under `src/routes/[[lang=lang]]/`, Spanish at the root and English under
   `/en` (the `lang` matcher accepts only the non-default languages, so `/es` is a 404). That gives
   the home page (`/`, `/en`), one page per readable post and language at `/blog/<slug>` and
   `/en/blog/<slug>` (from `entries()`, using `postPages`), `/sitemap.xml` (with `xhtml:link`
-  hreflang alternates), the RSS
-  feeds (`/rss.xml`, `/en/rss.xml`, built by `packages/adapters/src/rss`) and a `404.html`
-  fallback. Its composition root, `src/lib/server/portfolio.ts`, runs in the server
-  loads **at prerender time only**. It picks a reader by `CONTENT_SOURCE` (`json` by default, or
-  `supabase`), and invalid content fails the build with field paths. While building, every page
-  shares one read, so a build is one consistent snapshot; in dev each request reads again. The
-  browser never gets an adapter or a key. Pages hand each section component its slice of the view
-  by props, and components import types and pure helpers from `@jzb/domain`, never data modules.
+  hreflang alternates), the RSS feeds (`/rss.xml`, `/en/rss.xml`, built by
+  `packages/adapters/src/rss`) and a `404.html` fallback. Its composition root,
+  `src/lib/server/portfolio.ts`, runs in the server loads **at prerender time only**. It picks a
+  reader by `CONTENT_SOURCE` (`json` by default, or `supabase`), and invalid content fails the
+  build with field paths. While building, every page shares one read, so a build is one
+  consistent snapshot; in dev each request reads again. The browser never gets an adapter or a
+  key. Pages hand each section component its slice of the view by props, and components import
+  types and pure helpers from `@jzb/domain`, never data modules.
 - On the home page, a post card is a real link to `/blog/<slug>`. A plain click opens the reader
   `<dialog>` instead and moves the URL there with SvelteKit shallow routing (`pushState`,
   `page.state.reader`); Esc, the back button and browser Back all close it and restore `/` (or
-  `/en`).
-  `Article.svelte` is the one article view, shared by the dialog and the post page. `Seo.svelte`
-  writes each page's title, description, canonical, Open Graph/Twitter tags (with the post's cover
-  or the default card `static/assets/og.png` as the image) and JSON-LD (`Person` on home,
-  `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them unless called
-  with `{ drafts: true }`, which the composition root passes only in dev, so `preview:content`
-  shows them (their page with `noindex`). With no published post there is no Blog band, nav entry
-  or footer column.
+  `/en`). `Article.svelte` is the one article view, shared by the dialog and the post page.
+  `Seo.svelte` writes each page's title, description, canonical, Open Graph/Twitter tags (with the
+  post's cover or the default card `static/assets/og.png` as the image) and JSON-LD (`Person` on
+  home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them unless
+  called with `{ drafts: true }`, which the composition root passes only in dev, so
+  `preview:content` shows them (their page with `noindex`). With no published post there is no
+  Blog band, nav entry or footer column.
 - `apps/backoffice` is SvelteKit + adapter-node, local only. `hooks.server.ts` creates a
   cookie-backed Supabase client per request, so every write carries the editor's session and RLS
   decides. It never uses the secret key. `lib/server/services.ts` is its composition root. Forms
@@ -124,11 +123,11 @@ The design is the **Modernist** system from a Claude Design canvas: `--color-bg`
   (`page.params.lang`), on the server while prerendering and in the browser alike. Every string
   is a `Localized` pair and `t()` picks one; the page does not duplicate markup per language.
   Build site paths with `localePath(lang, path)` from `@jzb/domain` (with `langOfPath`,
-  `unlocalizedPath` and `alternatePaths`), never by hand. `hooks.server.ts` fills `<html
-lang="%lang%">` in `app.html`. The ES/EN toggle in `SiteNav` is a pair of links to the same page
-  in each language. An explicit choice is remembered in localStorage and restores that language on
-  the next visit (`+layout.svelte`); `navigator.language` is deliberately ignored, as crawlers
-  announce English. Tests reach English by going to `/en`.
+  `unlocalizedPath` and `alternatePaths`), never by hand. `hooks.server.ts` fills
+  `<html lang="%lang%">` in `app.html`. The ES/EN toggle in `SiteNav` is a pair of links to the
+  same page in each language. An explicit choice is remembered in localStorage and restores that
+  language on the next visit (`+layout.svelte`); `navigator.language` is deliberately ignored,
+  as crawlers announce English. Tests reach English by going to `/en`.
 - `content/portfolio.json` is the whole aggregate: `site` sections (including `ui`, the interface
   strings), `experience`, `posts`, `skills` and `projects`. It seeds the database, the unit tests
   and Playwright read it, and it is the fallback content source.
@@ -164,14 +163,15 @@ Motion is split deliberately between CSS and JS:
   `@media (prefers-reduced-motion: no-preference)` and
   `@supports ((animation-timeline: view()) and (animation-range: entry))`. They are decorative
   progressive enhancement with no JS fallback: where unsupported (Firefox today) the finished state
-  renders. Never move a reveal out of that `@supports` block — it would leave content at
+  renders. Never move a reveal out of that `@supports` block: it would leave content at
   `opacity: 0`.
-- **Pointer position and scroll velocity** effects live in `apps/web/src/lib/motion.svelte.ts`: one shared
-  rAF loop feeding the `motionRoot`, `parallax` and `magnetic` actions. The loop only writes custom
-  properties (`--mx`, `--my`, `--py`, `--skew`, `--squash`); the helper classes in `app.css`
-  (`.magnet`, `.magnet-skew`, `.parallax-y`, `.magnet-parallax`) decide how an element spends them.
+- **Pointer position and scroll velocity** effects live in `apps/web/src/lib/motion.svelte.ts`:
+  one shared rAF loop feeding the `motionRoot`, `parallax` and `magnetic` actions. The loop only
+  writes custom properties (`--mx`, `--my`, `--py`, `--skew`, `--squash`); the helper classes in
+  `app.css` (`.magnet`, `.magnet-skew`, `.parallax-y`, `.magnet-parallax`) decide how an element
+  spends them.
   That split is what lets one node take magnetism, parallax and a CSS reveal without fighting over
-  `transform` — so add a new combination as a class there, not as an inline `transform`.
+  `transform`, so add a new combination as a class there, not as an inline `transform`.
 
 The blog reader is a native `<dialog>` opened with `showModal()`, so Esc, focus trapping and
 inerting the page come from the platform; do not reintroduce manual scroll locking.
@@ -179,9 +179,11 @@ inerting the page come from the platform; do not reintroduce manual scroll locki
 ## Conventions
 
 - Versions are pinned: exact versions in every `package.json` (no `^`/`~`), pnpm with its sha512
-  in `packageManager`, and workflow actions by commit SHA with the version in a comment. `savePrefix: ""` in
-  `pnpm-workspace.yaml` makes `pnpm add` pin too; Renovate proposes the updates.
-- Svelte 5 runes throughout (`$state`, `$props`, `$derived`, `$effect`) — no stores, no `export let`.
+  in `packageManager`, and workflow actions by commit SHA with the version in a comment.
+  `savePrefix: ""` in `pnpm-workspace.yaml` makes `pnpm add` pin too; Renovate proposes the
+  updates.
+- Svelte 5 runes throughout (`$state`, `$props`, `$derived`, `$effect`). No stores, no
+  `export let`.
 - `*.svelte.ts` rune modules need the TS parser, which `eslint.config.js` sets explicitly; the
   svelte parser cannot read them.
 - Tailwind utilities with arbitrary `clamp()` values carry the fluid type scale. Prefer the theme

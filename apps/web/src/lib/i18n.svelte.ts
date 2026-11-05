@@ -27,7 +27,7 @@ export function rememberLang(choice: Lang) {
 	try {
 		localStorage.setItem(STORAGE_KEY, choice);
 	} catch {
-		// Private browsing with storage blocked: the choice just won't persist.
+		// Private browsing with storage blocked: the choice does not persist.
 	}
 }
 

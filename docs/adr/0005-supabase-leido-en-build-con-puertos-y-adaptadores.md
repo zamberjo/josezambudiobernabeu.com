@@ -2,7 +2,8 @@
 
 - **Estado**: aceptada
 - **Fecha**: 2026-09-24
-- **Sustituye**: [ADR 0004](0004-contenido-en-json-validado-en-la-frontera.md), «contenido en JSON validado en la frontera, sin puertos».
+- **Sustituye**: [ADR 0004](0004-contenido-en-json-validado-en-la-frontera.md), «contenido en
+  JSON validado en la frontera, sin puertos».
 
 ## Contexto
 
@@ -30,7 +31,7 @@ inactivos: la web dependería en ejecución de un servicio que se duerme.
 2. **Arquitectura hexagonal en un monorepo pnpm**:
    - `packages/domain`: schemas Valibot (los tipos se derivan de ellos), reglas de negocio y
      selectores puros. Sin dependencias de infraestructura.
-   - `packages/application`: casos de uso y **puertos como tipos de función**
+   - `packages/application`: casos de uso y puertos como tipos de función
      (`PortfolioReader`, `ContentQueries`, `ContentCommands`, `PublishTrigger`). Los errores
      viajan como `Result`, no como excepciones.
    - `packages/adapters`: JSON, Supabase, GitHub y memoria. Los tipos generados de Supabase no
@@ -42,18 +43,19 @@ inactivos: la web dependería en ejecución de un servicio que se duerme.
    del schema `api`, que es el contrato público y permite refactorizar las tablas sin romper la web.
 5. **Publicación explícita**: el backoffice lanza `repository_dispatch` y la CI reconstruye y
    despliega. No se usa un webhook por cada escritura.
-6. `content/portfolio.json` es la instantánea del contenido. De ella se genera `supabase/seeds/10_content.sql`,
-   Playwright la usa (así la CI no depende de Supabase) y `pnpm content:export` la regenera desde
-   la BD como copia de seguridad versionada.
+6. `content/portfolio.json` es la instantánea del contenido. De ella se genera
+   `supabase/seeds/10_content.sql`, Playwright la usa (así la CI no depende de Supabase) y
+   `pnpm content:export` la regenera desde la BD como copia de seguridad versionada.
 
 ## Consecuencias
 
-- Hexagonal se justifica ahora porque hay **dos adaptadores reales** detrás del mismo puerto
+- Hexagonal se justifica ahora porque hay dos adaptadores reales detrás del mismo puerto
   (JSON y Supabase) y dos clientes (web y backoffice). Antes no los había, y por eso la decisión
   anterior era la correcta en su momento.
 - Un cambio de contenido tarda lo que tarde un deploy (~2 min), y a cambio no hay coste de
   ejecución.
 - Añadir un idioma requiere tres cambios: `LOCALES` en el dominio, `is_localized()` en una
   migración y rellenar las filas existentes.
-- El build de producción necesita `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` (la clave publicable o la anon heredada). Si Supabase está pausado,
-  el deploy falla y la versión publicada sigue en pie.
+- El build de producción necesita `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` (la clave
+  publicable o la anon heredada). Si Supabase está pausado, el deploy falla y la versión
+  publicada sigue en pie.

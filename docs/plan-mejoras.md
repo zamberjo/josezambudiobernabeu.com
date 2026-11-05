@@ -1,17 +1,18 @@
 # Plan de mejoras del portfolio
 
-Objetivo: que la web **y el repositorio que enlaza** transmitan el nivel de un ingeniero
-senior con criterio de arquitectura. El repo es parte del portfolio: quien abre
-`josezambudiobernabeu.com` acaba abriendo este repositorio.
+Objetivo: que la web y el repositorio que enlaza transmitan el nivel de un ingeniero senior con
+criterio de arquitectura. El repo es parte del portfolio: quien abre `josezambudiobernabeu.com`
+acaba abriendo este repositorio.
 
 Cada paso es un commit independiente, con un criterio de aceptación verificable. El orden está
 pensado para que lo más visible llegue antes y nada dependa de un paso posterior.
 
 Decisiones ya tomadas:
 
-- **Capa de contenido**: validación en la frontera (schemas que parsean los JSON y rompen el
-  build), no puerto/adapter explícito. El dominio queda desacoplado del formato sin ceremonia
-  añadida. Se documenta como ADR.
+- **Capa de contenido**: validación en la frontera, con schemas que parsean los JSON y rompen el
+  build, y sin puertos ni adaptadores. El dominio queda desacoplado del formato sin capas extra.
+  Se documenta como ADR. (Revocada después por el
+  [ADR 0005](adr/0005-supabase-leido-en-build-con-puertos-y-adaptadores.md).)
 - **Contenido real** (artículos, empresas, métricas): lo escribe Jose. El trabajo técnico deja la
   estructura lista y los huecos marcados; nada se publica con relleno.
 
@@ -29,7 +30,7 @@ Arreglos pequeños que hoy contradicen el resto del repo.
       reader) y `tests/content.spec.ts` (que los JSON mandan sobre la página).
 - [x] **0.4** `LICENSE` (MIT) y `package.json`: `name` real en vez de `portfolio`.
 
-_Aceptación_: `pnpm lint && pnpm check && pnpm test` en verde. **Hecho** — 7 tests en verde.
+_Aceptación_: `pnpm lint && pnpm check && pnpm test` en verde. **Hecho**: 7 tests en verde.
 
 ## Fase 1 — Rigor visible en CI (media tarde)
 
@@ -41,7 +42,8 @@ El punto que más resta hoy: hay tests buenos y no los ejecuta nadie.
       no se publica.
 - [x] **1.3** Subir el reporte HTML de Playwright como artifact en caso de fallo.
       **Hecho** (1.1–1.3) en #50.
-- [x] **1.4** Renovate los jueves a las 17:00, agrupando devDependencies, con todas las versiones fijadas (PR #46).
+- [x] **1.4** Renovate los jueves a las 17:00, agrupando devDependencies, con todas las
+      versiones fijadas (PR #46).
 
 _Aceptación_: un PR de prueba muestra los checks de lint, types y tests; romper una aserción a
 propósito bloquea el merge.
@@ -56,8 +58,8 @@ Hoy `blog.ts` y `projects.ts` hacen `data.posts as Post[]`: un cast, no un parse
 JSON llega a producción en silencio.
 
 - [x] **2.1** Añadir Valibot (más ligero que Zod para lo que necesitamos).
-- [x] **2.2** `src/lib/data/schema.ts`: schema de `T`, `Block`, `Post`, `Project`, `Skill`. Los tipos
-      del dominio pasan a derivarse del schema (`InferOutput`), no a declararse dos veces.
+- [x] **2.2** `src/lib/data/schema.ts`: schema de `T`, `Block`, `Post`, `Project`, `Skill`. Los
+      tipos del dominio se derivan del schema (`InferOutput`) en vez de declararse dos veces.
 - [x] **2.3** Los loaders (`blog.ts`, `projects.ts`, `skills.ts`) parsean en vez de castear. Un JSON
       inválido lanza en tiempo de build, con el path del campo en el mensaje.
 - [x] **2.4** Reglas de negocio junto al schema, no dispersas: un `Post` `published` exige `date`,
@@ -68,14 +70,15 @@ _Aceptación_: quitar `date` de un post publicado rompe `pnpm build` con un erro
 
 ## Fase 3 — ADRs (una tarde, alto retorno para perfil de arquitecto)
 
-Documentar decisiones **ya tomadas**, en formato corto (contexto / decisión / consecuencias).
+Documentar decisiones ya tomadas, en formato corto (contexto, decisión, consecuencias).
 
 - [x] **3.1** `docs/adr/0001-sitio-estatico-y-firebase-hosting.md`
-- [x] **3.2** `docs/adr/0002-i18n-sin-routing.md` — y sus consecuencias en SEO, que la fase 5 corrige.
-- [x] **3.3** `docs/adr/0003-motion-css-scroll-driven-vs-js.md` — por qué el scroll va en CSS y el
+- [x] **3.2** `docs/adr/0002-i18n-sin-routing.md`, con sus consecuencias en SEO, que la fase 5
+      corrige.
+- [x] **3.3** `docs/adr/0003-motion-css-scroll-driven-vs-js.md`: por qué el scroll va en CSS y el
       puntero en JS, y por qué el reveal nunca sale del `@supports`.
-- [x] **3.4** `docs/adr/0004-contenido-en-json-validado-en-la-frontera.md` — incluyendo por qué **no**
-      se ha montado un puerto/adapter hexagonal en un sitio de este tamaño.
+- [x] **3.4** `docs/adr/0004-contenido-en-json-validado-en-la-frontera.md`, incluido por qué no se
+      ha montado un puerto/adapter hexagonal en un sitio de este tamaño.
 - [x] **3.5** Enlazar el índice de ADRs desde el README.
 
 **Hecho** en `docs/adrs`, con nombres algo distintos (ver [el índice](adr/README.md)). Se añade
@@ -91,15 +94,15 @@ El trabajo técnico prepara la estructura; el texto lo escribe Jose.
       (banda, entrada de nav y columna del footer) desaparece hasta que haya artículo real.
       Las bandas se renumeran solas. **Hecho.**
 - [ ] **4.2** Rediseñar el modelo de `Skill`: fuera `level` 0–100 y su barra. Sustituir por
-      evidencia — años, contexto y proyecto donde se usó. Implica tocar `skills.json`,
+      evidencia: años, contexto y proyecto donde se usó. Implica tocar `skills.json`,
       `skills.ts`, `SkillsGrid.svelte` y el CSS de `.bar-grow` en `app.css`.
 - [ ] **4.3** Ampliar el modelo de `experience`: empresa, periodo con fechas, escala (equipo,
       volumen, módulos) y **una decisión técnica o resultado medible** por entrada. Dejar los
       campos y marcar los huecos en el JSON/TS para que Jose los rellene.
-- [ ] **4.4** CTA: sección de contacto con email y CV en PDF (`static/assets/cv/`), enlazada desde
-      nav y footer.
-- [ ] **4.5** Sacar `project.description` del atributo `title` a la propia tarjeta: hoy es contenido
-      bueno invisible en móvil y para teclado.
+- [ ] **4.4** CTA: sección de contacto con email y CV en PDF (`static/assets/cv/`), enlazada
+      desde nav y footer.
+- [ ] **4.5** Sacar `project.description` del atributo `title` a la propia tarjeta: hoy ese texto
+      no se ve en móvil ni con teclado.
 
 _Aceptación_: ninguna cadena visible contiene texto de plantilla; `rg -i "sustituye|lorem|tu primer"`
 sobre `src/lib/data` no devuelve nada.
@@ -156,8 +159,9 @@ _Aceptación_: axe sin violaciones críticas; Lighthouse ≥ 95 en las cuatro ca
   la CSP en `svelte.config.js` y en `firebase.json`.
 
 La primera versión de esta sección descartaba los puertos y adaptadores por ceremonia. Dejó de
-valer cuando hubo dos fuentes de contenido; el [ADR 0004](adr/0004-contenido-en-json-validado-en-la-frontera.md)
-cuenta la decisión original y el 0005 por qué cambió.
+valer cuando hubo dos fuentes de contenido. El
+[ADR 0004](adr/0004-contenido-en-json-validado-en-la-frontera.md) cuenta la decisión original y
+el 0005 por qué cambió.
 
 ---
 
@@ -166,14 +170,11 @@ cuenta la decisión original y el 0005 por qué cambió.
 Ya fusionados en `master`: el plan del backend (#45, con 6.2 y 6.5), Renovate con versiones
 fijadas (#46), borradores fuera del sitio publicado (#47), `robots.txt` sin crawlers de
 entrenamiento (#48), el aviso de sanitize-html en el renderer (#49), Playwright en CI (#50, 1.1–1.3),
-una URL por idioma (#51, 5.5) y cabeceras de seguridad con imagen OG (#52, 6.1 y 5.1).
+una URL por idioma (#51, 5.5), cabeceras de seguridad con imagen OG (#52, 6.1 y 5.1) y los ADRs
+(#53, fase 3).
 
-Quedan dos ramas apiladas, que se fusionan en este orden:
-
-| Orden | PR  | Rama                 | Base        | Qué implementa                                          |
-| ----- | --- | -------------------- | ----------- | ------------------------------------------------------- |
-| 1     | #53 | `docs/adrs`          | `master`    | Fase 3: ADRs 0001–0004, 0006 e índice; este plan al día |
-| 2     | #54 | `docs/estilo-humano` | `docs/adrs` | Repaso de comentarios y documentación con la guía       |
+Queda #54 (`docs/estilo-humano`, base `master`): el repaso de comentarios y documentación con la
+guía de estilo. Con él se cierra el stack.
 
 Con «Create a merge commit», al borrar la rama fusionada GitHub cambia solo la base del PR
 siguiente a `master` y no hay que tocar nada. «Squash and merge» (#45) y «Rebase and merge»

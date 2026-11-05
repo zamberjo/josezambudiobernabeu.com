@@ -2,7 +2,7 @@ import { fail } from '@sveltejs/kit';
 import type { StoreError } from '@jzb/application';
 import type { ValidationIssue } from '@jzb/domain';
 
-/** Reads the form's single JSON field. A malformed body is the client's bug, not the editor's. */
+/** Reads the form's single JSON field. A malformed body is a client bug, so it throws. */
 export async function readPayload(request: Request): Promise<unknown> {
 	const raw = (await request.formData()).get('payload');
 	if (typeof raw !== 'string') throw new Error('The form posted no payload');

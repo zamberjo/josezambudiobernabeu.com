@@ -3,8 +3,8 @@ import { LocalizedSchema } from './i18n.ts';
 
 /*
  * The page copy that is not a list: one value per section, stored as one row
- * per key in `site_sections`. `ui` holds the interface strings the components
- * used to carry inline, so every translation now lives in the content store.
+ * per key in `site_sections`. `ui` holds the interface strings, so every
+ * translation lives in the content store and none in the components.
  */
 
 const Text = v.pipe(v.string(), v.nonEmpty());

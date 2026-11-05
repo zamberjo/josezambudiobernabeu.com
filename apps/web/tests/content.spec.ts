@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 import content from '../../../content/portfolio.json' with { type: 'json' };
 
 /**
- * These assert the content snapshot (content/portfolio.json) actually drives the page, rather
- * than the markup carrying a hardcoded copy of the same content.
+ * These check that the content snapshot (content/portfolio.json) drives the page. The markup
+ * carries no hardcoded copy of the same content.
  */
 
 const posts = content.posts as {
@@ -25,10 +25,9 @@ test('side projects link out to their repositories', async ({ page }) => {
 	await expect(card).toHaveAttribute('href', 'https://github.com/zamberjo/home-hosted');
 });
 
-// The Blog band is the only optional one: with no published post the section, the
-// nav entry and the footer column all go away, and the bands renumber around
-// the hole. These cover both states so the suite keeps its meaning once the
-// first post is written.
+// The Blog band is the only optional one: with no published post the section,
+// the nav entry and the footer column all go away, and the bands renumber around
+// the hole. These cover both states, so they hold with or without posts.
 test('the blog band appears only when a post is published', async ({ page }) => {
 	await page.goto('/');
 
@@ -66,7 +65,7 @@ test('the reader renders the post body and index from the content', async ({ pag
 	const reader = page.getByRole('dialog');
 	await expect(reader).toBeVisible();
 	await expect(reader.getByRole('navigation', { name: 'In this post' })).toBeVisible();
-	// Headings are numbered by the reader itself, so the first one always leads with 01.
+	// The build-time renderer numbers the headings, so the first one always leads with 01.
 	await expect(reader.getByRole('heading', { name: /^01 — / })).toBeVisible();
 });
 

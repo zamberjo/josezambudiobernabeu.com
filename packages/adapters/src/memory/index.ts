@@ -22,8 +22,8 @@ type State = {
 };
 
 /**
- * A complete store in a closure: the reference implementation of the ports,
- * used by the tests and handy for running the backoffice without a database.
+ * A complete store in a closure: the reference implementation of the ports.
+ * It runs the shared store contract with no database behind it.
  * Every write replaces `state` with a new value; nothing is mutated in place.
  */
 export const createMemoryStore = (seed?: Portfolio, newId = sequence()) => {
