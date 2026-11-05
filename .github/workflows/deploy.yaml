@@ -38,6 +38,23 @@ jobs:
       - name: Unit tests
         run: pnpm run test:unit
 
+      # The same suite as on pull requests, as a gate: a red test never
+      # deploys. It builds from the snapshot (playwright.config.ts), so it
+      # tests the code; the build below then picks the real content source.
+      - name: Install Chromium
+        run: pnpm --filter web exec playwright install --with-deps chromium
+
+      - name: Playwright
+        run: pnpm run test
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 14
+
       # Content comes from Supabase once its secrets exist, and from the
       # committed snapshot until then, so deploys keep working either way.
       # A repository_dispatch always builds master, whatever branch sent it.
