@@ -124,6 +124,10 @@ The cover on a post's own page is its Largest Contentful Paint, so it loads eage
 pnpm lighthouse          # production build, every page, 3 runs each; reports in .lighthouseci/
 ```
 
+Every pull request also runs the Playwright suite against a production build, and so does every
+deploy before it publishes: a failing spec stops it. When a spec fails, the job uploads the HTML
+report, with a trace of the failure, as the `playwright-report` artifact.
+
 Lighthouse CI audits the **production build**. A Lighthouse run against `pnpm dev` or
 `pnpm preview:content` is not representative: the dev server ships unbundled modules and renders on
 every request, which is where "Duplicated JavaScript", a deep network dependency tree and slow

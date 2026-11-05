@@ -36,14 +36,17 @@ pnpm lighthouse             # Lighthouse CI on the production build (budgets: li
 Deploy by hand: `CONTENT_SOURCE=supabase SUPABASE_URL=… SUPABASE_PUBLISHABLE_KEY=… pnpm build`, then
 `npx -y firebase-tools deploy --only hosting` (`firebase.json` points at `apps/web/build`).
 
-CI: `lint.yaml` runs lint, check and unit tests on pull requests. `deploy.yaml` runs on push to
-`master`, `workflow_dispatch` and `repository_dispatch: content-published` (the backoffice's
-Publish button). It checks, runs the unit tests, builds, and deploys to Firebase Hosting. It builds
+CI: `lint.yaml` runs on pull requests: lint, check and unit tests; the Playwright suite (its HTML
+report is uploaded when it fails); and Lighthouse. `deploy.yaml` runs on push to `master`,
+`workflow_dispatch` and `repository_dispatch: content-published` (the backoffice's Publish
+button). It checks, runs the unit tests and the Playwright suite as a gate, builds, and deploys to
+Firebase Hosting. Playwright always builds from the snapshot (`webServer.env` in
+`apps/web/playwright.config.ts`), so the specs test the code whatever the content source. It builds
 from Supabase when the `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` secrets exist, and from the
 snapshot otherwise. It also needs `FIREBASE_SERVICE_ACCOUNT_JOSEZAMBUDIOBERNABEU`. PR previews
-(`firebase-hosting-pull-request.yml`) always build from the snapshot. There is still no Playwright
-job. `renovate.yaml` runs self-hosted Renovate on Thursdays at 17:00
-Europe/Madrid with `renovate.json` (needs the `RENOVATE_TOKEN` secret).
+(`firebase-hosting-pull-request.yml`) always build from the snapshot. `renovate.yaml` runs
+self-hosted Renovate on Thursdays at 17:00 Europe/Madrid with `renovate.json` (needs the
+`RENOVATE_TOKEN` secret).
 
 ## Architecture
 
