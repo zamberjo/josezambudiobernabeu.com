@@ -89,6 +89,10 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   `<html lang>` set, and links to its translation with `hreflang` (Spanish is `x-default`), so
   search engines index both and show each visitor theirs. The ES/EN toggle links between them,
   and a visitor who uses it gets that language back on their next visit.
+- **Share cards**: every page has an Open Graph/Twitter image, a post's cover or the default
+  card `static/assets/og.png`. The card is HTML rendered in Chromium with the site's font and
+  colours (`apps/web/scripts/og-image.ts`); after changing it, run `pnpm --filter web og:image`
+  and commit the PNG.
 - **Every published post has its own URL**, `/blog/<slug>`, prerendered with its canonical link,
   Open Graph card and `BlogPosting` structured data, and listed in `/sitemap.xml`. On the home
   page a card opens the reader over the page at that same URL.

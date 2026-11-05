@@ -10,7 +10,8 @@
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-		"prepare": "svelte-kit sync || echo ''"
+		"prepare": "svelte-kit sync || echo ''",
+		"og:image": "node scripts/og-image.ts"
 	},
 	"devDependencies": {
 		"@playwright/test": "1.63.0",

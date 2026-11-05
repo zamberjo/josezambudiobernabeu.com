@@ -6,7 +6,7 @@
 		description: string;
 		/** Absolute canonical URL of this page. */
 		url: string;
-		/** Absolute URL of the share image, if any. */
+		/** Absolute URL of the share image; the site's default card if none. */
 		image?: string | null;
 		type?: 'website' | 'article';
 		/** YYYY-MM-DD, for articles. */
@@ -37,6 +37,11 @@
 	const OG_LOCALES: Record<Lang, string> = { es: 'es_ES', en: 'en_GB' };
 	// Same origin as the canonical URL, which is always absolute.
 	const absolute = (path: string) => new URL(path, url).href;
+
+	// Every page shares with a picture: its own (a post's cover) or the default
+	// card, static/assets/og.png, rendered by `pnpm --filter web og:image`.
+	const DEFAULT_IMAGE = { path: '/assets/og.png', width: 1200, height: 630 };
+	const shareImage = $derived(image ?? absolute(DEFAULT_IMAGE.path));
 
 	// JSON-LD is injected as a script element, so no string in it may contain a
 	// closing tag: every '<' is escaped, which JSON parsers read back unchanged.
@@ -87,13 +92,18 @@
 		<meta property="og:locale:alternate" content={OG_LOCALES[other]} />
 	{/each}
 	<meta property="og:site_name" content="Jose Zambudio Bernabeu" />
-	{#if image}<meta property="og:image" content={image} />{/if}
+	<meta property="og:image" content={shareImage} />
+	<meta property="og:image:alt" content={title} />
+	{#if !image}
+		<meta property="og:image:width" content={String(DEFAULT_IMAGE.width)} />
+		<meta property="og:image:height" content={String(DEFAULT_IMAGE.height)} />
+	{/if}
 	{#if publishedTime}<meta property="article:published_time" content={publishedTime} />{/if}
 
-	<meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
-	{#if image}<meta name="twitter:image" content={image} />{/if}
+	<meta name="twitter:image" content={shareImage} />
 
 	{#if structuredData}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->

@@ -31,6 +31,7 @@ pnpm db:types               # regenerate packages/adapters/src/supabase/database
 pnpm images:optimize        # PNG/JPEG in apps/web/static/assets/blog → responsive WebP set
 pnpm images:check           # CI: fails on unoptimised PNG/JPEG over 200 KB
 pnpm lighthouse             # Lighthouse CI on the production build (budgets: lighthouserc.cjs)
+pnpm --filter web og:image  # re-render the default share card, static/assets/og.png
 ```
 
 Deploy by hand: `CONTENT_SOURCE=supabase SUPABASE_URL=… SUPABASE_PUBLISHABLE_KEY=… pnpm build`, then
@@ -86,11 +87,12 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `page.state.reader`); Esc, the back button and browser Back all close it and restore `/` (or
   `/en`).
   `Article.svelte` is the one article view, shared by the dialog and the post page. `Seo.svelte`
-  writes each page's title, description, canonical, Open Graph/Twitter tags and JSON-LD (`Person`
-  on home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them
-  unless called with `{ drafts: true }`, which the composition root passes only in dev, so
-  `preview:content` shows them (their page with `noindex`). With no published post there is no
-  Blog band, nav entry or footer column.
+  writes each page's title, description, canonical, Open Graph/Twitter tags (with the post's cover
+  or the default card `static/assets/og.png` as the image) and JSON-LD (`Person` on home,
+  `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them unless called
+  with `{ drafts: true }`, which the composition root passes only in dev, so `preview:content`
+  shows them (their page with `noindex`). With no published post there is no Blog band, nav entry
+  or footer column.
 - `apps/backoffice` is SvelteKit + adapter-node, local only. `hooks.server.ts` creates a
   cookie-backed Supabase client per request, so every write carries the editor's session and RLS
   decides. It never uses the secret key. `lib/server/services.ts` is its composition root. Forms

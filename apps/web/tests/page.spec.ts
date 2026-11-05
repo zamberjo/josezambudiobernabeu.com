@@ -110,6 +110,17 @@ test('the home page carries its canonical URL and social card', async ({ page })
 		'https://josezambudiobernabeu.com/'
 	);
 	await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
+	// A link shared on LinkedIn or Slack shows the default card, as a large image.
+	await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+		'content',
+		'https://josezambudiobernabeu.com/assets/og.png'
+	);
+	await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+		'content',
+		'summary_large_image'
+	);
+	const card = await page.request.get('/assets/og.png');
+	expect(card.headers()['content-type']).toBe('image/png');
 });
 
 test('robots.txt keeps AI training crawlers out and lets search in', async ({ request }) => {
