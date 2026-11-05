@@ -258,6 +258,12 @@ CONTENT_SOURCE=supabase SUPABASE_URL=… SUPABASE_PUBLISHABLE_KEY=… pnpm build
 npx -y firebase-tools deploy --only hosting
 ```
 
+## Architecture decisions
+
+The decisions behind this layout, and the ones it replaced, are in [docs/adr](docs/adr/README.md).
+The roadmap and the order in which its pull requests merge are in
+[docs/plan-mejoras.md](docs/plan-mejoras.md).
+
 ### Previous Versions
 
 - [React version](https://github.com/zamberjo/josezambudiobernabeu.com/tree/react)
