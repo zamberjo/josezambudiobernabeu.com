@@ -135,9 +135,10 @@ and the `lighthouse` job enforces them on each pull request.
 `apps/web/static/robots.txt` lets search engines and AI search assistants in, and keeps the
 crawlers that gather AI training data out (GPTBot, ClaudeBot, Google-Extended, CCBot and others).
 Each company runs its search crawler under a separate user agent, so blocking training does not
-drop the site from ChatGPT search, Perplexity or Google. For everyone else, the `Content-Signal`
-line (`search=yes, ai-input=yes, ai-train=no`) states the same terms, following
-[contentsignals.org](https://contentsignals.org).
+drop the site from ChatGPT search, Perplexity or Google. The file also states those terms in the
+format of [contentsignals.org](https://contentsignals.org) (`search=yes, ai-input=yes,
+ai-train=no`), as a comment: Lighthouse fails its robots.txt audit on a `Content-Signal`
+directive.
 
 `robots.txt` is a request that well-behaved crawlers honour. Enforcing it needs a proxy in front
 of Firebase Hosting, which cannot filter by user agent: Cloudflare's AI Crawl Control can block

@@ -3,10 +3,12 @@
 # Search engines and AI search assistants may crawl and cite this site.
 # Using its content to train AI models is not allowed.
 #
-# Content-Signal follows the Content Signals Policy (https://contentsignals.org):
-#   search=yes    building a search index and showing links and excerpts
-#   ai-input=yes  using the content as input to answer a question (RAG, grounding)
-#   ai-train=no   training or fine-tuning AI models
+# The same terms as a Content Signals Policy line (https://contentsignals.org):
+#
+#   Content-Signal: search=yes, ai-input=yes, ai-train=no
+#
+# It stays a comment because robots.txt validators, Lighthouse among them,
+# reject the directive as unknown.
 
 # Crawlers that collect training data. Their search counterparts
 # (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot,
@@ -31,7 +33,6 @@ User-agent: img2dataset
 Disallow: /
 
 User-agent: *
-Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://josezambudiobernabeu.com/sitemap.xml
