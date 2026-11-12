@@ -42,7 +42,8 @@ Publish button). It checks, runs the unit tests, builds, and deploys to Firebase
 from Supabase when the `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` secrets exist, and from the
 snapshot otherwise. It also needs `FIREBASE_SERVICE_ACCOUNT_JOSEZAMBUDIOBERNABEU`. PR previews
 (`firebase-hosting-pull-request.yml`) always build from the snapshot. There is still no Playwright
-job.
+job. `renovate.yaml` runs self-hosted Renovate on Thursdays at 17:00
+Europe/Madrid with `renovate.json` (needs the `RENOVATE_TOKEN` secret).
 
 ## Architecture
 
@@ -160,6 +161,9 @@ inerting the page come from the platform; do not reintroduce manual scroll locki
 
 ## Conventions
 
+- Versions are pinned: exact versions in every `package.json` (no `^`/`~`), pnpm with its sha512
+  in `packageManager`, and workflow actions by commit SHA with the version in a comment. `savePrefix: ""` in
+  `pnpm-workspace.yaml` makes `pnpm add` pin too; Renovate proposes the updates.
 - Svelte 5 runes throughout (`$state`, `$props`, `$derived`, `$effect`) — no stores, no `export let`.
 - `*.svelte.ts` rune modules need the TS parser, which `eslint.config.js` sets explicitly; the
   svelte parser cannot read them.

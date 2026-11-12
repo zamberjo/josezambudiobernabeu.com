@@ -129,6 +129,30 @@ document latency come from. Budgets live in `lighthouserc.cjs` (every category â
 and the `lighthouse` job enforces them on each pull request. A draft post's page reports "Page is
 blocked from indexing" on purpose (`noindex`); it goes away once the post is published.
 
+## Dependency updates
+
+Every version is pinned. Packages in each `package.json` use exact versions, with no `^` or `~`,
+and pnpm itself is pinned with its sha512 in `packageManager`. Workflow actions are pinned by commit
+SHA, with the version in a comment (`actions/checkout@<sha> # v4.4.0`), since a tag can be moved.
+The lockfile records each package's integrity hash, so `pnpm install` rejects a tarball that
+changed.
+
+Renovate keeps the pins current. It runs as a GitHub Action (`.github/workflows/renovate.yaml`) on
+Thursdays at 17:00 Europe/Madrid, or by hand from the Actions tab, and opens PRs following
+`renovate.json`. Minor and patch updates of dev tooling arrive grouped in one PR. The SvelteKit
+toolchain, Supabase, Tiptap and the workflow actions each get their own group, and majors come one
+by one. It waits three days after a release, longer than pnpm's own `minimumReleaseAge`, so
+`pnpm install` never rejects what it proposes. The lockfile is refreshed in the same window, and
+the Dependency Dashboard issue lists what is pending.
+
+GitHub's cron runs in UTC and ignores daylight saving, so the workflow fires at 15:00 and 16:00 UTC.
+Renovate's own schedule (`timezone: Europe/Madrid`) skips whichever of the two is not 17:00 in
+Madrid.
+
+It needs a `RENOVATE_TOKEN` secret: a fine-grained token on this repository with _Contents_, _Pull
+requests_, _Issues_ and _Workflows_ set to read and write. PRs opened with the default
+`GITHUB_TOKEN` do not trigger other workflows, so CI would never run on them.
+
 ## Deploy
 
 Pushing to `master`, running the workflow by hand, or pressing **Publish** in the backoffice
