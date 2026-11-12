@@ -78,8 +78,10 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `page.state.reader`); Esc, the back button and browser Back all close it and restore `/`.
   `Article.svelte` is the one article view, shared by the dialog and the post page. `Seo.svelte`
   writes each page's title, description, canonical, Open Graph/Twitter tags and JSON-LD (`Person`
-  on home, `BlogPosting` on posts). Drafts with a body get a page but `noindex`, and stay out of
-  the sitemap.
+  on home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them
+  unless called with `{ drafts: true }`, which the composition root passes only in dev, so
+  `preview:content` shows them (their page with `noindex`). With no published post there is no
+  Blog band, nav entry or footer column.
 - `apps/backoffice` is SvelteKit + adapter-node, local only. `hooks.server.ts` creates a
   cookie-backed Supabase client per request, so every write carries the editor's session and RLS
   decides. It never uses the secret key. `lib/server/services.ts` is its composition root. Forms

@@ -14,7 +14,8 @@ import {
 	type PortfolioView,
 	type Result,
 	type Site,
-	type SiteSection
+	type SiteSection,
+	type ViewOptions
 } from '@jzb/domain';
 import { move, type Direction } from './ordering.ts';
 import type {
@@ -41,9 +42,9 @@ import type {
 // --- Web ------------------------------------------------------------------------
 
 export const loadPortfolioView =
-	(read: PortfolioReader, render: ArticleRenderer) =>
+	(read: PortfolioReader, render: ArticleRenderer, options?: ViewOptions) =>
 	async (): Promise<Result<PortfolioView, ReadError>> =>
-		map(await read(), (portfolio) => toPortfolioView(portfolio, render));
+		map(await read(), (portfolio) => toPortfolioView(portfolio, render, options));
 
 // --- Backoffice: commands ---------------------------------------------------------
 

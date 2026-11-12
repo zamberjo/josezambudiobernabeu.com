@@ -63,7 +63,7 @@ pnpm dev:local           # the same, but always against the local stack
 ```
 
 Both run the site in dev mode, where the page's content is loaded on every request: save in the
-backoffice, reload the preview, and the change is there. Nothing is built or deployed until you
+backoffice, reload the preview, and the change is there. Drafts show here, and only here. Nothing is built or deployed until you
 press **Publish**. For a check of the exact production output, `pnpm build:local && pnpm preview`
 prerenders from the local database and serves the result.
 
@@ -84,15 +84,17 @@ it is a `jsonb` column checked by `is_localized()`; in code it is the domain's `
   allow-list and numbers every `<h2>`, which also builds the reader's side index. The reading time is derived per language from the word count
   (`readingMinutes`, 220 words a minute), so it is never typed and never stale. The opening
   paragraph reads as the lede, and the newest published post becomes the featured card.
-- **Every readable post has its own URL**, `/blog/<slug>`, prerendered with its canonical link,
-  Open Graph card and `BlogPosting` structured data, and listed in `/sitemap.xml` once published.
-  Drafts with a body also get a page, for sharing a preview, but with `noindex`. On the home page
-  a card opens the reader over the page at that same URL.
+- **Every published post has its own URL**, `/blog/<slug>`, prerendered with its canonical link,
+  Open Graph card and `BlogPosting` structured data, and listed in `/sitemap.xml`. On the home
+  page a card opens the reader over the page at that same URL.
+- **Drafts are not on the site.** The build leaves them out: no card, no page, no feed entry.
+  They only show in the dev preview (`pnpm preview:content`), so they can be read before
+  publishing.
 - **RSS**: `/rss.xml` (Spanish) and `/en/rss.xml` (English) carry the 20 newest published posts
   with the full article. Every page advertises both in its `<head>`, so feed readers find them
   from the site's address, and the footer's Blog column links to the one in the visitor's
   language. Drafts never reach subscribers.
-- **An empty blog** hides the whole Blog section, along with its nav entry and footer column, and
+- **A blog with nothing published** hides the whole Blog section, along with its nav entry and footer column, and
   the other sections renumber themselves.
 
 The article typography lives in `apps/web/src/app.css` under `.article`. To allow a new tag in
@@ -126,8 +128,7 @@ Lighthouse CI audits the **production build**. A Lighthouse run against `pnpm de
 `pnpm preview:content` is not representative: the dev server ships unbundled modules and renders on
 every request, which is where "Duplicated JavaScript", a deep network dependency tree and slow
 document latency come from. Budgets live in `lighthouserc.cjs` (every category ≥ 90, CLS ≤ 0.1),
-and the `lighthouse` job enforces them on each pull request. A draft post's page reports "Page is
-blocked from indexing" on purpose (`noindex`); it goes away once the post is published.
+and the `lighthouse` job enforces them on each pull request.
 
 ## Deploy
 

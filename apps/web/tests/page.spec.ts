@@ -41,7 +41,10 @@ test('the language toggle switches the copy between Spanish and English', async 
 });
 
 test('the blog reader opens at the post URL and closes with Escape or Back', async ({ page }) => {
-	test.skip(content.posts.length === 0, 'no posts written yet, so there is no reader to open');
+	test.skip(
+		!(content.posts as { status: string }[]).some((post) => post.status === 'published'),
+		'no published post, so there is no reader to open'
+	);
 
 	await page.goto('/');
 	await page.getByRole('button', { name: 'EN', exact: true }).click();
