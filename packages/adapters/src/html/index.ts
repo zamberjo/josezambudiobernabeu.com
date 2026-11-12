@@ -102,16 +102,15 @@ export const sanitizingArticleRenderer: ArticleRenderer = (source) => {
 		})
 	);
 
-	// Second pass over markup that is already safe: everything is allowed
-	// through, and the only change is on each h2, in order: an anchor id and
-	// its "01 — " prefix as real text, so the number is part of the heading's
-	// accessible name exactly as the side index shows it.
+	// Second pass, with the same allow-list plus the id it adds: the only change
+	// is on each h2, in order, an anchor id and its "01 — " prefix as real text,
+	// so the number is part of the heading's accessible name exactly as the side
+	// index shows it. Re-applying the list leaves the clean markup as it is.
 	let headings = 0;
 	let prefix: string | null = null;
 	const html = sanitizeHtml(clean, {
-		allowedTags: false,
-		allowedAttributes: false,
-		allowedSchemes: OPTIONS.allowedSchemes,
+		...OPTIONS,
+		allowedAttributes: { ...OPTIONS.allowedAttributes, h2: ['id'] },
 		transformTags: {
 			'*': (tagName, attribs) => {
 				if (tagName !== 'h2') {
