@@ -46,7 +46,7 @@ export const POST_STATUSES = ['published', 'draft'] as const;
 export const PostSchema = v.pipe(
 	v.strictObject({
 		slug: Slug,
-		/** `draft` posts show in the grid but only open the reader once they have a body. */
+		/** `draft` posts stay off the published site; a dev preview shows them. */
 		status: v.picklist(POST_STATUSES),
 		date: v.nullable(IsoDate),
 		cover: v.nullable(ImageSrc),

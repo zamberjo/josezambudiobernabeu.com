@@ -1,4 +1,4 @@
-import { building } from '$app/environment';
+import { building, dev } from '$app/environment';
 import { loadPortfolioView, type PortfolioReader, type ReadError } from '@jzb/application';
 import { jsonPortfolioReader } from '@jzb/adapters/json';
 import { sanitizingArticleRenderer } from '@jzb/adapters/html';
@@ -40,7 +40,10 @@ const describe = (error: ReadError): string =>
 async function readView() {
 	const reader = readers[source];
 	if (!reader) throw new Error(`Unknown CONTENT_SOURCE "${source}"`);
-	return unwrap(await loadPortfolioView(reader(), sanitizingArticleRenderer)(), describe);
+	// Drafts only in dev, where `preview:content` reads them before publishing.
+	// A build, and so the deployed site, has published posts only.
+	const view = loadPortfolioView(reader(), sanitizingArticleRenderer, { drafts: dev });
+	return unwrap(await view(), describe);
 }
 
 let built: ReturnType<typeof readView> | undefined;

@@ -92,10 +92,10 @@ export type BlogView = { featured: PostView | undefined; others: PostView[] };
 
 export type PortfolioView = {
 	site: Site;
-	/** Only the links to bands that render: no posts, no Blog entry. */
+	/** Only the links to bands that render: no visible posts, no Blog entry. */
 	nav: NavLink[];
 	bands: Partial<Record<Band, string>>;
-	/** `null` when there are no posts: the whole band, nav entry and footer column go. */
+	/** `null` when no post is visible: the whole band, nav entry and footer column go. */
 	blog: BlogView | null;
 	experience: Portfolio['experience'];
 	skills: Portfolio['skills'];
@@ -103,13 +103,25 @@ export type PortfolioView = {
 };
 
 /**
- * With no posts the section has nothing to say, so the page drops it: a
- * portfolio is better off without a blog than with an empty one.
+ * Drafts are left out unless asked for. The published site only shows what has
+ * been published; a dev server previewing the content shows drafts too, so
+ * they can be read before publishing.
  */
-export const toPortfolioView = (portfolio: Portfolio, render: ArticleRenderer): PortfolioView => {
-	const hasPosts = portfolio.posts.length > 0;
+export type ViewOptions = { drafts?: boolean };
+
+/**
+ * With no visible posts the section has nothing to say, so the page drops it:
+ * a portfolio is better off without a blog than with an empty one.
+ */
+export const toPortfolioView = (
+	portfolio: Portfolio,
+	render: ArticleRenderer,
+	{ drafts = false }: ViewOptions = {}
+): PortfolioView => {
+	const visible = portfolio.posts.filter((post) => drafts || post.status === 'published');
+	const hasPosts = visible.length > 0;
 	const rendered = BANDS.filter((band) => band !== 'blog' || hasPosts);
-	const posts = portfolio.posts.map(renderPost(render));
+	const posts = visible.map(renderPost(render));
 	const featured = featuredPost(posts);
 
 	return {
@@ -124,9 +136,9 @@ export const toPortfolioView = (portfolio: Portfolio, render: ArticleRenderer): 
 };
 
 /**
- * Every post with a page of its own at /blog/<slug>: the readable ones. A
- * draft with a body gets one too (shared for review), but is kept out of
- * search engines and the sitemap; see `isIndexable`.
+ * Every post in the view with a page of its own at /blog/<slug>: the readable
+ * ones. Drafts only reach the view in a preview, and even there their page is
+ * kept out of search engines; see `isIndexable`.
  */
 export const postPages = (view: PortfolioView): PostView[] =>
 	view.blog

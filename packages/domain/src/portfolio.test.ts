@@ -134,6 +134,29 @@ describe('read model', () => {
 		expect(view.bands.blog).toBe('02');
 	});
 
+	it('leaves drafts out of the published site', () => {
+		const posts = [post(), post({ slug: 'draft', status: 'draft' })];
+		const view = toPortfolioView({ ...valid(), posts }, render);
+		expect([view.blog?.featured, ...(view.blog?.others ?? [])].map((p) => p?.slug)).toEqual([
+			'a-post'
+		]);
+	});
+
+	it('drops the blog band and its nav link when every post is a draft', () => {
+		const posts = [post({ slug: 'draft', status: 'draft' })];
+		const view = toPortfolioView({ ...valid(), posts }, render);
+		expect(view.blog).toBeNull();
+		expect(view.nav.some((link) => link.href === '#blog')).toBe(false);
+		expect(view.bands.blog).toBeUndefined();
+	});
+
+	it('shows drafts when previewing', () => {
+		const posts = [post({ slug: 'draft', status: 'draft' })];
+		const view = toPortfolioView({ ...valid(), posts }, render, { drafts: true });
+		expect(view.blog?.others.map((p) => p.slug)).toEqual(['draft']);
+		expect(view.nav.some((link) => link.href === '#blog')).toBe(true);
+	});
+
 	it('floats featured projects to the front, keeping order', () => {
 		const names = toPortfolioView(valid(), render).projects.map((project) => project.featured);
 		expect(names).toEqual(names.toSorted((a, b) => Number(b) - Number(a)));
