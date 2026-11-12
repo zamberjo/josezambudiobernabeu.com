@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { sanitizingArticleRenderer as render } from './index.ts';
 
 describe('article renderer', () => {
@@ -39,6 +39,13 @@ describe('article renderer', () => {
 			'srcset="/assets/blog/a-640w.webp 640w, /assets/blog/a-960w.webp 960w, /assets/blog/a-1280w.webp 1280w, /assets/blog/a-1920w.webp 1920w"'
 		);
 		expect(html).not.toContain('evil.png');
+	});
+
+	it('renders without sanitize-html warning about vulnerable tags', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		render('<h2>Uno</h2><p>Texto <code class="language-ts">x</code></p><img src="/a.png" alt="">');
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
 	});
 
 	it('restarts the numbering for every article', () => {
