@@ -76,3 +76,19 @@ test('the home page carries its canonical URL and social card', async ({ page })
 	);
 	await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
 });
+
+test('robots.txt keeps AI training crawlers out and lets search in', async ({ request }) => {
+	const robots = await (await request.get('/robots.txt')).text();
+	const groups = robots.split(/\n\s*\n/).filter((group) => /^User-agent:/m.test(group));
+	const groupOf = (agent: string) =>
+		groups.find((group) => new RegExp(`^User-agent: ${agent}$`, 'm').test(group));
+
+	for (const agent of ['GPTBot', 'ClaudeBot', 'Google-Extended', 'CCBot'])
+		expect(groupOf(agent)).toMatch(/^Disallow: \/$/m);
+	// Search crawlers have no group of their own, so they follow `*`.
+	for (const agent of ['Googlebot', 'OAI-SearchBot', 'Claude-SearchBot', 'PerplexityBot'])
+		expect(groupOf(agent)).toBeUndefined();
+	expect(groupOf('\\*')).toMatch(/^Allow: \/$/m);
+	expect(groupOf('\\*')).toContain('Content-Signal: search=yes, ai-input=yes, ai-train=no');
+	expect(robots).toContain('Sitemap: https://josezambudiobernabeu.com/sitemap.xml');
+});

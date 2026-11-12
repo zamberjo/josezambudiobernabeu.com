@@ -130,6 +130,19 @@ every request, which is where "Duplicated JavaScript", a deep network dependency
 document latency come from. Budgets live in `lighthouserc.cjs` (every category ≥ 90, CLS ≤ 0.1),
 and the `lighthouse` job enforces them on each pull request.
 
+## Crawlers and AI
+
+`apps/web/static/robots.txt` lets search engines and AI search assistants in, and keeps the
+crawlers that gather AI training data out (GPTBot, ClaudeBot, Google-Extended, CCBot and others).
+Each company runs its search crawler under a separate user agent, so blocking training does not
+drop the site from ChatGPT search, Perplexity or Google. For everyone else, the `Content-Signal`
+line (`search=yes, ai-input=yes, ai-train=no`) states the same terms, following
+[contentsignals.org](https://contentsignals.org).
+
+`robots.txt` is a request that well-behaved crawlers honour. Enforcing it needs a proxy in front
+of Firebase Hosting, which cannot filter by user agent: Cloudflare's AI Crawl Control can block
+those crawlers, or charge them per request with Pay per crawl.
+
 ## Dependency updates
 
 Every version is pinned. Packages in each `package.json` use exact versions, with no `^` or `~`,
