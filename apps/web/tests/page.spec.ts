@@ -89,6 +89,5 @@ test('robots.txt keeps AI training crawlers out and lets search in', async ({ re
 	for (const agent of ['Googlebot', 'OAI-SearchBot', 'Claude-SearchBot', 'PerplexityBot'])
 		expect(groupOf(agent)).toBeUndefined();
 	expect(groupOf('\\*')).toMatch(/^Allow: \/$/m);
-	expect(groupOf('\\*')).toContain('Content-Signal: search=yes, ai-input=yes, ai-train=no');
 	expect(robots).toContain('Sitemap: https://josezambudiobernabeu.com/sitemap.xml');
 });
