@@ -69,6 +69,9 @@ export type ContentCommands = {
  */
 export type { ArticleRenderer } from '@jzb/domain';
 
+/** Draws a post's share card. Declared in the domain, like `ArticleRenderer`. */
+export type { ShareCardRenderer } from '@jzb/domain';
+
 /** One encoded variant of an image, at a given width. */
 export type EncodedImage = { readonly width: number; readonly data: Uint8Array };
 

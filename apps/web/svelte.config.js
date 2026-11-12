@@ -14,11 +14,12 @@ const config = {
 		prerender: {
 			// Nothing links to the sitemap or the feeds, so the crawler is told.
 			entries: ['*', '/sitemap.xml', '/rss.xml', '/en/rss.xml'],
-			// With no readable posts, the post route has no pages to build, which
-			// is fine; any other prerenderable route left unbuilt is still an error.
+			// With no readable posts, the post routes (the page and its share card)
+			// have nothing to build, which is fine; any other prerenderable route
+			// left unbuilt is still an error.
 			handleUnseenRoutes: ({ routes, message }) => {
-				if (routes.some((route) => route !== '/[[lang=lang]]/blog/[slug]'))
-					throw new Error(message);
+				const postRoutes = ['/[[lang=lang]]/blog/[slug]', '/[[lang=lang]]/blog/[slug]/og.png'];
+				if (routes.some((route) => !postRoutes.includes(route))) throw new Error(message);
 			}
 		},
 		// Content Security Policy, as a <meta> in every prerendered page. SvelteKit

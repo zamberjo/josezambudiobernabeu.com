@@ -124,13 +124,15 @@ sobre `src/lib/data` no devuelve nada.
       [ADR 0006](adr/0006-idioma-en-la-url.md).
 - [x] **5.6** Revisar el rewrite `**` de `firebase.json`: con rutas reales, un slug inexistente debe
       dar 404, no 200 con la home.
-- [ ] **5.7** Imagen OG propia de cada post. Hoy un post comparte su portada, o la tarjeta
+- [x] **5.7** Imagen OG propia de cada post. Hoy un post comparte su portada, o la tarjeta
       genérica `og.png` si no tiene; ninguna de las dos lleva el título. Generar en build una
       imagen de 1200×630 por post e idioma, con el diseño de `og.png` más el título, la fecha y
       las etiquetas, y la portada si la tiene. Sirve como `og:image` en `/blog/<slug>/og.png` y
       `/en/blog/<slug>/og.png`, prerenderizada desde un `+server.ts`. Para no depender de
       Chromium en el build, renderizarla con satori y resvg, usando la Archivo de fontsource
-      que ya tiene el sitio.
+      que ya tiene el sitio. **Hecho** en `feat/og-per-post` (adaptador `og`). En lugar de la
+      fecha, que el sitio no muestra en ningún otro sitio, la tarjeta lleva el tiempo de
+      lectura, como las tarjetas del blog.
 
 _Aceptación_: compartir la URL en LinkedIn muestra tarjeta con imagen; un artículo tiene URL propia
 y aparece en el sitemap; la versión EN es rastreable.

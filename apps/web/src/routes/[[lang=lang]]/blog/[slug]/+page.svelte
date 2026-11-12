@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { alternatePaths, isIndexable, localePath } from '@jzb/domain';
+	import { alternatePaths, isIndexable, localePath, shareCardPath } from '@jzb/domain';
 	import { lang, t } from '$lib/i18n.svelte';
 	import { motionRoot } from '$lib/motion.svelte';
 	import Article from '$lib/components/Article.svelte';
@@ -19,7 +19,10 @@
 	const path = $derived(`/blog/${post.slug}`);
 	const url = $derived(absolute(localePath(lang.current, path)));
 	const home = $derived(localePath(lang.current, '/'));
-	const image = $derived(post.cover ? absolute(post.cover) : null);
+	// Link previews get the post's own card; structured data keeps the cover,
+	// the picture the article actually shows, when there is one.
+	const card = $derived(absolute(shareCardPath(lang.current, post.slug)));
+	const cover = $derived(post.cover ? absolute(post.cover) : null);
 	const author = $derived({ '@type': 'Person', name: 'Jose Zambudio Bernabeu', url: origin });
 </script>
 
@@ -28,7 +31,7 @@
 	title="{t(post.title)} · Jose Zambudio Bernabeu"
 	description={t(post.excerpt)}
 	{url}
-	{image}
+	image={card}
 	type="article"
 	publishedTime={post.date}
 	noindex={!isIndexable(post)}
@@ -43,7 +46,7 @@
 		url,
 		mainEntityOfPage: url,
 		...(post.date && { datePublished: post.date }),
-		...(image && { image }),
+		image: cover ?? card,
 		keywords: post.tags.join(', '),
 		wordCount: post.article[lang.current].words,
 		timeRequired: `PT${post.article[lang.current].minutes}M`,

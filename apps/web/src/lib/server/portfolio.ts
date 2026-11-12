@@ -2,6 +2,7 @@ import { building, dev } from '$app/environment';
 import { loadPortfolioView, type PortfolioReader, type ReadError } from '@jzb/application';
 import { jsonPortfolioReader } from '@jzb/adapters/json';
 import { sanitizingArticleRenderer } from '@jzb/adapters/html';
+import { satoriShareCardRenderer } from '@jzb/adapters/og';
 import { createContentClient, supabasePortfolioReader } from '@jzb/adapters/supabase';
 import { describeValidation, unwrap } from '@jzb/domain';
 
@@ -59,3 +60,6 @@ export function loadView() {
 	built ??= readView();
 	return built;
 }
+
+/** Draws each post's share card while prerendering; see the og.png route. */
+export const renderShareCard = satoriShareCardRenderer();
