@@ -24,13 +24,13 @@
 	"dependencies": {
 		"@jzb/application": "workspace:*",
 		"@jzb/domain": "workspace:*",
-		"@supabase/supabase-js": "^2.117.1",
-		"domutils": "^4.0.2",
-		"htmlparser2": "^12.0.0",
-		"sanitize-html": "^2.17.7",
-		"sharp": "~0.35.5"
+		"@supabase/supabase-js": "2.117.1",
+		"domutils": "4.0.2",
+		"htmlparser2": "12.0.0",
+		"sanitize-html": "2.17.7",
+		"sharp": "0.35.5"
 	},
 	"devDependencies": {
-		"@types/sanitize-html": "^2.16.2"
+		"@types/sanitize-html": "2.16.2"
 	}
 }

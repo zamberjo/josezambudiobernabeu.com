@@ -1,0 +1,33 @@
+name: Renovate
+
+# Self-hosted Renovate: opens dependency update PRs against this repository,
+# following renovate.json. Its window is Thursday 17:00-18:00 Europe/Madrid.
+# GitHub cron is UTC and ignores daylight saving, so it fires at 15:00 and
+# 16:00 UTC: one of the two is 17:00 in Madrid (CEST, then CET), and Renovate
+# skips the other because it falls outside the schedule in renovate.json.
+on:
+  schedule:
+    - cron: '0 15,16 * * 4'
+  workflow_dispatch:
+
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    name: Update dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: renovatebot/github-action@266fef21329c44765ad42f9dea1f01f5d2d91084 # v46.3.13
+        with:
+          # A fine-grained token (Contents, Pull requests, Issues and Workflows:
+          # read and write). PRs opened with the default GITHUB_TOKEN do not
+          # trigger other workflows, so CI would never run on them.
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          # renovate.json is already committed: no onboarding PR.
+          RENOVATE_ONBOARDING: 'false'
+          RENOVATE_REQUIRE_CONFIG: required
+          LOG_LEVEL: info

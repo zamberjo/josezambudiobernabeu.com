@@ -2,7 +2,7 @@
 	"name": "josezambudiobernabeu.com",
 	"version": "0.0.1",
 	"private": true,
-	"packageManager": "pnpm@11.3.0",
+	"packageManager": "pnpm@11.3.0+sha512.2c403d6594527287672b1f7056343a1f7c3634036a67ffabfcc2b3d7595d843768f8787148d1b57cf7956c90606bbd192857c363af19e96d2d0ec9ec5741d215",
 	"type": "module",
 	"scripts": {
 		"dev": "pnpm --filter web dev",
@@ -28,18 +28,18 @@
 		"lighthouse": "pnpm build && lhci autorun"
 	},
 	"devDependencies": {
-		"@eslint/js": "^10.0.0",
+		"@eslint/js": "10.0.1",
 		"@lhci/cli": "0.15.1",
-		"@types/node": "^24.13.6",
-		"eslint": "^10.10.0",
-		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-svelte": "^3.23.0",
-		"globals": "^16.0.0",
-		"prettier": "^3.9.6",
-		"prettier-plugin-svelte": "^4.1.1",
-		"svelte": "^5.57.0",
-		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.70.0",
-		"vitest": "^5.0.1"
+		"@types/node": "24.13.6",
+		"eslint": "10.10.0",
+		"eslint-config-prettier": "10.1.8",
+		"eslint-plugin-svelte": "3.23.0",
+		"globals": "16.5.0",
+		"prettier": "3.9.6",
+		"prettier-plugin-svelte": "4.1.1",
+		"svelte": "5.57.0",
+		"typescript": "6.0.3",
+		"typescript-eslint": "8.70.0",
+		"vitest": "5.0.1"
 	}
 }

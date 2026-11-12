@@ -1,0 +1,63 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:recommended",
+		"helpers:pinGitHubActionDigestsToSemver",
+		":semanticCommitTypeAll(chore)",
+		":dependencyDashboard"
+	],
+	"timezone": "Europe/Madrid",
+	"schedule": ["* 17 * * 4"],
+	"labels": ["dependencies"],
+	"prConcurrentLimit": 5,
+	"minimumReleaseAge": "3 days",
+	"internalChecksFilter": "strict",
+	"rangeStrategy": "pin",
+	"pinDigests": true,
+	"lockFileMaintenance": {
+		"enabled": true,
+		"schedule": ["* 17 * * 4"]
+	},
+	"packageRules": [
+		{
+			"description": "Minor and patch updates of tooling, in one PR",
+			"matchDepTypes": ["devDependencies"],
+			"matchUpdateTypes": ["minor", "patch", "digest"],
+			"groupName": "devDependencies (non-major)"
+		},
+		{
+			"description": "The SvelteKit toolchain moves together",
+			"matchPackageNames": [
+				"svelte",
+				"svelte-check",
+				"@sveltejs/**",
+				"vite",
+				"@tailwindcss/**",
+				"tailwindcss"
+			],
+			"matchUpdateTypes": ["minor", "patch"],
+			"groupName": "SvelteKit toolchain"
+		},
+		{
+			"description": "Supabase client and SSR helpers",
+			"matchPackageNames": ["@supabase/**"],
+			"groupName": "Supabase"
+		},
+		{
+			"description": "The editor's packages must share a version",
+			"matchPackageNames": ["@tiptap/**"],
+			"groupName": "Tiptap"
+		},
+		{
+			"description": "Workflow actions, pinned by commit SHA, in one PR",
+			"matchManagers": ["github-actions"],
+			"matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+			"groupName": "GitHub Actions"
+		},
+		{
+			"description": "Workspace packages are not published",
+			"matchPackageNames": ["@jzb/**"],
+			"enabled": false
+		}
+	]
+}
