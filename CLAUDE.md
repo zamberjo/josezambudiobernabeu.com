@@ -64,9 +64,12 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `PublishTrigger` and `SnapshotSink`. **Use cases are curried**, dependencies first
   (`saveEntry(commands)(collection, input)`), and validate untrusted input with the domain before
   any port sees it. Errors are `Result` values, never thrown.
-- `packages/adapters` provides `json`, `supabase`, `github`, `memory` and `html`. `html` is the
-  build-time `ArticleRenderer` (sanitize-html allow-list, `<h2>` ids and "01 — " numbering,
-  outline). In `supabase/codecs.ts`, the codecs are the anti-corruption layer (snake_case rows ↔
+- `packages/adapters` provides `json`, `supabase`, `github`, `memory`, `html` and `og`. `html` is
+  the build-time `ArticleRenderer` (sanitize-html allow-list, `<h2>` ids and "01 — " numbering,
+  outline). `og` is the build-time `ShareCardRenderer`: each post's 1200×630 card, laid out
+  with satori and rasterised with resvg (native, so `vite.config.ts` keeps it and sharp out of
+  the SSR bundle). The card route is `[[lang=lang]]/blog/[slug]/og.png/+server.ts`. In
+  `supabase/codecs.ts`, the codecs are the anti-corruption layer (snake_case rows ↔
   domain), and generated DB types never leave this package. `src/contract.ts` is the shared
   store contract: the memory and Supabase stores both run it. Keep them in step.
 - `apps/web` is fully prerendered (`adapter-static`, `prerender = true`), **once per language**:
@@ -87,8 +90,8 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `page.state.reader`); Esc, the back button and browser Back all close it and restore `/` (or
   `/en`). `Article.svelte` is the one article view, shared by the dialog and the post page.
   `Seo.svelte` writes each page's title, description, canonical, Open Graph/Twitter tags (with the
-  post's cover or the default card `static/assets/og.png` as the image) and JSON-LD (`Person` on
-  home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them unless
+  post's own share card or the default card `static/assets/og.png` as the image) and JSON-LD
+  (`Person` on home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them unless
   called with `{ drafts: true }`, which the composition root passes only in dev, so
   `preview:content` shows them (their page with `noindex`). With no published post there is no
   Blog band, nav entry or footer column.
@@ -203,5 +206,5 @@ inerting the page come from the platform; do not reintroduce manual scroll locki
 - `firebase.json` points at `apps/web/build/` and has **no rewrites**. Every route is a built file
   (`cleanUrls` maps `/blog/x` to `blog/x.html`), so an unknown path gets Firebase's `404.html`
   with a real 404 status, not the home page. `/en` is `en.html`, next to the `en/` folder of
-  English posts and feed. `svelte.config.js` tolerates `/[[lang=lang]]/blog/[slug]` having
-  no pages while there are no posts (`handleUnseenRoutes`), and nothing else.
+  English posts and feed. `svelte.config.js` tolerates `/[[lang=lang]]/blog/[slug]` and its
+  `og.png` having no pages while there are no posts (`handleUnseenRoutes`), and nothing else.

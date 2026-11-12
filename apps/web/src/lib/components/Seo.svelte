@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { LOCALES, type Lang } from '@jzb/domain';
+	import { DEFAULT_SHARE_CARD, LOCALES, SHARE_CARD_SIZE, type Lang } from '@jzb/domain';
 
 	interface Props {
 		title: string;
 		description: string;
 		/** Absolute canonical URL of this page. */
 		url: string;
-		/** Absolute URL of the share image; the site's default card if none. */
+		/** Absolute URL of the share card (1200×630); the site's default card if none. */
 		image?: string | null;
 		type?: 'website' | 'article';
 		/** YYYY-MM-DD, for articles. */
@@ -38,10 +38,9 @@
 	// Same origin as the canonical URL, which is always absolute.
 	const absolute = (path: string) => new URL(path, url).href;
 
-	// Every page shares with a picture: its own (a post's cover) or the default
-	// card, static/assets/og.png, rendered by `pnpm --filter web og:image`.
-	const DEFAULT_IMAGE = { path: '/assets/og.png', width: 1200, height: 630 };
-	const shareImage = $derived(image ?? absolute(DEFAULT_IMAGE.path));
+	// Every page shares with a card of SHARE_CARD_SIZE: a post's own, drawn at
+	// build time with its title, or the default one, static/assets/og.png.
+	const shareImage = $derived(image ?? absolute(DEFAULT_SHARE_CARD));
 
 	// JSON-LD is injected as a script element, so no string in it may contain a
 	// closing tag: every '<' is escaped, which JSON parsers read back unchanged.
@@ -94,10 +93,9 @@
 	<meta property="og:site_name" content="Jose Zambudio Bernabeu" />
 	<meta property="og:image" content={shareImage} />
 	<meta property="og:image:alt" content={title} />
-	{#if !image}
-		<meta property="og:image:width" content={String(DEFAULT_IMAGE.width)} />
-		<meta property="og:image:height" content={String(DEFAULT_IMAGE.height)} />
-	{/if}
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content={String(SHARE_CARD_SIZE.width)} />
+	<meta property="og:image:height" content={String(SHARE_CARD_SIZE.height)} />
 	{#if publishedTime}<meta property="article:published_time" content={publishedTime} />{/if}
 
 	<meta name="twitter:card" content="summary_large_image" />

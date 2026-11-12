@@ -11,7 +11,8 @@
 		"./github": "./src/github/index.ts",
 		"./html": "./src/html/index.ts",
 		"./images": "./src/images/index.ts",
-		"./rss": "./src/rss/index.ts"
+		"./rss": "./src/rss/index.ts",
+		"./og": "./src/og/index.ts"
 	},
 	"scripts": {
 		"check": "tsc -p .",
@@ -22,12 +23,15 @@
 		"images:check": "node scripts/images.ts check"
 	},
 	"dependencies": {
+		"@fontsource/archivo": "5.3.0",
 		"@jzb/application": "workspace:*",
 		"@jzb/domain": "workspace:*",
+		"@resvg/resvg-js": "2.6.2",
 		"@supabase/supabase-js": "2.117.1",
 		"domutils": "4.0.2",
 		"htmlparser2": "12.0.0",
 		"sanitize-html": "2.17.7",
+		"satori": "0.63.2",
 		"sharp": "0.35.5"
 	},
 	"devDependencies": {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { alternatePaths, isLang, langOfPath, localePath, unlocalizedPath } from './i18n.ts';
+import { shareCardPath } from './share.ts';
 
 describe('language in the URL', () => {
 	it('keeps Spanish at the root and prefixes English', () => {
@@ -44,5 +45,10 @@ describe('language in the URL', () => {
 		expect(isLang('en')).toBe(true);
 		expect(isLang('fr')).toBe(false);
 		expect(isLang(undefined)).toBe(false);
+	});
+
+	it("serves a post's share card next to its page, per language", () => {
+		expect(shareCardPath('es', 'hola')).toBe('/blog/hola/og.png');
+		expect(shareCardPath('en', 'hola')).toBe('/en/blog/hola/og.png');
 	});
 });

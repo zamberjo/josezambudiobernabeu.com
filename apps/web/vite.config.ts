@@ -10,5 +10,10 @@ export default defineConfig(({ mode }) => {
 		process.env[key] ??= value;
 	}
 
-	return { plugins: [tailwindcss(), sveltekit()] };
+	return {
+		plugins: [tailwindcss(), sveltekit()],
+		// Native modules, used while prerendering to draw the share cards: Node
+		// loads them at run time, as they cannot be bundled.
+		ssr: { external: ['@resvg/resvg-js', 'sharp'] }
+	};
 });

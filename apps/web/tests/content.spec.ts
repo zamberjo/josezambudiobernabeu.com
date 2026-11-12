@@ -106,6 +106,13 @@ test('every published post has its own prerendered page, found by search engines
 			expect(html).toContain('<meta property="og:type" content="article"');
 			expect(html).toContain('"@type":"BlogPosting"');
 			expect(html).not.toContain('<meta name="robots" content="noindex"');
+
+			// Its own share card, drawn at build time, in the page's language.
+			const card = `https://josezambudiobernabeu.com${path}/og.png`;
+			expect(html).toContain(`<meta property="og:image" content="${card}"`);
+			const png = await request.get(`${path}/og.png`);
+			expect(png.status()).toBe(200);
+			expect(png.headers()['content-type']).toBe('image/png');
 		}
 	}
 
