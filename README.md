@@ -170,20 +170,24 @@ The lockfile records each package's integrity hash, so `pnpm install` rejects a 
 changed.
 
 Renovate keeps the pins current. It runs as a GitHub Action (`.github/workflows/renovate.yaml`) on
-Thursdays at 17:00 Europe/Madrid, or by hand from the Actions tab, and opens PRs following
+Thursdays at 17:07 Europe/Madrid, or by hand from the Actions tab, and opens PRs following
 `renovate.json`. Minor and patch updates of dev tooling arrive grouped in one PR. The SvelteKit
 toolchain, Supabase, Tiptap and the workflow actions each get their own group, and majors come one
 by one. It waits three days after a release, longer than pnpm's own `minimumReleaseAge`, so
-`pnpm install` never rejects what it proposes. The lockfile is refreshed in the same window, and
-the Dependency Dashboard issue lists what is pending.
+`pnpm install` never rejects what it proposes. Each run also refreshes the lockfile, and the
+Dependency Dashboard issue lists what is pending.
 
-GitHub's cron runs in UTC and ignores daylight saving, so the workflow fires at 15:00 and 16:00 UTC.
-Renovate's own schedule (`timezone: Europe/Madrid`) skips whichever of the two is not 17:00 in
-Madrid.
+The workflow's cron is the only schedule, in Madrid time (`timezone: Europe/Madrid`), and
+`renovate.json` has none. GitHub can start a scheduled run hours late, and a Renovate time window
+would then skip it. Renovate runs from its Docker image, pinned by digest, which Renovate also
+updates. Run by hand, the workflow takes a dry run, which works out the updates without creating
+branches or PRs, and a log level.
 
-It needs a `RENOVATE_TOKEN` secret: a fine-grained token on this repository with _Contents_, _Pull
-requests_, _Issues_ and _Workflows_ set to read and write. PRs opened with the default
-`GITHUB_TOKEN` do not trigger other workflows, so CI would never run on them.
+It authenticates as a GitHub App, so its PRs trigger CI: PRs opened with the default
+`GITHUB_TOKEN` do not trigger other workflows. The app needs _Contents_, _Pull requests_,
+_Issues_ and _Workflows_ set to read and write, and _Metadata_ to read, and must be installed on
+this repository. The workflow reads its client ID from the `RENOVATE_APP_CLIENT_ID` repository
+variable and its private key from the `RENOVATE_APP_PRIVATE_KEY` secret.
 
 ## Security headers
 

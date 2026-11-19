@@ -1,14 +1,30 @@
 name: Renovate
 
-# Self-hosted Renovate: opens dependency update PRs against this repository,
-# following renovate.json. Its window is Thursday 17:00-18:00 Europe/Madrid.
-# GitHub cron is UTC and ignores daylight saving, so it fires at 15:00 and
-# 16:00 UTC: one of the two is 17:00 in Madrid (CEST, then CET), and Renovate
-# skips the other because it falls outside the schedule in renovate.json.
 on:
   schedule:
-    - cron: '0 15,16 * * 4'
+    # The only schedule: renovate.json has none, as GitHub can start this hours late
+    # and a Renovate time window would then skip the run.
+    - cron: '7 17 * * 4'
+      timezone: Europe/Madrid
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: calcula las actualizaciones sin crear ramas ni PRs'
+        type: boolean
+        default: false
+      log_level:
+        description: 'Nivel de log de Renovate'
+        type: choice
+        options:
+          - info
+          - debug
+          - trace
+          - warn
+          - error
+        default: info
+
+permissions:
+  contents: read
 
 concurrency:
   group: renovate
@@ -16,18 +32,27 @@ concurrency:
 
 jobs:
   renovate:
-    name: Update dependencies
+    name: Run Renovate
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: renovatebot/github-action@266fef21329c44765ad42f9dea1f01f5d2d91084 # v46.3.13
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
         with:
-          # A fine-grained token (Contents, Pull requests, Issues and Workflows:
-          # read and write). PRs opened with the default GITHUB_TOKEN do not
-          # trigger other workflows, so CI would never run on them.
-          token: ${{ secrets.RENOVATE_TOKEN }}
+          client-id: ${{ vars.RENOVATE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+
+      - name: Run Renovate
+        uses: renovatebot/github-action@ebcbb513d07ead4d9c0c2139064301db05e84a3e # v46.3.15
         env:
           RENOVATE_REPOSITORIES: ${{ github.repository }}
-          # renovate.json is already committed: no onboarding PR.
           RENOVATE_ONBOARDING: 'false'
           RENOVATE_REQUIRE_CONFIG: required
-          LOG_LEVEL: info
+          RENOVATE_DRY_RUN: ${{ inputs.dry_run && 'full' || 'null' }}
+          LOG_LEVEL: ${{ inputs.log_level || 'info' }}
+        with:
+          # Renovate updates this image too (its github-actions manager reads renovate-image).
+          renovate-image: ghcr.io/renovatebot/renovate:44.236.2@sha256:55deecada47b7a8b1bf07218c91fd62f380d374a2b87e08570af5bfcd63c34d8
+          token: ${{ steps.app-token.outputs.token }}
+          env-regex: "^(?:RENOVATE_\\w+|LOG_LEVEL)$"
