@@ -46,8 +46,9 @@ Firebase Hosting. Playwright always builds from the snapshot (`webServer.env` in
 from Supabase when the `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` secrets exist, and from the
 snapshot otherwise. It also needs `FIREBASE_SERVICE_ACCOUNT_JOSEZAMBUDIOBERNABEU`. PR previews
 (`firebase-hosting-pull-request.yml`) always build from the snapshot. `renovate.yaml` runs
-self-hosted Renovate on Thursdays at 17:00 Europe/Madrid with `renovate.json` (needs the
-`RENOVATE_TOKEN` secret).
+self-hosted Renovate on Thursdays at 17:07 Europe/Madrid with `renovate.json`, as a GitHub App
+(`RENOVATE_APP_CLIENT_ID` variable, `RENOVATE_APP_PRIVATE_KEY` secret). The cron is its only
+schedule: `renovate.json` has none, since a late start would fall outside a Renovate window.
 
 ## Architecture
 
@@ -91,8 +92,8 @@ Hexagonal, in a monorepo; see `docs/adr/0005-…`. Dependencies point inward onl
   `/en`). `Article.svelte` is the one article view, shared by the dialog and the post page.
   `Seo.svelte` writes each page's title, description, canonical, Open Graph/Twitter tags (with the
   post's own share card or the default card `static/assets/og.png` as the image) and JSON-LD
-  (`Person` on home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops them unless
-  called with `{ drafts: true }`, which the composition root passes only in dev, so
+  (`Person` on home, `BlogPosting` on posts). Drafts never reach a build: `toPortfolioView` drops
+  them unless called with `{ drafts: true }`, which the composition root passes only in dev, so
   `preview:content` shows them (their page with `noindex`). With no published post there is no
   Blog band, nav entry or footer column.
 - `apps/backoffice` is SvelteKit + adapter-node, local only. `hooks.server.ts` creates a

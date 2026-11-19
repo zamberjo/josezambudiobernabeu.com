@@ -6,8 +6,6 @@
 		":semanticCommitTypeAll(chore)",
 		":dependencyDashboard"
 	],
-	"timezone": "Europe/Madrid",
-	"schedule": ["* 17 * * 4"],
 	"labels": ["dependencies"],
 	"prConcurrentLimit": 5,
 	"minimumReleaseAge": "3 days",
@@ -16,7 +14,7 @@
 	"pinDigests": true,
 	"lockFileMaintenance": {
 		"enabled": true,
-		"schedule": ["* 17 * * 4"]
+		"schedule": ["at any time"]
 	},
 	"packageRules": [
 		{
